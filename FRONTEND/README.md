@@ -1,0 +1,1 @@
+for the frontend of the AI-powered resume builder.
