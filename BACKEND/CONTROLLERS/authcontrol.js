@@ -8,7 +8,7 @@ exports.register = async (req, res) => {
   const { error } = validateRegistration(req.body);
   if (error) return res.status(400).json({ message: error.details[0].message });
 
-  const { email, password } = req.body;
+  const { name, email, password } = req.body;
 
   try {
     // Check if user already exists
@@ -52,4 +52,6 @@ exports.login = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
+
+
 };
