@@ -1,7 +1,7 @@
 # Ignore node modules directory
 node_modules/
 
-# Ignore pnpm lock file
+# Ignore pnpm lockfiels
 pnpm-lock.yaml
 
 # Ignore .env files
