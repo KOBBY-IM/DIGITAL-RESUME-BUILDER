@@ -18,7 +18,7 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
       const data = await response.json();
       if (response.ok) {
         alert('Registration successful!');
-        window.location.href = '/'; // Redirect to home page
+        window.location.href = 'loginindex.html'; // Redirect to home page
       } else {
         alert(`Error: ${data.message}`);
       }
@@ -48,7 +48,7 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
       if (response.ok) {
         alert('Login successful!');
         localStorage.setItem('token', data.token); // Save JWT token
-        window.location.href = '/'; // Redirect to home page
+        window.location.href = 'loginindex.html'; // Redirect to home page
       } else {
         alert(`Error: ${data.message}`);
       }

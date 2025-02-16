@@ -40,7 +40,7 @@
                 <img src="./assets/logo.png" alt="logo" class="header-logo" style="height: 69px;">
                 
                 <nav class="nav nav-header justify-content-end gap-2">
-                    <button type="button" class="btn btn-secondary rounded-pill" data-bs-toggle="modal" data-bs-target="#signupModal" style="width: 90px;">Sign up</button>
+                    <button type="button" class="btn btn-secondary rounded-pill" data-bs-toggle="modal" data-bs-target="#signupModal" style="width: 90px;">Sign Up</button>
                     <button type="button" class="btn btn-dark rounded-pill" data-bs-toggle="modal" data-bs-target="#loginModal" style="width: 90px;">Log In</button>
                 </nav>
             </div>
@@ -55,21 +55,21 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="signupForm">
                     <div class="mb-3">
-                        <label class="form-label">Name</label>
-                        <input type="text" class="form-control" required>
+                      <label class="form-label">Name</label>
+                      <input type="text" class="form-control" id="name" required> 
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-control" required>
+                      <label class="form-label">Email</label>
+                      <input type="email" class="form-control" id="email" required> 
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Password</label>
-                        <input type="password" class="form-control" required>
+                      <label class="form-label">Password</label>
+                      <input type="password" class="form-control" id="password" required> 
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Sign Up</button>
-                </form>
+                  </form>
             </div>
         </div>
     </div>
@@ -84,17 +84,17 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form id="loginForm"> 
                             <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" required>
+                              <label class="form-label">Email</label>
+                              <input type="email" class="form-control" id="loginEmail" required> 
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Password</label>
-                                <input type="password" class="form-control" required>
+                              <label class="form-label">Password</label>
+                              <input type="password" class="form-control" id="loginPassword" required> 
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Log In</button>
-                        </form>
+                          </form>
                     </div>
                 </div>
             </div>
