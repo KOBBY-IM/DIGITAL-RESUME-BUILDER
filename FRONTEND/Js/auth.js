@@ -5,6 +5,13 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    //check if passwords match
+    if (password !== confirmPassword) {
+        alert('Password do not match')
+        return;
+    }
   
     try {
       const response = await fetch('/api/auth/register', {
@@ -12,7 +19,7 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, password, confirmPassword }),
       });
   
       const data = await response.json();
