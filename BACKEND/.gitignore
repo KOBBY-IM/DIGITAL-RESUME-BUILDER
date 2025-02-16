@@ -6,3 +6,8 @@ pnpm-lock.yaml
 
 # Ignore .env files
 .env
+
+# Ignore .env.development files
+.env.development
+
+package-lock.json
