@@ -64,3 +64,9 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
       alert('An error occurred. Please try again.');
     }
   });
+
+  // log out function
+  function logout () {
+    localStorage.removeItem('token');
+    window.location.href ='cvindex.html'
+  }
