@@ -23,7 +23,7 @@ connectDB(); // Use the connectDB function from the CONFIGURATION/db.js file
 
 // Enable CORS
 app.use(cors({
-  origin: 'http://localhost:${PORT}',
+  origin: 'http://localhost:${process.env.PORT || 3000}',
   credentials: true,
 }));
 
