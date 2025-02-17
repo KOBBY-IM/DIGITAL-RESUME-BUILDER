@@ -11,8 +11,10 @@ exports.register = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
+    const normalizedEmail = email.toLowerCase();
+
     // Check if user already exists
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ email: normalizedEmail });
     if (user) return res.status(400).json({ message: 'User already exists' });
 
     // Hash password
@@ -20,7 +22,7 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Create new user
-    user = new User({ name, email, password: hashedPassword });
+    user = new User({ name, email: normalizedEmail, password: hashedPassword });
     await user.save();
 
     res.status(201).json({ message: 'User registered successfully' });
@@ -37,8 +39,10 @@ exports.login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
+    const normalizedEmail = email.toLowerCase();
+
     // Check if user exists
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) return res.status(400).json({ message: 'Invalid credentials' });
 
     // Validate password
@@ -52,6 +56,20 @@ exports.login = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
+};
 
+ // Logout user
+exports.logout = (req, res) => {
+  // Extract the token from the Authorization header
+  const token = req.header('Authorization')?.split(' ')[1];
 
+  if (token) {
+    // Add the token to the blacklist
+    blacklistedTokens.add(token);
+
+    console.log('Token invalidated:', token); // For debugging
+  }
+
+  // Send a success response
+  res.status(200).json({ message: 'User logged out successfully' });
 };
