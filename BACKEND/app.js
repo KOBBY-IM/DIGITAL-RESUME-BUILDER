@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
+const templateRoutes = require('./ROUTES/templateRoutes');
+const resumeRoutes = require('./ROUTES/resumeRoutes');
 
 // Import routes
 const authRoutes = require('./ROUTES/auth_Routes');
@@ -33,6 +35,10 @@ app.use(express.static(path.join(__dirname, '../FRONTEND')));
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/templates', templateRoutes);
+app.use('/api/resumes', resumeRoutes);
+
+
 
 // Catch-all route to serve the frontend's index.html
 app.get('*', (req, res) => {
