@@ -1,5 +1,5 @@
-const Resume = require('../models/resume');
-const Template = require('../models/template');
+const Resume = require('../MODELS/resume');
+const Template = require('../MODELS/template');
 
 // Create a new resume based on a selected template
 exports.createResume = async (req, res) => {

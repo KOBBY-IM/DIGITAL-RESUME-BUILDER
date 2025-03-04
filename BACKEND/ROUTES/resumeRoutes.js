@@ -1,5 +1,5 @@
 const express = require('express');
-const resumeController = require('../controllers/resumeControl');
+const resumeController = require('../CONTROLLERS/resumeControl');
 
 const router = express.Router();
 
