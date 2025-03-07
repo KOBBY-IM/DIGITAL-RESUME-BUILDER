@@ -5,19 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>User Form with Live CV Preview</title>
   <link rel="stylesheet" href="./css/cvstyle.css">
-  <style>
-    /* seperate nav buttons - previous/next */
-    .nav-buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
-    }
-    .nav-buttons button { 
-      padding: 10px 20px;
-      font-size: 1rem;
-    }
-  </style>
+  <link rel="stylesheet" href="./css/tabnext.css">
 </head>
+<div class="header-container d-flex h-100 p-3 mx-auto" style="width: 100%;">
+  <header class="header mb-auto" style="width: 100%;">
+    <div class="inner d-flex justify-content-between align-items-center" style="width: 100%;">
+      <img src="./assets/logo.png" alt="logo" class="header-logo" style="height: 69px;">
+
+      <nav class="header-nav">
+        <a href="loginindex.html" class="btn btn-primary rounded-pill" style="width: 90px;">Home</a>
+        <button type="button" class="btn btn-dark rounded-pill" onclick="logout()" style="width: 90px;">Log Out</button>
+      </nav>
+    </div>
+  </header>
+</div>
+
 <body>
   <div class="page-container">
     <!-- Form Section -->
@@ -171,5 +173,6 @@
     </div>
   </div>
   <script src="./Js/cvbuilder.js"></script>
+  <script src="./Js/auth.js"></script>
 </body>
 </html>

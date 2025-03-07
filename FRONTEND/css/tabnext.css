@@ -1,0 +1,18 @@
+/* Styles for tab navigation buttons */
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.nav-buttons button { 
+    padding: 10px 20px;
+    font-size: 1rem;
+}
+
+/* New styles for header navigation */
+.header-nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
