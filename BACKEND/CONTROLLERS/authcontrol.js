@@ -1,5 +1,6 @@
 const User = require('../MODELS/user');
 const { validateRegistration, validateLogin } = require('../UTILS/validation');
+const BlacklistedToken = require('../MODELS/blacklistedToken')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -60,17 +61,20 @@ exports.login = async (req, res) => {
 };
 
  // Logout user
-exports.logout = (req, res) => {
-  // Extract the token from the Authorization header
-  const token = req.header('Authorization')?.split(' ')[1];
+exports.logout = async (req, res) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
 
   if (token) {
-    // Add the token to the blacklist
-    blacklistedTokens.add(token);
-
-    console.log('Token invalidated:', token); // For debugging
+    try {
+      // Add the token to the blacklist
+      const blacklistedToken = new BlacklistedToken({ token });
+      await blacklistedToken.save();
+      res.status(200).json({ message: 'User logged out successfully' });
+    } catch (error) {
+      console.error('Error blacklisting token:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  } else {
+    res.status(400).json({ message: 'No token provided' });
   }
-
-  // Send a success response
-  res.status(200).json({ message: 'User logged out successfully' });
 };
