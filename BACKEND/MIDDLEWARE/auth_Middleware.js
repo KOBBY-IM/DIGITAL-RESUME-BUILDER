@@ -1,10 +1,12 @@
 const jwt = require('jsonwebtoken');
-
+const BlacklistedToken = require('../MODELS/blacklistedToken'); // Import the BlacklistedToken model
 
 exports.authenticate = async (req, res, next) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
 
-  if (!token) return res.status(401).json({ message: 'Access denied. No token provided.' });
+  if (!token) {
+    return res.status(401).json({ message: 'Access denied. No token provided.' });
+  }
 
   try {
     // Check if the token is blacklisted
