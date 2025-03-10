@@ -81,5 +81,5 @@ document.addEventListener('DOMContentLoaded', () => {
 // Logout function
 function logout() {
   localStorage.removeItem('token');
-  window.location.href = 'cvindex.html';
+  window.location.href = 'test.html';
 }

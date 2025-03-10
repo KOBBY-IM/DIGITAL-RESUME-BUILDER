@@ -39,7 +39,7 @@ app.use('/api/resumes', resumeRoutes);
 
 // Catch-all route to serve the frontend's index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../FRONTEND/cvindex.html'));
+  res.sendFile(path.join(__dirname, '../FRONTEND/test.html'));
 });
 
 // Start the server
