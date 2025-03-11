@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+  font-family: "proxima-nova", sans-serif;
     background: #f4f4f4;
     margin: 0;
     padding: 20px;
@@ -122,3 +122,5 @@ body {
     display: flex;
     flex-wrap: wrap;
   }
+
+  

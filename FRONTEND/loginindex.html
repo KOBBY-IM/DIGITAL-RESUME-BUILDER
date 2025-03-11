@@ -6,130 +6,103 @@
     <title>CV Builder</title>
     <link rel="stylesheet" href="./css/bootstrap.css">
     <link rel="stylesheet" href="https://use.typekit.net/fuz8kft.css">
-    <style>  
-        .container {
-            position: relative;
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
+    <style>
+        .custom-button {
+          padding: 2rem;
+          font-size: 2rem;
+        }
+        .icon {
+          height: 64px;
+          width: auto;
         }
 
-        .container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url("./assets/city.jpg"), rgba(0, 0, 0, 0.5); 
-            background-size: cover;
-            background-position: center;
-            background-blend-mode: darken;
-            border-radius: 10px;
-            z-index: -1;
-        }
-        </style>
-  
+            /* Standard icon */
+            .icon-swap {
+            transition: filter 0.1s ease;
+            }
+
+            /* Make icons white when button is hovered */
+            button:hover .icon-swap {
+            filter: brightness(0) invert(1);
+            }
+            /* RIGHT CHEVRON BLUE/WHITE*/
+            .icon-chevron {
+            filter: brightness(0) saturate(100%) invert(32%) sepia(99%) saturate(748%) hue-rotate(199deg) brightness(99%) contrast(101%);
+            }
+            button:hover .icon-chevron {
+            filter: brightness(0) invert(1);
+            }
+      </style>
+  </head>
   <body class="text-center">
-  
+   
     <div class="header-container d-flex h-100 p-3 mx-auto flex-column text-left">
-        <header class="header mb-auto">
-            <div class="inner d-flex justify-content-between align-items-center">
-                <img src="./assets/logo.png" alt="logo" class="header-logo" style="height: 69px;">
-                
-                <nav class="nav nav-header justify-content-end gap-2">
-                   
-                    <button type="button" class="btn btn-dark rounded-pill" onclick="logout()" style="width: 90px;">Log Out</button>
-                </nav>
-            </div>
-        </header>
-
-<!-- Sign Up Pop Up  -->
-<div class="modal fade" id="signupModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Create Account</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label class="form-label">Name</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Password</label>
-                        <input type="password" class="form-control" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Sign Up</button>
-                </form>
-            </div>
+      <header class="header mb-auto">
+        <div class="inner d-flex justify-content-between align-items-center">
+          <img src="./assets/Untitled.png" alt="logo" class="header-logo" style="height: 69px;">
+          <nav class="nav nav-header justify-content-end gap-2">
+            <button type="button" class="btn btn-primary rounded-pill" style="width: 90px;" onclick="logout()">Log Out</button>
+          </nav>
         </div>
+      </header>
     </div>
-</div>
 
-<!-- Login Modal Pop Up -->
-        <div class="modal fade" id="loginModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Sign In</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Password</label>
-                                <input type="password" class="form-control" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">Log In</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>     
-    </div>
-    
-    <hr>
-     
+
     <main>
-        <div class="container d-flex flex-column justify-content-center vh-100" name="cont">
-            <div class="row justify-content-center">
-                <div class="col-12">
-                <h2>Build Your Perfect Resume with AI</h2>
-                <p>Create, Edit, and Download Resumes in Minutes!</p>
-                <br>
+        <div class="container vh-100 d-flex flex-column justify-content-center align-items-center">
+          <div class="w-50"></div>
+            <h2 class="mb-4">How will you make your resume?</h2>
+            <button type="button" onclick="templatepage()" class="btn btn-outline-primary w-50 d-flex align-items-center justify-content-between p-3 mb-3">
+              <div class="d-flex align-items-center">
+                <div class="me-3">
+                  <img src="./assets/contractblue.png" alt="Start from scratch" width="24" height="24" class="icon-swap"/>
                 </div>
-            </div>
-            <div class="row justify-content-center">
-            <div class="col-3">
-                <div class="d-grid gap-3">
-                <button type="button" class="btn btn-secondary btn-block rounded-pill" onclick="window.location.href='cvbuilder.html';">Start from Scratch</button>
-                <button type="button" class="btn btn-dark btn-block rounded-pill">Upload your resume</button>
+                <div>
+                  <div class="fw-bold mb-0">Start from scratch</div>
+                  <small class="text-muted">Our AI helper will guide you</small>
                 </div>
-            </div>
-            </div>
+              </div>
+              <div>
+                <img src="./assets/next.png" alt="Next" width="24" height="24" class="icon-chevron"/>
+              </div>
+            </button>
+      
+            <button type="button" class="btn btn-outline-primary w-50 d-flex align-items-center justify-content-between p-3">
+              <div class="d-flex align-items-center">
+                <div class="me-3">
+                  <img src="./assets/fileblue.png" alt="Upload your resume" width="24" height="24" class="icon-swap" />
+                </div>
+                <div>
+                  <div class="fw-bold mb-0">Upload your resume</div>
+                  <small class="text-muted">We’ll help you tailor it</small>
+                </div>
+              </div>
+              <div>
+                <img src="./assets/next.png" alt="Next" width="24" height="24" class="icon-chevron"/>
+              </div>
+            </button>
+          </div>
         </div>
-    </main>
-    
+      </main>
+      
+      
+ 
     <footer class="footer-container mt-auto">
-        <div class="inner">
-            <hr>
-            <p>Resumaker® is a registered trademark of CMM004 Team B 2025</p>
-        </div>
-
+      <div class="inner">
+        <hr>
+        <p>Resumaker® is a registered trademark of CMM004 Team B 2025</p>
+      </div>
     </footer>
+
+    
+
+
   </body>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="./js/auth.js"></script>
-  <script src="./js/cvbuilder.js"></script>
+  <script>
+    function templatepage() {
+      window.location.href = 'template.html';
+    }
+  </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="./Js/auth.js"></script>
 </html>

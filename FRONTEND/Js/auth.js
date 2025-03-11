@@ -83,3 +83,11 @@ function logout() {
   localStorage.removeItem('token');
   window.location.href = 'test.html';
 }
+
+function templatepage() {
+  window.location.href = 'template.html';
+}
+
+function homepage() {
+  window.location.href = 'loginindex.html';
+}

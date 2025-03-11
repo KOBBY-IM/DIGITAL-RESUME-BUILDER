@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resume Builder</title>
+    <link rel="stylesheet" href="./css/templates/template2.css" />
+    <script defer src="./Js/templates/template2.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Left Section: Form Inputs -->
+      <div class="form-section">
+        <h2>Resume Builder</h2>
+
+        <label for="name">Full Name:</label>
+        <input
+          type="text"
+          id="name"
+          placeholder="Enter your name"
+          oninput="updatePreview()" />
+
+        <label for="title">Job Title:</label>
+        <input
+          type="text"
+          id="title"
+          placeholder="Enter job title"
+          oninput="updatePreview()" />
+
+        <label for="summary">Summary:</label>
+        <textarea
+          id="summary"
+          placeholder="Write a brief summary"
+          oninput="updatePreview()"></textarea>
+
+        <label>Work Experience:</label>
+        <div id="experience-list">
+          <div class="experience-item">
+            <input
+              type="text"
+              placeholder="Job Title"
+              oninput="updatePreview()" />
+            <input
+              type="text"
+              placeholder="Company - Year"
+              oninput="updatePreview()" />
+            <textarea
+              placeholder="Job description"
+              oninput="updatePreview()"></textarea>
+          </div>
+        </div>
+        <button onclick="addExperience()">➕ Add Experience</button>
+
+        <label>Skills:</label>
+        <div id="skills-list">
+          <input type="text" placeholder="Skill" oninput="updatePreview()" />
+        </div>
+        <button onclick="addSkill()">➕ Add Skill</button>
+
+        <button id="download-btn">📥 Download PDF</button>
+      </div>
+
+      <!-- Right Section: Live Preview -->
+      <div class="preview-section">
+        <div class="resume">
+          <header>
+            <h1 id="preview-name">Your Name</h1>
+            <h2 id="preview-title">Job Title</h2>
+          </header>
+
+          <section>
+            <h3>Summary</h3>
+            <p id="preview-summary">A brief summary about yourself.</p>
+          </section>
+
+          <section>
+            <h3>Work Experience</h3>
+            <div id="preview-experience"></div>
+          </section>
+
+          <section>
+            <h3>Skills</h3>
+            <ul id="preview-skills"></ul>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <script src="./Js/templates/template2.js"></script>
+  </body>
+</html>
