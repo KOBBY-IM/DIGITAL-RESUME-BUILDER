@@ -67,11 +67,14 @@
         <div class="form-section">
           <h2>Professional Summary</h2>
           <div class="form-group">
-            <textarea
-              id="summary"
-              placeholder="Write a short professional summary"
-              data-preview="preview-summary"
-              rows="4"></textarea>
+            <div class="textarea-container">
+              <textarea
+                id="summary"
+                placeholder="Write a short professional summary"
+                data-preview="preview-summary"
+                rows="4"></textarea>
+                <button class="button-ai" role="button">Ai Assist</button>
+            </div>
           </div>
         </div>
 
@@ -111,10 +114,13 @@
               </div>
               <div class="form-group">
                 <label>Description</label>
-                <textarea
-                  class="exp-description"
-                  placeholder="Describe your responsibilities and achievements"
-                  rows="3"></textarea>
+                <div class="textarea-container">
+                  <textarea
+                    class="exp-description"
+                    placeholder="Describe your responsibilities and achievements"
+                    rows="3"></textarea>
+                  <button class="button-ai" role="button">Ai Assist</button>
+                </div>
               </div>
             </div>
           </div>
@@ -181,7 +187,7 @@
               <h1 id="preview-name">Your Name</h1>
               <p id="preview-title">Job Title</p>
               <div class="contact-info">
-                <span id="preview-email">email@example.com</span>
+                <span id="preview-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d6b3bbb7bfba96b3aeb7bba6bab3f8b5b9bb">[email&#160;protected]</a></span>
                 <span id="preview-phone">(123) 456-7890</span>
                 <span id="preview-location">City, State</span>
               </div>
@@ -219,6 +225,7 @@
         </div>
       </section>
     </div>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
   </body>
   <script src="./Js/auth.js"></script>
 </html>

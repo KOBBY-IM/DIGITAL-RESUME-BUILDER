@@ -280,3 +280,4 @@ function initPrintButton() {
     window.print();
   });
 }
+
