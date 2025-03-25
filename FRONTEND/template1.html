@@ -1,215 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resume Editor</title>
-    <link rel="stylesheet" href="./css/templates/template1.css" />
-    <script defer src="./Js/templates/template1.js"></script>
-  </head>
-  <body>
-    <div class="container">
-      <!-- Left Section: Input Fields -->
-      <section class="editor">
-        <div class="editor-header">
-          <h1>Resume Editor</h1>
-          <button type="button" onclick="templatepage()">Back</button>
-        </div>
 
-        <div class="form-section">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Builder - Template 1</title>
+  <link rel="stylesheet" href="./css/templates/template1.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <!-- Original Header with Navigation -->
+    <header class="app-header">
+      <div class="logo">
+        <h1>Resume<span>Maker</span></h1>
+      </div>
+      <nav class="header-nav">
+        <button class="btn btn-outline" id="back-to-templates-btn">
+          <i class="fas fa-arrow-left"></i> Back to Templates
+        </button>
+        <button id="save-resume" class="btn btn-secondary">
+          <i class="fas fa-save"></i> Save
+        </button>
+        <button id="load-resume" class="btn btn-primary">
+          <i class="fas fa-folder-open"></i> Load Resume
+        </button>
+      </nav>
+    </header>
+
+    <div class="page-container">
+      <!-- Left Section: Editor -->
+      <div class="editor">
+        <h2>Resume Editor</h2>
+
+        <section class="form-section">
           <h2>Personal Information</h2>
+
           <div class="form-group">
             <label for="full-name">Full Name</label>
-            <input
-              type="text"
-              id="full-name"
-              placeholder="Enter your full name"
-              data-preview="preview-name" />
+            <input type="text" id="full-name" placeholder="Enter your full name" data-preview="preview-name">
           </div>
 
           <div class="form-group">
             <label for="job-title">Job Title</label>
-            <input
-              type="text"
-              id="job-title"
-              placeholder="Enter your job title"
-              data-preview="preview-title" />
+            <input type="text" id="job-title" placeholder="Enter your job title" data-preview="preview-title">
           </div>
 
           <div class="form-group">
             <label for="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="Enter your email"
-              data-preview="preview-email" />
+            <input type="email" id="email" placeholder="Enter your email" data-preview="preview-email">
           </div>
 
           <div class="form-group">
             <label for="phone">Phone</label>
-            <input
-              type="tel"
-              id="phone"
-              placeholder="Enter your phone number"
-              data-preview="preview-phone" />
+            <input type="tel" id="phone" placeholder="Enter your phone number" data-preview="preview-phone">
           </div>
 
           <div class="form-group">
             <label for="location">Location</label>
-            <input
-              type="text"
-              id="location"
-              placeholder="City, State"
-              data-preview="preview-location" />
+            <input type="text" id="location" placeholder="City, State" data-preview="preview-location">
           </div>
-        </div>
+        </section>
 
-        <div class="form-section">
+        <div class="section-divider"></div>
+
+        <section class="form-section">
           <h2>Professional Summary</h2>
+
           <div class="form-group">
             <div class="textarea-container">
-              <textarea
-                id="summary"
-                placeholder="Write a short professional summary"
-                data-preview="preview-summary"
-                rows="4"></textarea>
-                <button class="button-ai" role="button">Ai Assist</button>
+              <textarea id="summary-text" placeholder="Write a short professional summary"
+                data-preview="preview-summary" rows="4"></textarea>
+              <button class="ai-assist">
+                <i class="fas fa-magic"></i> AI Assist
+              </button>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div class="form-section">
+        <div class="section-divider"></div>
+
+        <section class="form-section">
           <h2>Work Experience</h2>
+
+          <button id="add-experience" class="btn-add">
+            <i class="fas fa-plus"></i> Add Experience
+          </button>
+
           <div id="experience-container">
-            <div class="experience-entry">
-              <div class="form-group">
-                <label>Job Title</label>
-                <input
-                  type="text"
-                  class="exp-title"
-                  placeholder="e.g. Software Engineer" />
-              </div>
-              <div class="form-group">
-                <label>Company</label>
-                <input
-                  type="text"
-                  class="exp-company"
-                  placeholder="e.g. Tech Company Inc." />
-              </div>
-              <div class="form-row">
-                <div class="form-group half">
-                  <label>Start Date</label>
-                  <input
-                    type="text"
-                    class="exp-start"
-                    placeholder="e.g. Jan 2020" />
-                </div>
-                <div class="form-group half">
-                  <label>End Date</label>
-                  <input
-                    type="text"
-                    class="exp-end"
-                    placeholder="e.g. Present" />
-                </div>
-              </div>
-              <div class="form-group">
-                <label>Description</label>
-                <div class="textarea-container">
-                  <textarea
-                    class="exp-description"
-                    placeholder="Describe your responsibilities and achievements"
-                    rows="3"></textarea>
-                  <button class="button-ai" role="button">Ai Assist</button>
-                </div>
-              </div>
-            </div>
+            <!-- Experience entries will be added here -->
           </div>
-          <button id="add-experience" class="btn-add">+ Add Experience</button>
-        </div>
+        </section>
 
-        <div class="form-section">
+        <div class="section-divider"></div>
+
+        <section class="form-section">
           <h2>Education</h2>
+
+          <button id="add-education" class="btn-add">
+            <i class="fas fa-plus"></i> Add Education
+          </button>
+
           <div id="education-container">
-            <div class="education-entry">
-              <div class="form-group">
-                <label>Degree</label>
-                <input
-                  type="text"
-                  class="edu-degree"
-                  placeholder="e.g. Bachelor of Science" />
-              </div>
-              <div class="form-group">
-                <label>Institution</label>
-                <input
-                  type="text"
-                  class="edu-institution"
-                  placeholder="e.g. University Name" />
-              </div>
-              <div class="form-row">
-                <div class="form-group half">
-                  <label>Start Year</label>
-                  <input
-                    type="text"
-                    class="edu-start"
-                    placeholder="e.g. 2016" />
-                </div>
-                <div class="form-group half">
-                  <label>End Year</label>
-                  <input type="text" class="edu-end" placeholder="e.g. 2020" />
-                </div>
-              </div>
+            <!-- Education entries will be added here -->
+          </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <section class="form-section">
+          <h2>Skills</h2>
+
+          <div class="form-group">
+            <label for="skills-text">Skills (comma separated)</label>
+            <div class="textarea-container">
+              <input type="text" id="skills-text" placeholder="e.g. JavaScript, Project Management, Communication"
+                data-preview="preview-skills">
+              <button class="ai-assist">
+                <i class="fas fa-magic"></i> AI Assist
+              </button>
             </div>
           </div>
-          <button id="add-education" class="btn-add">+ Add Education</button>
-        </div>
+        </section>
 
-        <div class="form-section">
-          <h2>Skills</h2>
-          <div class="form-group">
-            <textarea
-              id="skills"
-              placeholder="Enter your skills, separated by commas"
-              data-preview="preview-skills"
-              rows="3"></textarea>
+        <div class="section-divider"></div>
+
+        <section class="form-section">
+          <h2>Custom Sections</h2>
+
+          <div id="custom-sections-container">
+            <!-- Custom sections will be added here -->
+            <div class="no-custom-sections">
+              <p>Add custom sections like Certifications, Projects, Languages, etc.</p>
+            </div>
           </div>
-        </div>
-      </section>
 
-      <!-- Right Section: Resume Preview -->
-      <section class="preview">
+          <div class="add-custom-section-container">
+            <button id="add-custom-section" class="btn-add-custom-section">
+              <i class="fas fa-plus"></i> Add Custom Section
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Section: Preview -->
+      <div class="preview">
         <div class="preview-header">
           <h2>Resume Preview</h2>
-          <button id="print-resume" class="btn-print">Print Resume</button>
+          <button id="export-pdf" class="export-pdf">
+            <i class="fas fa-file-pdf"></i> Export to PDF
+          </button>
         </div>
+
         <div class="resume-container">
-          <div class="resume" id="resume">
+          <div class="resume">
+            <!-- Resume Header -->
             <div class="resume-header">
               <h1 id="preview-name">Your Name</h1>
               <p id="preview-title">Job Title</p>
               <div class="contact-info">
-                <span id="preview-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d6b3bbb7bfba96b3aeb7bba6bab3f8b5b9bb">[email&#160;protected]</a></span>
+                <span id="preview-email">email@example.com</span>
                 <span id="preview-phone">(123) 456-7890</span>
                 <span id="preview-location">City, State</span>
               </div>
             </div>
 
+            <!-- Summary Section -->
             <div class="resume-section">
               <h2>Professional Summary</h2>
-              <p id="preview-summary">
-                A brief summary of your professional background and career
-                goals...
-              </p>
+              <p id="preview-summary">A brief summary of your professional background and career goals...</p>
             </div>
 
+            <!-- Experience Section -->
             <div class="resume-section">
               <h2>Work Experience</h2>
               <div id="preview-experience">
-                <p class="empty-section">
-                  Your work experience will appear here...
-                </p>
+                <p class="empty-section">Your work experience will appear here...</p>
               </div>
             </div>
 
+            <!-- Education Section -->
             <div class="resume-section">
               <h2>Education</h2>
               <div id="preview-education">
@@ -217,15 +188,237 @@
               </div>
             </div>
 
+            <!-- Skills Section -->
             <div class="resume-section">
               <h2>Skills</h2>
-              <p id="preview-skills">Your skills will appear here...</p>
+              <div id="preview-skills" class="skills-list">
+                <p class="empty-section">Your skills will appear here...</p>
+              </div>
             </div>
+
+            <!-- Custom Sections will be dynamically added here -->
+            <div id="preview-custom-sections"></div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-  </body>
-  <script src="./Js/auth.js"></script>
+  </div>
+
+  <!-- Resume List Modal -->
+  <div class="modal fade" id="resumeListModal" tabindex="-1" aria-labelledby="resumeListModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="resumeListModalLabel">Your Resumes</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="resume-list-content"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HTML Templates for dynamic content -->
+  <!-- Experience Entry Template -->
+  <template id="experience-entry-template">
+    <div class="entry-container experience-entry">
+      <div class="entry-header">
+        <h3>Position Details</h3>
+        <button class="btn-remove">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+
+      <div class="form-group">
+        <label>Job Title</label>
+        <input type="text" class="form-control exp-title" placeholder="e.g. Software Engineer">
+      </div>
+
+      <div class="form-group">
+        <label>Company</label>
+        <input type="text" class="form-control exp-company" placeholder="e.g. Tech Company Inc.">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>Start Date</label>
+          <input type="text" class="form-control exp-start" placeholder="e.g. Jan 2020">
+        </div>
+        <div class="form-group col-md-6">
+          <label>End Date</label>
+          <input type="text" class="form-control exp-end" placeholder="e.g. Present">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <div class="textarea-wrapper">
+          <textarea class="form-control exp-description" placeholder="Describe your responsibilities and achievements"
+            rows="4"></textarea>
+          <button class="ai-assist">
+            <i class="fas fa-magic"></i> AI Assist
+          </button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <!-- Education Entry Template -->
+  <template id="education-entry-template">
+    <div class="entry-container education-entry">
+      <div class="entry-header">
+        <h3>Education Details</h3>
+        <button class="btn-remove">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+
+      <div class="form-group">
+        <label>Degree</label>
+        <input type="text" class="form-control edu-degree" placeholder="e.g. Bachelor of Science">
+      </div>
+
+      <div class="form-group">
+        <label>Institution</label>
+        <input type="text" class="form-control edu-institution" placeholder="e.g. University Name">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>Start Year</label>
+          <input type="text" class="form-control edu-start" placeholder="e.g. 2016">
+        </div>
+        <div class="form-group col-md-6">
+          <label>End Year</label>
+          <input type="text" class="form-control edu-end" placeholder="e.g. 2020">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Description (Optional)</label>
+        <textarea class="form-control edu-description" placeholder="Additional details about your education"
+          rows="2"></textarea>
+      </div>
+    </div>
+  </template>
+
+  <!-- Experience item template for the preview -->
+  <template id="experience-item-template">
+    <div class="experience-item">
+      <div class="job-title"></div>
+      <div class="company-dates">
+        <span class="company"></span>
+        <span class="dates"></span>
+      </div>
+      <div class="job-description"></div>
+    </div>
+  </template>
+
+  <!-- Education item template for the preview -->
+  <template id="education-item-template">
+    <div class="education-item">
+      <div class="degree"></div>
+      <div class="institution-years">
+        <span class="institution"></span>
+        <span class="years"></span>
+      </div>
+      <div class="education-description"></div>
+    </div>
+  </template>
+
+  <!-- Print template for resume export -->
+  <template id="print-template">
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+      <title>Resume - {{name}}</title>
+      <link rel="stylesheet" href="./css/print-styles.css">
+    </head>
+
+    <body>
+      <div class="resume">
+        {{resumeContent}}
+      </div>
+    </body>
+
+    </html>
+  </template>
+
+  <!-- Toast notification template -->
+  <template id="toast-template">
+    <div class="toast {{type}}">
+      <div class="toast-icon">
+        <i class="fas {{iconClass}}"></i>
+      </div>
+      <div class="toast-content">
+        <div class="toast-title">{{title}}</div>
+        <div class="toast-message">{{message}}</div>
+      </div>
+      <button class="toast-close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </template>
+
+  <!-- Empty State Template -->
+  <template id="empty-state-template">
+    <div class="empty-state">
+      <div class="empty-state-icon">
+        <i class="fas fa-file-alt"></i>
+      </div>
+      <div class="empty-state-title">No resumes found</div>
+      <div class="empty-state-text">Create your first resume to see it here</div>
+    </div>
+  </template>
+
+  <!-- Resume List Item Template -->
+  <template id="resume-list-item-template">
+    <li class="resume-list-item">
+      <div class="resume-info">
+        <div class="resume-title">Resume Title</div>
+        <div class="resume-meta">
+          <span class="resume-position">Position</span>
+          <span class="resume-date">Last updated: 01/01/2025</span>
+        </div>
+      </div>
+      <div class="resume-actions">
+        <button class="action-button edit" title="Edit Resume">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button class="action-button delete" title="Delete Resume">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    </li>
+  </template>
+
+  <!-- Loading Spinner Template -->
+  <template id="loading-spinner-template">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+    </div>
+  </template>
+
+  <!-- Error State Template -->
+  <template id="error-state-template">
+    <div class="empty-state">
+      <div class="empty-state-icon">
+        <i class="fas fa-exclamation-circle"></i>
+      </div>
+      <div class="empty-state-title">Error</div>
+      <div class="empty-state-text">Error message goes here</div>
+    </div>
+  </template>
+
+  <!-- Include Bootstrap for modals -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Include your improved JavaScript file -->
+  <script defer src="./Js/templates/template1.js"></script>
+</body>
+
 </html>

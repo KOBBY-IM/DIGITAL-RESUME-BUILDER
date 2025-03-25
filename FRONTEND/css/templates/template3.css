@@ -1,0 +1,175 @@
+/* Template 3 specific resume styles */
+.template3 .resume {
+    font-family: var(--font-family-base);
+    position: relative;
+    padding: var(--spacing-lg);
+    color: var(--text-color);
+  }
+  
+  /* Sidebar styling */
+  .template3 .resume-sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30%;
+    height: 100%;
+    background-color: var(--primary-color);
+    color: white;
+    padding: var(--spacing-lg);
+  }
+  
+  .template3 .resume-main {
+    margin-left: 30%;
+    padding: var(--spacing-lg);
+  }
+  
+  .template3 .resume-header {
+    text-align: left;
+    border-bottom: none;
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .template3 .resume-header h1 {
+    font-size: 2rem;
+    color: var(--secondary-color);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .template3 .resume-header p {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  /* Contact info styling */
+  .template3 .contact-info {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--spacing-lg);
+  }
+  
+  .template3 .contact-info span {
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+  }
+  
+  .template3 .contact-info i {
+    margin-right: var(--spacing-sm);
+    width: 20px;
+    text-align: center;
+  }
+  
+  /* Section styling */
+  .template3 .resume-section {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .template3 .resume-section h2 {
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-xs);
+    border-bottom: 2px solid var(--primary-color);
+  }
+  
+  /* Experience and education items */
+  .template3 .experience-item,
+  .template3 .education-item {
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .template3 .experience-item:last-child,
+  .template3 .education-item:last-child {
+    border-bottom: none;
+  }
+  
+  .template3 .job-title,
+  .template3 .degree {
+    font-weight: var(--font-weight-bold);
+    color: var(--secondary-color);
+    margin-bottom: 0.25rem;
+    font-size: 1.1rem;
+  }
+  
+  .template3 .company-dates,
+  .template3 .institution-years {
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .template3 .company,
+  .template3 .institution {
+    font-weight: var(--font-weight-medium);
+  }
+  
+  .template3 .dates {
+    font-style: italic;
+    color: var(--text-color-light);
+  }
+  
+  .template3 .job-description {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  
+  /* Skills styling */
+  .template3 .skills-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+  }
+  
+  .template3 .skill-tag {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    font-size: 0.85rem;
+    text-align: center;
+  }
+  
+  /* Print styles */
+  @media print {
+    .template3 .resume-sidebar {
+      background-color: #f0f0f0 !important;
+      color: var(--text-color) !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    
+    .template3 .resume-section h2 {
+      color: var(--secondary-color) !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    
+    .template3 .skill-tag {
+      background-color: #f0f0f0 !important;
+      color: var(--text-color) !important;
+      border: 1px solid var(--border-color);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .template3 .resume-sidebar {
+      position: relative;
+      width: 100%;
+      height: auto;
+    }
+    
+    .template3 .resume-main {
+      margin-left: 0;
+    }
+    
+    .template3 .skills-list {
+      grid-template-columns: 1fr;
+    }
+  }

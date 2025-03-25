@@ -1,119 +1,267 @@
-const puppeteer = require('puppeteer');
-
 const Resume = require('../MODELS/resume');
-const Template = require('../MODELS/template');
-
-
+const PDFGenerator = require('../UTILS/pdfGenerator');
+const mongoose = require('mongoose');
 
 // Create a new resume
 exports.createResume = async (req, res) => {
-    try {
-        const { userId, templateId, personalInfo, education, experience, certifications, references } = req.body;
-
-        const newResume = new Resume({
-            userId,
-            templateId,
-            personalInfo,
-            education,
-            experience,
-            certifications,
-            references,
-        });
-
-        await newResume.save();
-        res.status(201).json(newResume);
-    } catch (error) {
-        res.status(500).json({ message: 'Error creating resume', error });
+  try {
+    const { personalInfo, summary, experience, education, skills } = req.body;
+    
+    if (!personalInfo || !personalInfo.fullName) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Full name is required' 
+      });
     }
+
+    const newResume = new Resume({
+      userId: req.userId,
+      personalInfo,
+      summary,
+      experience: Array.isArray(experience) ? experience : [],
+      education: Array.isArray(education) ? education : [],
+      skills: Array.isArray(skills) ? skills : [],
+      lastUpdated: new Date()
+    });
+
+    await newResume.save();
+    
+    res.status(201).json({
+      success: true,
+      message: 'Resume created successfully',
+      data: newResume
+    });
+  } catch (error) {
+    console.error('Create resume error:', error);
+    
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Validation error',
+        errors: Object.values(error.errors).map(e => e.message)
+      });
+    }
+    
+    res.status(500).json({ 
+      success: false,
+      message: 'Error creating resume', 
+    });
+  }
 };
 
-// Update a resume
-exports.updateResume = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const updateData = req.body;
-
-        const updatedResume = await Resume.findByIdAndUpdate(id, updateData, { new: true });
-        if (!updatedResume) {
-            return res.status(404).json({ message: 'Resume not found' });
-        }
-
-        res.status(200).json(updatedResume);
-    } catch (error) {
-        res.status(500).json({ message: 'Error updating resume', error });
+// Get all resumes for a user
+exports.getUserResumes = async (req, res) => {
+  try {
+    if (!req.userId) {
+      return res.status(401).json({ 
+        success: false,
+        message: 'Unauthorized' 
+      });
     }
-};
 
-// Fetch a resume by ID
-exports.getResumeById = async (req, res) => {
-    try {
-        const resume = await Resume.findById(req.params.id);
-        if (!resume) {
-            return res.status(404).json({ message: 'Resume not found' });
-        }
-        res.status(200).json(resume);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching resume', error });
-    }
-};
-
-// save a resume
-exports.saveResume = async (req, res) => {
-    try {
-        const resume = await Resume.findById(req.params.id);
-        if (!resume) {
-            return res.status(404).json({ message: 'Resume not found' });
-        }
-        res.status(200).json(resume);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching resume', error });
-    }
+    const resumes = await Resume.find({ userId: req.userId })
+      .sort({ lastUpdated: -1 })
+      .select('personalInfo.jobTitle personalInfo.fullName lastUpdated')
+      .lean()
+      .limit(20);
+      
+    res.status(200).json({
+      success: true,
+      count: resumes.length,
+      data: resumes
+    });
+  } catch (error) {
+    console.error('Get resumes error:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Error fetching resumes'
+    });
+  }
 };
 
 // Download resume as PDF
 exports.downloadResume = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const resume = await Resume.findById(id).populate('templateId').populate('userId');
-
-        if (!resume) {
-            return res.status(404).json({ message: 'Resume not found' });
-        }
-
-        // Generate HTML content for the resume
-        const htmlContent = `
-            <h1>${resume.personalInfo.fullName}</h1>
-            <p>Email: ${resume.personalInfo.email}</p>
-            <p>Phone: ${resume.personalInfo.phone}</p>
-            <h2>Education</h2>
-            ${resume.education.map(edu => `
-                <h3>${edu.institution}</h3>
-                <p>Degree: ${edu.degree}</p>
-                <p>Field of Study: ${edu.fieldOfStudy}</p>
-                <p>Dates: ${edu.startDate} - ${edu.endDate}</p>
-                <p>Description: ${edu.description}</p>
-            `).join('')}
-            <h2>Experience</h2>
-            ${resume.experience.map(exp => `
-                <h3>${exp.company}</h3>
-                <p>Position: ${exp.position}</p>
-                <p>Dates: ${exp.startDate} - ${exp.endDate}</p>
-                <p>Description: ${exp.description}</p>
-            `).join('')}
-        `;
-
-        // Use Puppeteer to generate PDF
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-        await page.setContent(htmlContent);
-        const pdfBuffer = await page.pdf({ format: 'A4' });
-        await browser.close();
-
-        // Send the PDF as a response
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', `attachment; filename=${resume.personalInfo.fullName}_Resume.pdf`);
-        res.send(pdfBuffer);
-    } catch (error) {
-        res.status(500).json({ message: 'Error generating PDF', error });
+  try {
+    const { id } = req.params;
+    
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Invalid resume ID' 
+      });
     }
+    
+    const resume = await Resume.findById(id);
+    
+    if (!resume) {
+      return res.status(404).json({ 
+        success: false,
+        message: 'Resume not found' 
+      });
+    }
+    
+    if (resume.userId.toString() !== req.userId) {
+      return res.status(403).json({ 
+        success: false,
+        message: 'Unauthorized access' 
+      });
+    }
+
+    const pdf = await PDFGenerator.generatePDF(resume);
+    
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="${resume.personalInfo.fullName.replace(/[^a-z0-9]/gi, '_')}_Resume.pdf"`);
+    res.send(pdf);
+  } catch (error) {
+    console.error('Download resume error:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Error generating PDF: ' + error.message
+    });
+  }
+};
+
+// Update a resume
+exports.updateResume = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Invalid resume ID' 
+      });
+    }
+    
+    const updateData = req.body;
+    
+    // Add lastUpdated date
+    updateData.lastUpdated = new Date();
+
+    const resume = await Resume.findById(id);
+    if (!resume) {
+      return res.status(404).json({ 
+        success: false,
+        message: 'Resume not found' 
+      });
+    }
+
+    if (resume.userId.toString() !== req.userId) {
+      return res.status(403).json({ 
+        success: false,
+        message: 'Unauthorized access' 
+      });
+    }
+
+    const updatedResume = await Resume.findByIdAndUpdate(
+      id, 
+      updateData, 
+      { new: true, runValidators: true }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Resume updated successfully',
+      data: updatedResume
+    });
+  } catch (error) {
+    console.error('Update resume error:', error);
+    
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Validation error',
+        errors: Object.values(error.errors).map(e => e.message)
+      });
+    }
+    
+    res.status(500).json({ 
+      success: false,
+      message: 'Error updating resume'
+    });
+  }
+};
+
+// Get resume by ID
+exports.getResumeById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Invalid resume ID' 
+      });
+    }
+    
+    const resume = await Resume.findById(id);
+    
+    if (!resume) {
+      return res.status(404).json({ 
+        success: false,
+        message: 'Resume not found' 
+      });
+    }
+    
+    if (resume.userId.toString() !== req.userId) {
+      return res.status(403).json({ 
+        success: false,
+        message: 'Unauthorized access' 
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: resume
+    });
+  } catch (error) {
+    console.error('Get resume error:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Error fetching resume'
+    });
+  }
+};
+
+// Delete a resume
+exports.deleteResume = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Invalid resume ID' 
+      });
+    }
+    
+    const resume = await Resume.findById(id);
+    
+    if (!resume) {
+      return res.status(404).json({ 
+        success: false,
+        message: 'Resume not found' 
+      });
+    }
+    
+    if (resume.userId.toString() !== req.userId) {
+      return res.status(403).json({ 
+        success: false,
+        message: 'Unauthorized access' 
+      });
+    }
+
+    await Resume.findByIdAndDelete(id);
+
+    res.status(200).json({
+      success: true,
+      message: 'Resume deleted successfully'
+    });
+  } catch (error) {
+    console.error('Delete resume error:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Error deleting resume'
+    });
+  }
 };

@@ -3,56 +3,97 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Products Page</title>
-    <link rel="stylesheet" href="./css/template.css" />
+    <title>Resume Templates - ResumeMaker</title>
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="https://use.typekit.net/fuz8kft.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script defer src="./Js/template.js"></script>
   </head>
   <body>
     <div class="container">
       <!-- Header Section -->
-      <header class="header">
-        <p class="tagline">Resumaker</p>
-        <h1>Resume Templates</h1>
-        <p class="description">Select a resume template to begin.</p>
-        <button type="button" class="btn btn-primary rounded-pill" style="width: 90px;" onclick="homepage()">Home</button>
+      <header class="app-header balanced-header">
+        <div class="header-wrap">
+          <div class="logo">
+            <h1>Resume<span>Maker</span></h1>
+          </div>
+          <div class="template-header-text">
+            <h2>Choose a Template</h2>
+            <p>Select a design to get started</p>
+          </div>
+          <nav class="header-nav">
+            <button type="button" class="btn btn-outline-primary" onclick="homepage()">
+              <i class="fas fa-arrow-left me-2"></i>Back
+            </button>
+          </nav>
+        </div>
       </header>
 
-      <!-- Products Grid -->
-      <main class="products-grid">
-        <!-- Product Card 1 -->
-        <div class="product-card">
-          <div class="product-image">
-            <img src="./assets/template1.jpg"/>
+      <!-- Templates Grid -->
+      <main class="templates-center">
+        <div class="templates-grid">
+          <!-- Template Card 1 -->
+          <div class="template-card">
+            <div class="template-image">
+              <img src="./assets/template1.jpg" alt="Professional Template" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%23f8f9fa\'/%3E%3Cpath d=\'M35 30h30v5H35z\' fill=\'%233498db\'/%3E%3Ccircle cx=\'50\' cy=\'20\' r=\'5\' fill=\'%233498db\'/%3E%3Cpath d=\'M35 40h30v2H35z\' fill=\'%23bbb\'/%3E%3Cpath d=\'M35 45h30v2H35z\' fill=\'%23bbb\'/%3E%3Cpath d=\'M35 50h30v2H35z\' fill=\'%23bbb\'/%3E%3Cpath d=\'M35 65h20v2H35z\' fill=\'%23bbb\'/%3E%3Cpath d=\'M35 70h20v2H35z\' fill=\'%23bbb\'/%3E%3Cpath d=\'M35 60h10v2H35z\' fill=\'%233498db\'/%3E%3C/svg%3E'"/>
+            </div>
+            <div class="template-info">
+              <h3>Professional</h3>
+              <p>Clean, modern design perfect for most industries and career levels</p>
+              <button class="btn btn-primary btn-select">Select Template</button>
+            </div>
           </div>
-          <h2 class="product-name">Template 1</h2>
-          <button class="add-to-cart">Select</button>
-        </div>
 
-        <!-- Product Card 2 -->
-        <div class="product-card">
-          <div class="product-image">
-            <img
-              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Cpath d='M35 45h30v10H35z' fill='%23bbb'/%3E%3Ccircle cx='50' cy='35' r='10' fill='%23bbb'/%3E%3C/svg%3E"
-              alt="Product placeholder" />
+          <!-- Template Card 2 -->
+          <div class="template-card">
+            <div class="template-image">
+              <img src="./assets/template2.jpg" alt="Creative Template" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'30\' height=\'100\' fill=\'%232c3e50\'/%3E%3Crect x=\'30\' width=\'70\' height=\'100\' fill=\'%23f8f9fa\'/%3E%3Ccircle cx=\'15\' cy=\'20\' r=\'8\' fill=\'%23fff\'/%3E%3Cpath d=\'M40 30h40v3H40z\' fill=\'%232c3e50\'/%3E%3Cpath d=\'M40 40h40v2H40z\' fill=\'%23bbb\'/%3E%3Cpath d=\'M40 45h30v2H40z\' fill=\'%23bbb\'/%3E%3Cpath d=\'M40 65h35v2H40z\' fill=\'%23bbb\'/%3E%3Cpath d=\'M40 70h25v2H40z\' fill=\'%23bbb\'/%3E%3Cpath d=\'M10 40h15v2H10z\' fill=\'%23fff\'/%3E%3Cpath d=\'M10 45h15v2H10z\' fill=\'%23fff\'/%3E%3C/svg%3E'"/>
+            </div>
+            <div class="template-info">
+              <h3>Creative</h3>
+              <p>Modern design with a sidebar, perfect for creative and design professionals</p>
+              <button class="btn btn-primary btn-select">Select Template</button>
+            </div>
           </div>
-          <h2 class="product-name">Template 2</h2>
-          <button class="add-to-cart">Select</button>
-        </div>
 
-        <!-- Product Card 3 -->
-        <div class="product-card">
-          <div class="product-image">
-            <img
-              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Cpath d='M35 45h30v10H35z' fill='%23bbb'/%3E%3Ccircle cx='50' cy='35' r='10' fill='%23bbb'/%3E%3C/svg%3E"
-              alt="Product placeholder" />
+          <!-- Template Card 3 -->
+          <div class="template-card">
+            <div class="template-image">
+              <img src="./assets/template3.jpg" alt="Executive Template" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%23f8f9fa\'/%3E%3Cpath d=\'M20 15h60v5H20z\' fill=\'%233498db\'/%3E%3Cpath d=\'M20 25h60v1H20z\' fill=\'%23bbb\'/%3E%3Cpath d=\'M20 30h60v1H20z\' fill=\'%23bbb\'/%3E%3Cpath d=\'M20 35h60v1H20z\' fill=\'%23bbb\'/%3E%3Cpath d=\'M20 45h60v3H20z\' fill=\'%233498db\'/%3E%3Cpath d=\'M20 55h60v1H20z\' fill=\'%23bbb\'/%3E%3Cpath d=\'M20 60h40v1H20z\' fill=\'%23bbb\'/%3E%3Cpath d=\'M20 65h40v1H20z\' fill=\'%23bbb\'/%3E%3Cpath d=\'M20 75h60v3H20z\' fill=\'%233498db\'/%3E%3Cpath d=\'M20 85h30v1H20z\' fill=\'%23bbb\'/%3E%3C/svg%3E'"/>
+            </div>
+            <div class="template-info">
+              <h3>Executive</h3>
+              <p>Elegant and sophisticated design ideal for management and executive positions</p>
+              <button class="btn btn-primary btn-select">Select Template</button>
+            </div>
           </div>
-          <h2 class="product-name">Template 3</h2>
-
-          <button class="add-to-cart">Select</button>
         </div>
-       
       </main>
+
+      <footer class="app-footer">
+        <hr>
+        <p>Resumaker® is a registered trademark of CMM004 Team B 2025</p>
+      </footer>
     </div>
+
+    <script>
+      // Initialize template selection
+      document.addEventListener('DOMContentLoaded', function() {
+        const selectButtons = document.querySelectorAll('.btn-select');
+        
+        selectButtons.forEach((button, index) => {
+          button.addEventListener('click', function() {
+            const templateNumber = index + 1;
+            window.location.href = `template${templateNumber}.html`;
+          });
+        });
+      });
+      
+      // Navigate back to home
+      function homepage() {
+        window.location.href = 'loginindex.html';
+      }
+    </script>
+    <script src="./Js/auth.js"></script>
   </body>
-  <script src="./Js/auth.js"></script>
 </html>

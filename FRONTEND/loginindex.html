@@ -3,106 +3,79 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CV Builder</title>
-    <link rel="stylesheet" href="./css/bootstrap.css">
+    <title>ResumeMaker</title>
+    <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="https://use.typekit.net/fuz8kft.css">
-    <style>
-        .custom-button {
-          padding: 2rem;
-          font-size: 2rem;
-        }
-        .icon {
-          height: 64px;
-          width: auto;
-        }
-
-            /* Standard icon */
-            .icon-swap {
-            transition: filter 0.1s ease;
-            }
-
-            /* Make icons white when button is hovered */
-            button:hover .icon-swap {
-            filter: brightness(0) invert(1);
-            }
-            /* RIGHT CHEVRON BLUE/WHITE*/
-            .icon-chevron {
-            filter: brightness(0) saturate(100%) invert(32%) sepia(99%) saturate(748%) hue-rotate(199deg) brightness(99%) contrast(101%);
-            }
-            button:hover .icon-chevron {
-            filter: brightness(0) invert(1);
-            }
-      </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   </head>
-  <body class="text-center">
-   
-    <div class="header-container d-flex h-100 p-3 mx-auto flex-column text-left">
-      <header class="header mb-auto">
-        <div class="inner d-flex justify-content-between align-items-center">
-          <img src="./assets/Untitled.png" alt="logo" class="header-logo" style="height: 69px;">
-          <nav class="nav nav-header justify-content-end gap-2">
-            <button type="button" class="btn btn-primary rounded-pill" style="width: 90px;" onclick="logout()">Log Out</button>
+  <body>
+    <div class="container">
+      <header class="app-header balanced-header">
+        <div class="header-wrap">
+          <div class="logo">
+            <h1>Resume<span>Maker</span></h1>
+          </div>
+          <nav class="header-nav">
+            <span class="user-welcome">Welcome, <span id="user-name">User</span></span>
+            <button type="button" class="btn btn-primary" onclick="logout()">Log Out</button>
           </nav>
         </div>
       </header>
-    </div>
 
-
-    <main>
-        <div class="container vh-100 d-flex flex-column justify-content-center align-items-center">
-          <div class="w-50"></div>
-            <h2 class="mb-4">How will you make your resume?</h2>
-            <button type="button" onclick="templatepage()" class="btn btn-outline-primary w-50 d-flex align-items-center justify-content-between p-3 mb-3">
-              <div class="d-flex align-items-center">
-                <div class="me-3">
-                  <img src="./assets/contractblue.png" alt="Start from scratch" width="24" height="24" class="icon-swap"/>
-                </div>
-                <div>
-                  <div class="fw-bold mb-0">Start from scratch</div>
-                  <small class="text-muted">Our AI helper will guide you</small>
-                </div>
+      <main class="dashboard-center">
+        <div class="text-center">
+          <h2>How will you make your resume?</h2>
+          <div class="option-cards">
+            <button type="button" onclick="templatepage()" class="option-card">
+              <div class="option-icon">
+                <i class="fas fa-file-alt"></i>
               </div>
-              <div>
-                <img src="./assets/next.png" alt="Next" width="24" height="24" class="icon-chevron"/>
+              <div class="option-text">
+                <div class="option-title">Start from scratch</div>
+                <div class="option-desc">Our AI helper will guide you</div>
               </div>
             </button>
       
-            <button type="button" class="btn btn-outline-primary w-50 d-flex align-items-center justify-content-between p-3">
-              <div class="d-flex align-items-center">
-                <div class="me-3">
-                  <img src="./assets/fileblue.png" alt="Upload your resume" width="24" height="24" class="icon-swap" />
-                </div>
-                <div>
-                  <div class="fw-bold mb-0">Upload your resume</div>
-                  <small class="text-muted">We’ll help you tailor it</small>
-                </div>
+            <button type="button" class="option-card">
+              <div class="option-icon">
+                <i class="fas fa-upload"></i>
               </div>
-              <div>
-                <img src="./assets/next.png" alt="Next" width="24" height="24" class="icon-chevron"/>
+              <div class="option-text">
+                <div class="option-title">Upload your resume</div>
+                <div class="option-desc">We'll help you tailor it</div>
               </div>
             </button>
           </div>
         </div>
       </main>
-      
-      
  
-    <footer class="footer-container mt-auto">
-      <div class="inner">
+      <footer class="app-footer">
         <hr>
         <p>Resumaker® is a registered trademark of CMM004 Team B 2025</p>
-      </div>
-    </footer>
+      </footer>
+    </div>
 
-    
-
-
+    <script>
+      function templatepage() {
+        window.location.href = 'template.html';
+      }
+      
+      function logout() {
+        // Clear authentication data
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = 'test.html?logout=true';
+      }
+      
+      // Display user name if available
+      document.addEventListener('DOMContentLoaded', function() {
+        const userData = JSON.parse(localStorage.getItem('user') || '{}');
+        if (userData.name) {
+          document.getElementById('user-name').textContent = userData.name;
+        }
+      });
+    </script>
+    <script src="./Js/auth.js"></script>
   </body>
-  <script>
-    function templatepage() {
-      window.location.href = 'template.html';
-    }
-  </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="./Js/auth.js"></script>
 </html>

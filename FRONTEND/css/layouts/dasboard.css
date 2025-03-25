@@ -1,0 +1,218 @@
+
+
+/* Main centered dashboard container */
+.dashboard-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh; /* Use viewport height to center vertically */
+    width: 100%;
+    padding: 2rem 0;
+  }
+  
+  /* Dashboard heading */
+  .dashboard-center h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+  
+  /* Option cards container */
+  .option-cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  /* Large option card button */
+  .option-card {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+  }
+  
+  .option-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    border-color: #3498db;
+  }
+  
+  /* Option icon */
+  .option-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: rgba(52, 152, 219, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 2rem;
+  }
+  
+  .option-icon i {
+    font-size: 2.5rem;
+    color: #3498db;
+  }
+  
+  /* Option text container */
+  .option-text {
+    flex: 1;
+  }
+  
+  /* Option title */
+  .option-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Option description */
+  .option-desc {
+    font-size: 1.1rem;
+    color: #7f8c8d;
+  }
+  
+  /* Make sure the option cards don't have default button styling */
+  button.option-card {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: white;
+    font-family: inherit;
+    text-align: left;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .dashboard-center h2 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .option-card {
+      padding: 1.5rem;
+    }
+    
+    .option-icon {
+      width: 60px;
+      height: 60px;
+      margin-right: 1.5rem;
+    }
+    
+    .option-icon i {
+      font-size: 2rem;
+    }
+    
+    .option-title {
+      font-size: 1.25rem;
+    }
+    
+    .option-desc {
+      font-size: 1rem;
+    }
+  }
+
+/* Header styles with improved spacing */
+
+/* Header container */
+.balanced-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem 0;
+    width: 100%;
+  }
+  
+  /* Inner header wrapper with better spacing */
+  .header-wrap {
+    display: flex;
+    justify-content: space-between; /* Keeps items at either end */
+    align-items: center;
+    width: 100%;
+    max-width: 1500px; /* Increased max-width for more space */
+    padding: 0 2rem; /* Add padding within the wrapper */
+  }
+  
+  /* Logo styling */
+  .balanced-header .logo {
+    margin: 0;
+  }
+  
+  .balanced-header .logo h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+  }
+  
+  /* Header navigation */
+  .balanced-header .header-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  /* Welcome message */
+  .user-welcome {
+    font-size: 1.1rem;
+    color: #2c3e50;
+    font-weight: 500;
+  }
+  
+  /* Logout button */
+  .header-nav .btn {
+    padding: 0.5rem 1.25rem;
+    font-size: 1rem;
+    border-radius: 6px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 992px) {
+    .header-wrap {
+      max-width: 900px;
+      padding: 0 1.5rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .header-wrap {
+      padding: 0 1rem;
+    }
+    
+    .balanced-header .logo h1 {
+      font-size: 1.5rem;
+    }
+    
+    .user-welcome {
+      font-size: 0.9rem;
+    }
+    
+    .header-nav .btn {
+      padding: 0.4rem 1rem;
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .header-wrap {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+    }
+    
+    .balanced-header .header-nav {
+      justify-content: center;
+    }
+  }

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; color: #333; }
+    .header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+    h1 { color: #2c3e50; margin-bottom: 5px; }
+    h2 { color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+    .contact-info { margin: 10px 0; font-size: 0.9em; }
+    .section { margin-bottom: 20px; }
+    .job { margin-bottom: 15px; }
+    .job-title { font-weight: bold; }
+    .company { font-style: italic; }
+    .dates { color: #7f8c8d; font-size: 0.9em; }
+    ul { padding-left: 20px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>{{fullName}}</h1>
+    <div class="contact-info">
+      {{email}} | {{phone}} | {{location}}
+    </div>
+    <div class="job-title">{{jobTitle}}</div>
+  </div>
+
+  <div class="section">
+    <h2>Professional Summary</h2>
+    <p>{{summary}}</p>
+  </div>
+
+  <div class="section">
+    <h2>Work Experience</h2>
+    {{experience-item}}
+    <div class="job">
+      <div class="job-title">{{jobTitle}}</div>
+      <div class="company">{{company}} | <span class="dates">{{startDate}} - {{endDate}}</span></div>
+      <p>{{description}}</p>
+    </div>
+    {{/experience-item}}
+  </div>
+
+  <div class="section">
+    <h2>Education</h2>
+    {{education-item}}
+    <div class="job">
+      <div class="job-title">{{degree}}</div>
+      <div class="company">{{institution}} | <span class="dates">{{startYear}} - {{endYear}}</span></div>
+    </div>
+    {{/education-item}}
+  </div>
+
+  <div class="section">
+    <h2>Skills</h2>
+    {{skills}}
+  </div>
+</body>
+</html>

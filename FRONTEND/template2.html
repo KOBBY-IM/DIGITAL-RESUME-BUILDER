@@ -1,91 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resume Builder</title>
-    <link rel="stylesheet" href="./css/templates/template2.css" />
-    <script defer src="./Js/templates/template2.js"></script>
-  </head>
-  <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Template 2</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/templates/template2.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header section -->
+    <header class="balanced-header">
+        <div class="header-wrap">
+            <div class="logo">
+                <h1>Resume<span>Builder</span></h1>
+            </div>
+            <div class="header-nav">
+                <div class="user-welcome">Welcome, User</div>
+                <button class="btn btn-outline-primary">My Resumes</button>
+                <button class="btn btn-primary">Save</button>
+                <button class="btn btn-secondary">Download PDF</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content area -->
     <div class="container">
-      <!-- Left Section: Form Inputs -->
-      <div class="form-section">
-        <h2>Resume Builder</h2>
+        <div class="page-container">
+            <!-- Form editor section -->
+            <div class="editor">
+                <form id="resumeForm">
+                    <!-- Personal Information -->
+                    <div class="form-section">
+                        <h2>Personal Information</h2>
+                        <div class="form-group">
+                            <label for="fullName" class="form-group__label">Full Name</label>
+                            <input type="text" id="fullName" class="form-group__input" placeholder="e.g. John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="jobTitle" class="form-group__label">Job Title</label>
+                            <input type="text" id="jobTitle" class="form-group__input" placeholder="e.g. Web Developer">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label for="email" class="form-group__label">Email</label>
+                                <input type="email" id="email" class="form-group__input" placeholder="e.g. johndoe@example.com">
+                            </div>
+                            <div class="form-group form-col">
+                                <label for="phone" class="form-group__label">Phone</label>
+                                <input type="tel" id="phone" class="form-group__input" placeholder="e.g. +1 234 567 890">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label for="location" class="form-group__label">Location</label>
+                                <input type="text" id="location" class="form-group__input" placeholder="e.g. New York, NY">
+                            </div>
+                            <div class="form-group form-col">
+                                <label for="website" class="form-group__label">Website/LinkedIn</label>
+                                <input type="url" id="website" class="form-group__input" placeholder="e.g. linkedin.com/in/johndoe">
+                            </div>
+                        </div>
+                    </div>
 
-        <label for="name">Full Name:</label>
-        <input
-          type="text"
-          id="name"
-          placeholder="Enter your name"
-          oninput="updatePreview()" />
+                    <!-- Professional Summary -->
+                    <div class="form-section">
+                        <h2>Professional Summary</h2>
+                        <div class="form-group">
+                            <div class="textarea-container">
+                                <textarea id="summary" class="form-group__textarea" rows="4" placeholder="Brief overview of your professional background and key strengths"></textarea>
+                                <button type="button" class="ai-assist-button">AI Write</button>
+                            </div>
+                        </div>
+                    </div>
 
-        <label for="title">Job Title:</label>
-        <input
-          type="text"
-          id="title"
-          placeholder="Enter job title"
-          oninput="updatePreview()" />
+                    <!-- Work Experience -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h2>Work Experience</h2>
+                            <button type="button" class="btn-add">
+                                <i class="fas fa-plus"></i> Add Experience
+                            </button>
+                        </div>
+                        
+                        <div id="experience-container">
+                            <div class="experience-entry">
+                                <div class="entry-header">
+                                    <h3>Experience 1</h3>
+                                    <button type="button" class="btn-remove">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-group__label">Job Title</label>
+                                    <input type="text" class="form-group__input" placeholder="e.g. Software Engineer">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-group__label">Company</label>
+                                    <input type="text" class="form-group__input" placeholder="e.g. Tech Solutions Inc.">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group form-col">
+                                        <label class="form-group__label">Start Date</label>
+                                        <input type="text" class="form-group__input" placeholder="e.g. Jan 2020">
+                                    </div>
+                                    <div class="form-group form-col">
+                                        <label class="form-group__label">End Date</label>
+                                        <input type="text" class="form-group__input" placeholder="e.g. Present">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-group__label">Description</label>
+                                    <div class="textarea-container">
+                                        <textarea class="form-group__textarea" rows="3" placeholder="Describe your responsibilities and achievements"></textarea>
+                                        <button type="button" class="ai-assist-button">AI Write</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-        <label for="summary">Summary:</label>
-        <textarea
-          id="summary"
-          placeholder="Write a brief summary"
-          oninput="updatePreview()"></textarea>
+                    <!-- Education -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h2>Education</h2>
+                            <button type="button" class="btn-add">
+                                <i class="fas fa-plus"></i> Add Education
+                            </button>
+                        </div>
+                        
+                        <div id="education-container">
+                            <div class="education-entry">
+                                <div class="entry-header">
+                                    <h3>Education 1</h3>
+                                    <button type="button" class="btn-remove">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-group__label">Degree</label>
+                                    <input type="text" class="form-group__input" placeholder="e.g. Bachelor of Science in Computer Science">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-group__label">Institution</label>
+                                    <input type="text" class="form-group__input" placeholder="e.g. University of Technology">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group form-col">
+                                        <label class="form-group__label">Start Year</label>
+                                        <input type="text" class="form-group__input" placeholder="e.g. 2016">
+                                    </div>
+                                    <div class="form-group form-col">
+                                        <label class="form-group__label">End Year</label>
+                                        <input type="text" class="form-group__input" placeholder="e.g. 2020">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-group__label">Description (Optional)</label>
+                                    <textarea class="form-group__textarea" rows="2" placeholder="Additional information, achievements, etc."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-        <label>Work Experience:</label>
-        <div id="experience-list">
-          <div class="experience-item">
-            <input
-              type="text"
-              placeholder="Job Title"
-              oninput="updatePreview()" />
-            <input
-              type="text"
-              placeholder="Company - Year"
-              oninput="updatePreview()" />
-            <textarea
-              placeholder="Job description"
-              oninput="updatePreview()"></textarea>
-          </div>
+                    <!-- Skills -->
+                    <div class="form-section">
+                        <h2>Skills</h2>
+                        <div class="form-group">
+                            <label class="form-group__label">Add skills (separate with commas)</label>
+                            <input type="text" id="skillsInput" class="form-group__input" placeholder="e.g. JavaScript, React, Node.js">
+                            <button type="button" id="addSkills" class="btn btn-primary mt-2">Add Skills</button>
+                        </div>
+                        <div class="skills-editor" id="skillsContainer">
+                            <span class="skill-item">JavaScript <button type="button" class="btn-remove-skill">×</button></span>
+                            <span class="skill-item">React <button type="button" class="btn-remove-skill">×</button></span>
+                            <span class="skill-item">Node.js <button type="button" class="btn-remove-skill">×</button></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Preview section -->
+            <div class="preview">
+                <div class="preview-header">
+                    <h2>Preview</h2>
+                    <button class="export-pdf">
+                        <i class="fas fa-download"></i> Export to PDF
+                    </button>
+                </div>
+                <div class="resume-container">
+                    <div class="resume template2">
+                        <div class="resume-sidebar">
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <span class="contact-icon"><i class="fas fa-envelope"></i></span>
+                                    <span>johndoe@example.com</span>
+                                </div>
+                                <div class="contact-item">
+                                    <span class="contact-icon"><i class="fas fa-phone"></i></span>
+                                    <span>+1 234 567 890</span>
+                                </div>
+                                <div class="contact-item">
+                                    <span class="contact-icon"><i class="fas fa-map-marker-alt"></i></span>
+                                    <span>New York, NY</span>
+                                </div>
+                                <div class="contact-item">
+                                    <span class="contact-icon"><i class="fas fa-link"></i></span>
+                                    <span>linkedin.com/in/johndoe</span>
+                                </div>
+                            </div>
+                            
+                            <div class="resume-section">
+                                <h2>Skills</h2>
+                                <div class="skills-list">
+                                    <div class="skill-item">
+                                        <span class="skill-name">JavaScript</span>
+                                        <div class="skill-bar">
+                                            <div class="skill-level" style="width: 90%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-item">
+                                        <span class="skill-name">React</span>
+                                        <div class="skill-bar">
+                                            <div class="skill-level" style="width: 85%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-item">
+                                        <span class="skill-name">Node.js</span>
+                                        <div class="skill-bar">
+                                            <div class="skill-level" style="width: 80%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="resume-main">
+                            <div class="resume-header">
+                                <h1>John Doe</h1>
+                                <p>Web Developer</p>
+                            </div>
+                            
+                            <div class="resume-section">
+                                <h2>Professional Summary</h2>
+                                <p>Dedicated and efficient web developer with 5+ years of experience in frontend and backend development. Proficient in JavaScript, React, and Node.js with a strong understanding of web standards and best practices. Known for delivering high-quality code and innovative solutions to complex problems.</p>
+                            </div>
+                            
+                            <div class="resume-section">
+                                <h2>Work Experience</h2>
+                                
+                                <div class="experience-item">
+                                    <div class="job-title">Senior Web Developer</div>
+                                    <div class="company">Tech Solutions Inc.</div>
+                                    <span class="dates">Jan 2020 - Present</span>
+                                    <div class="job-description">
+                                        <p>Led the frontend development team in creating responsive web applications. Implemented new features and optimized existing code to improve performance by 40%. Mentored junior developers and conducted code reviews to ensure quality standards.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="experience-item">
+                                    <div class="job-title">Web Developer</div>
+                                    <div class="company">Digital Creations</div>
+                                    <span class="dates">Mar 2018 - Dec 2019</span>
+                                    <div class="job-description">
+                                        <p>Developed and maintained client websites using JavaScript, React, and Node.js. Collaborated with the design team to implement visual elements. Improved site load times by 30% through code optimization.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="resume-section">
+                                <h2>Education</h2>
+                                
+                                <div class="education-item">
+                                    <div class="degree">Bachelor of Science in Computer Science</div>
+                                    <div class="institution">University of Technology</div>
+                                    <span class="dates">2014 - 2018</span>
+                                    <p>Graduated with honors. Specialized in web development and software engineering.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button onclick="addExperience()">➕ Add Experience</button>
-
-        <label>Skills:</label>
-        <div id="skills-list">
-          <input type="text" placeholder="Skill" oninput="updatePreview()" />
-        </div>
-        <button onclick="addSkill()">➕ Add Skill</button>
-
-        <button id="download-btn">📥 Download PDF</button>
-      </div>
-
-      <!-- Right Section: Live Preview -->
-      <div class="preview-section">
-        <div class="resume">
-          <header>
-            <h1 id="preview-name">Your Name</h1>
-            <h2 id="preview-title">Job Title</h2>
-          </header>
-
-          <section>
-            <h3>Summary</h3>
-            <p id="preview-summary">A brief summary about yourself.</p>
-          </section>
-
-          <section>
-            <h3>Work Experience</h3>
-            <div id="preview-experience"></div>
-          </section>
-
-          <section>
-            <h3>Skills</h3>
-            <ul id="preview-skills"></ul>
-          </section>
-        </div>
-      </div>
     </div>
 
-    <script src="./Js/templates/template2.js"></script>
-  </body>
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="container">
+            <p>&copy; 2025 ResumeBuilder. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/template2.js"></script>
+</body>
 </html>

@@ -1,0 +1,162 @@
+/* resume.css - Core styles for resume templates */
+
+/* Base resume styles for all templates */
+.resume {
+    color: var(--text-color);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    letter-spacing: 0.2px;
+  }
+  
+  .resume-header {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--primary-color);
+  }
+  
+  .resume-header h1 {
+    font-size: var(--font-size-xxl);
+    margin-bottom: var(--spacing-xs);
+    color: var(--secondary-color);
+  }
+  
+  .resume-header p {
+    font-size: var(--font-size-lg);
+    color: var(--text-color-light);
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .contact-info {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    font-size: var(--font-size-sm);
+    color: var(--text-color-light);
+  }
+  
+  .resume-section {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .resume-section:last-child {
+    margin-bottom: 0;
+  }
+  
+  .resume-section h2 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-md);
+    color: var(--primary-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: var(--spacing-xs);
+  }
+  
+  /* Experience and education items */
+  .experience-item,
+  .education-item {
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .experience-item:last-child,
+  .education-item:last-child {
+    margin-bottom: 0;
+  }
+  
+  .job-title,
+  .degree {
+    font-weight: var(--font-weight-bold);
+    color: var(--secondary-color);
+    margin-bottom: var(--spacing-xs);
+    font-size: var(--font-size-base);
+  }
+  
+  .company-dates,
+  .institution-years {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--font-size-sm);
+    color: var(--text-color-light);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .company,
+  .institution {
+    font-style: italic;
+  }
+  
+  .dates {
+    font-style: italic;
+    color: var(--text-color-light);
+  }
+  
+  .job-description {
+    font-size: var(--font-size-sm);
+    color: var(--text-color);
+    line-height: var(--line-height-base);
+  }
+  
+  /* Empty section placeholder */
+  .empty-section {
+    color: var(--text-color-lighter);
+    font-style: italic;
+    text-align: center;
+    padding: var(--spacing-md);
+  }
+  
+  /* Skills display */
+  .skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+  
+  .skill-tag {
+    display: inline-block;
+    background-color: rgba(var(--primary-color), 0.1);
+    color: var(--primary-color);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    margin: var(--spacing-xs);
+    border-radius: var(--border-radius-pill);
+    font-size: var(--font-size-sm);
+  }
+  
+  /* Print styles */
+  @media print {
+    .editor,
+    .preview-header,
+    .btn-print,
+    .btn-save,
+    .btn-load {
+      display: none !important;
+    }
+    
+    .preview {
+      width: 100% !important;
+      padding: 0 !important;
+    }
+    
+    .resume-container {
+      box-shadow: none !important;
+      padding: 0 !important;
+      height: auto !important;
+      overflow: visible !important;
+    }
+    
+    .resume {
+      box-shadow: none !important;
+    }
+    
+    body,
+    .container,
+    .preview,
+    .resume-container,
+    .resume {
+      background-color: white !important;
+    }
+    
+    @page {
+      size: auto;
+      margin: 10mm;
+    }
+  }
