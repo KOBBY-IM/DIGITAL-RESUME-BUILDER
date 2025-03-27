@@ -1,0 +1,297 @@
+/* editor.css - Main editor page styles */
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+  
+  /* Header */
+  .app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .logo h1 {
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin: 0;
+    color: #2c3e50;
+  }
+  
+  .logo span {
+    color: #3498db;
+  }
+  
+  .header-nav {
+    display: flex;
+    gap: 10px;
+  }
+  
+  /* Page layout - split into two columns */
+  .page-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px 0;
+    min-height: calc(100vh - 100px);
+  }
+  
+  /* Form container */
+  .form-container {
+    flex: 1;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    max-height: calc(100vh - 100px);
+  }
+  
+  /* Editor container */
+  .editor-container {
+    width: 100%;
+  }
+  
+  /* Tabs navigation */
+  .tabs {
+    margin-bottom: 20px;
+  }
+  
+  .tabs ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .tabs ul li {
+    margin-bottom: -1px;
+  }
+  
+  .tabs ul li a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #333;
+    border-radius: 4px 4px 0 0;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+  }
+  
+  .tabs ul li a:hover {
+    background-color: #f8f9fa;
+    color: #3498db;
+  }
+  
+  .tabs ul li a.active {
+    color: #3498db;
+    background-color: white;
+    border: 1px solid #eee;
+    border-bottom-color: white;
+    font-weight: 500;
+  }
+  
+  .tab-content {
+    padding: 10px 0;
+  }
+  
+  .tab-pane {
+    display: none;
+  }
+  
+  .tab-pane.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  /* Section header */
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .section-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  /* Form groups */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 15px;
+    transition: border-color 0.2s;
+  }
+  
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+  }
+  
+  /* Form rows */
+  .form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .form-col {
+    flex: 1;
+  }
+  
+  /* TextArea with AI assist button */
+  .textarea-container {
+    position: relative;
+  }
+  
+  .ai-assist-button {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .ai-assist-button:hover {
+    background-color: #2980b9;
+  }
+  
+  .ai-assist-button i {
+    margin-right: 5px;
+  }
+  
+  .textarea-container textarea {
+    padding-bottom: 45px;
+  }
+  
+  /* Form hints */
+  .form-hint {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+  }
+  
+  /* Entry containers */
+  .entry-container {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .entry-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  
+  .btn-danger {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .btn-danger:hover {
+    background-color: #c0392b;
+  }
+  
+  .entry-body {
+    padding-top: 5px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 992px) {
+    .page-container {
+      flex-direction: column;
+    }
+    
+    .form-container {
+      max-height: none;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .app-header {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+    }
+    
+    .header-nav {
+      justify-content: center;
+    }
+    
+    .form-row {
+      flex-direction: column;
+      gap: 0;
+    }
+    
+    .tabs ul {
+      flex-wrap: wrap;
+    }
+    
+    .tabs ul li {
+      flex: 1 1 auto;
+      text-align: center;
+    }
+  }

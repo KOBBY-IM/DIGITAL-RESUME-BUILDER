@@ -1,0 +1,321 @@
+/* common.css - Shared styles for all pages */
+
+/* Base styling */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+  line-height: 1.5;
+  background-color: #f8f9fa;
+}
+
+/* Container */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Logo styling */
+.logo h1 {
+  font-weight: 700;
+  font-size: 1.8rem;
+  margin: 0;
+  color: #2c3e50;
+}
+
+.logo span {
+  color: #3498db;
+}
+
+/* App header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.balanced-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 0;
+  width: 100%;
+}
+
+.header-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1500px;
+  padding: 0 2rem;
+}
+
+.header-nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* User welcome */
+.user-welcome {
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+/* App footer */
+.app-footer {
+  padding: 1.5rem 0;
+  color: #666;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.app-footer hr {
+  margin-bottom: 1.5rem;
+  opacity: 0.1;
+}
+
+/* General button styling */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 15px;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn i {
+  margin-right: 5px;
+}
+
+.btn-primary {
+  background-color: #3498db;
+  color: white;
+  border: 1px solid #3498db;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+  border-color: #2980b9;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  border: 1px solid #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #5a6268;
+}
+
+.btn-outline-primary {
+  background-color: transparent;
+  border: 1px solid #3498db;
+  color: #3498db;
+}
+
+.btn-outline-primary:hover {
+  background-color: #f1f9ff;
+}
+
+/* Form controls */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #555;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 15px;
+  transition: border-color 0.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Form row layout */
+.form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-col {
+  flex: 1;
+}
+
+/* Toast notifications */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 4px;
+  color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10000;
+  min-width: 200px;
+  text-align: center;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.toast-success {
+  background-color: #2ecc71;
+}
+
+.toast-error {
+  background-color: #e74c3c;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .header-wrap {
+      max-width: 900px;
+      padding: 0 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-header {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 1rem 0;
+      gap: 1rem;
+  }
+  
+  .header-wrap {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+      padding: 0 1rem;
+  }
+  
+  .header-nav {
+      justify-content: center;
+  }
+  
+  .form-row {
+      flex-direction: column;
+      gap: 0;
+  }
+}
+
+* Date input specific styling */
+.date-input {
+  position: relative;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  padding-right: 36px !important; /* Make room for the icon */
+}
+
+/* Present option toggle */
+.present-toggle {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 5px;
+  font-size: 0.85rem;
+  color: #666;
+  cursor: pointer;
+}
+
+.present-toggle input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.present-toggle:hover {
+  color: #3498db;
+}
+
+/* Improve small helper text */
+.text-muted {
+  font-size: 0.75rem;
+  color: #777;
+  margin-top: 2px;
+}
+
+/* Valid date input indication */
+.date-input.is-valid {
+  border-color: #2ecc71;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%232ecc71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>');
+  background-position: right 10px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 36px;
+}
+
+/* Invalid date input indication */
+.date-input.is-invalid {
+  border-color: #e74c3c;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>');
+  background-position: right 10px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 36px;
+}
+
+/* Improve date field hints */
+.date-field-container {
+  position: relative;
+}
+
+.date-format-tooltip {
+  position: absolute;
+  top: -8px;
+  right: 10px;
+  background-color: #3498db;
+  color: white;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.date-input:focus + .date-format-tooltip {
+  opacity: 1;
+}
+
+/* Add "Present" styling */
+.date-present {
+  color: #3498db;
+  font-style: italic;
+  font-weight: 500;
+}

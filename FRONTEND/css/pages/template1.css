@@ -1,0 +1,639 @@
+/* Enhanced template1.css - More formal professional resume styling */
+
+/* Base layout */
+body {
+  background-color: #f8f9fa;
+  color: #333;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+}
+
+/* Page layout */
+.page-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+  min-height: calc(100vh - 100px);
+}
+
+/* Editor section */
+.editor {
+  flex: 1;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 100px);
+}
+
+/* Preview section */
+.preview {
+  flex: 1;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 100px);
+}
+
+/* Section titles in the editor */
+.editor h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Form sections */
+.form-section {
+  margin-bottom: 40px;
+}
+
+.form-section:last-child {
+  margin-bottom: 0;
+}
+
+/* Section dividers */
+.section-divider {
+  height: 1px;
+  background-color: #eee;
+  margin: 30px 0;
+}
+
+/* Form group */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  color: #2c3e50;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+}
+
+/* Entry container for experience and education */
+.experience-entry,
+.education-entry {
+  position: relative;
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.entry-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.btn-remove {
+  background-color: transparent;
+  border: none;
+  color: #e74c3c;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-remove:hover {
+  color: #c0392b;
+}
+
+/* Add button styles */
+.btn-add {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 15px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 15px;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.btn-add:hover {
+  background-color: #2980b9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-add i {
+  margin-right: 5px;
+}
+
+/* Textarea container with AI assist button */
+.textarea-container {
+  position: relative;
+}
+
+.textarea-container textarea {
+  padding-bottom: 40px;
+  min-height: 80px;
+}
+
+/* AI Assist button */
+.ai-assist {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.ai-assist:hover {
+  background-color: #2980b9;
+}
+
+.ai-assist i {
+  margin-right: 5px;
+}
+
+/* ===== IMPROVED RESUME PREVIEW STYLING ===== */
+
+/* Resume container */
+.resume-container {
+  background-color: white;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+}
+
+.resume {
+  padding: 30px;
+  color: #333;
+  line-height: 1.5;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Resume header - more professional styling */
+.resume-header {
+  text-align: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #2c3e50;
+}
+
+.resume-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.resume-header p {
+  font-size: 16px;
+  color: #2c3e50;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.contact-info {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  font-size: 13px;
+  color: #555;
+  flex-wrap: wrap;
+}
+
+/* Resume sections - more formal styling */
+.resume-section {
+  margin-bottom: 20px;
+}
+
+.resume-section h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 12px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #e0e0e0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Professional Summary section */
+.resume-section p {
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+/* Experience items */
+.job {
+  margin-bottom: 18px;
+}
+
+.job-title {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 3px;
+  font-size: 15px;
+}
+
+.company-dates {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.company {
+  font-style: italic;
+  color: #555;
+}
+
+.dates {
+  color: #555;
+  font-size: 13px;
+}
+
+.job-description p {
+  margin: 5px 0;
+  font-size: 13px;
+}
+
+/* Education items */
+.education-item {
+  margin-bottom: 15px;
+}
+
+.degree {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 3px;
+  font-size: 15px;
+}
+
+.institution-years {
+  display: flex;
+  justify-content: space-between;
+}
+
+.institution {
+  font-style: italic;
+  color: #555;
+}
+
+.years {
+  color: #555;
+  font-size: 13px;
+}
+
+/* Skills list */
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-tag {
+  background-color: #f1f8fe;
+  color: #2980b9;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  border: 1px solid #d4e9f7;
+}
+
+/* Custom sections */
+.custom-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #e0e0e0;
+  text-transform: uppercase;
+}
+
+.custom-section-content {
+  font-size: 13px;
+}
+
+/* Preview header */
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.preview-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Export to PDF button */
+.export-pdf {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.export-pdf:hover {
+  background-color: #2980b9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.export-pdf i {
+  margin-right: 6px;
+}
+
+/* Custom sections */
+.custom-sections-container {
+  margin-top: 20px;
+}
+
+.custom-section {
+  position: relative;
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+/* Toast notification styles */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 4px;
+  color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 10000;
+  min-width: 250px;
+  text-align: center;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.toast-error {
+  background-color: #e74c3c;
+}
+
+.toast-success {
+  background-color: #2ecc71;
+}
+
+/* Print styles for PDF export */
+@media print {
+  body {
+    padding: 0;
+    background: none;
+  }
+  
+  .editor, .preview-header, .app-header {
+    display: none !important;
+  }
+  
+  .preview {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .resume-container {
+    box-shadow: none;
+  }
+  
+  .resume {
+    padding: 10mm;
+  }
+  
+  .resume-header, .resume-section {
+    page-break-inside: avoid;
+  }
+  
+  .job, .education-item {
+    page-break-inside: avoid;
+  }
+  
+  @page {
+    margin: 10mm;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .page-container {
+    flex-direction: column;
+  }
+  
+  .editor, .preview {
+    max-height: none;
+  }
+  
+  .preview {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .header-nav {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .contact-info {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+/* Add Custom Section Button */
+.btn-add-custom-section {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 15px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: all 0.2s ease;
+}
+
+.btn-add-custom-section:hover {
+  background-color: #2980b9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Add these styles to your template1.css file */
+
+/* Base font settings for the entire resume */
+.resume {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+}
+
+/* Consistent heading styles */
+.resume-header h1 {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.resume-header p {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #3498db;
+}
+
+.resume-section h2 {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #3498db;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Consistent content styles */
+.resume-section p, 
+.resume-section .job-description, 
+.resume-section .education-description {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Job titles and degrees */
+.job-title, 
+.degree {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Company and institution names */
+.company, 
+.institution {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+}
+
+/* Dates */
+.dates, 
+.years {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #777;
+}
+
+/* Skills tags */
+.skill-tag {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #2c3e50;
+}
+
+/* Bullet points in descriptions */
+.job-description ul, 
+.job-description li,
+.education-description ul,
+.education-description li {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Contact info */
+.contact-info {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 14px;
+  color: #555;
+}
+
+/* For print consistency */
+@media print {
+  .resume {
+    font-family: 'Poppins', Arial, sans-serif;
+  }
+}

@@ -1,13 +1,24 @@
 const express = require('express');
-const resumeController = require('../CONTROLLERS/resumeControl');
-const authMiddleware = require('../MIDDLEWARE/auth_Middleware');
-
 const router = express.Router();
+const resumeController = require('../CONTROLLERS/resumeControl');
+const { authenticate } = require('../MIDDLEWARE/auth_Middleware');
 
-router.post('/', authMiddleware.authenticate, resumeController.createResume);
-router.put('/:id', authMiddleware.authenticate, resumeController.updateResume);
-router.get('/:id', resumeController.getResumeById);
-router.get('/:id/download', resumeController.downloadResume);
+// Create a new resume
+router.post('/', authenticate, resumeController.createResume);
 
+// Get all resumes for current user
+router.get('/', authenticate, resumeController.getUserResumes);
+
+// Get a specific resume
+router.get('/:id', authenticate, resumeController.getResumeById);
+
+// Update a resume
+router.put('/:id', authenticate, resumeController.updateResume);
+
+// Download resume as PDF
+router.get('/:id/download', authenticate, resumeController.downloadResume);
+
+// Delete a resume
+router.delete('/:id', authenticate, resumeController.deleteResume);
 
 module.exports = router;

@@ -1,0 +1,126 @@
+/* loginindex.css - Dashboard styles */
+
+/* Main centered dashboard container */
+.dashboard-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+    width: 100%;
+    padding: 2rem 0;
+}
+
+/* Dashboard heading */
+.dashboard-center h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+/* Option cards container */
+.option-cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Large option card button */
+.option-card {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.option-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    border-color: #3498db;
+}
+
+/* Option icon */
+.option-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: rgba(52, 152, 219, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 2rem;
+}
+
+.option-icon i {
+    font-size: 2.5rem;
+    color: #3498db;
+}
+
+/* Option text container */
+.option-text {
+    flex: 1;
+}
+
+/* Option title */
+.option-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+/* Option description */
+.option-desc {
+    font-size: 1.1rem;
+    color: #7f8c8d;
+}
+
+/* Make sure the option cards don't have default button styling */
+button.option-card {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: white;
+    font-family: inherit;
+    text-align: left;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .dashboard-center h2 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .option-card {
+        padding: 1.5rem;
+    }
+    
+    .option-icon {
+        width: 60px;
+        height: 60px;
+        margin-right: 1.5rem;
+    }
+    
+    .option-icon i {
+        font-size: 2rem;
+    }
+    
+    .option-title {
+        font-size: 1.25rem;
+    }
+    
+    .option-desc {
+        font-size: 1rem;
+    }
+}

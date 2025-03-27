@@ -1,0 +1,277 @@
+/* test.css - Homepage & login/signup styles */
+
+/* Header styles with repositioned login buttons */
+.app-header .header-content {
+    display: flex;
+    justify-content: flex-start; /* Align both logo and buttons to the left */
+    align-items: center;
+    width: 100%;
+    gap: 2rem; /* Add some space between logo and buttons */
+}
+
+.app-header .logo {
+    /* Keep the logo styling as is */
+}
+
+.app-header .header-nav {
+    margin-left: 0; /* Remove any default margin */
+}
+
+/* Rest of the homepage styles */
+.homepage-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: 2rem 0;
+}
+
+.hero-section {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.hero-description {
+    font-size: 1.25rem;
+    color: #555;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.create-resume-btn {
+    font-size: 1.1rem;
+    padding: 0.75rem 1.5rem;
+    background-color: #3498db;
+    border-color: #3498db;
+    color: white;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(52, 152, 219, 0.25);
+    transition: all 0.3s ease;
+    margin: 0 auto 2.5rem;
+    min-width: 250px;
+}
+
+.create-resume-btn:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+}
+
+.hero-image {
+    max-width: 80%;
+    margin: 0 auto;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.hero-image:hover {
+    transform: translateY(-10px);
+}
+
+/* Auth Modal Styling */
+.modal-dialog-centered {
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 1rem);
+}
+
+.modal-content {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.auth-form-container {
+    position: relative;
+    padding: 2.5rem 2rem;
+    background-color: white;
+}
+
+.auth-header {
+    margin-bottom: 2rem;
+}
+
+.auth-header h4 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+    color: #7f8c8d;
+    margin-bottom: 0;
+}
+
+.auth-form-group {
+    margin-bottom: 1.25rem;
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #95a5a6;
+    font-size: 1rem;
+}
+
+.input-with-icon input {
+    width: 100%;
+    padding: 0.875rem 1rem 0.875rem 2.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #2c3e50;
+    transition: all 0.3s ease;
+}
+
+.input-with-icon input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.input-with-icon input::placeholder {
+    color: #bdc3c7;
+}
+
+.auth-submit-btn {
+    display: block;
+    width: 100%;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.875rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1.75rem;
+}
+
+.auth-submit-btn:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+}
+
+.auth-link {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.auth-link:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+.auth-alt-action {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #ecf0f1;
+}
+
+.auth-alt-action p {
+    margin-bottom: 0;
+    color: #7f8c8d;
+}
+
+.auth-close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    color: #95a5a6;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon:hover {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+}
+
+/* Choice Modal */
+.choice-modal .modal-body {
+    text-align: center;
+    padding: 2rem;
+}
+
+.choice-modal i.fas.fa-file-alt {
+    font-size: 3rem;
+    color: #3498db;
+    margin-bottom: 1rem;
+}
+
+.choice-modal h4 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+}
+
+.choice-modal p {
+    color: #7f8c8d;
+    margin-bottom: 1.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .app-header .header-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-description {
+        font-size: 1.1rem;
+    }
+    
+    .create-resume-btn {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .hero-image {
+        max-width: 90%;
+    }
+    
+    .auth-form-container {
+        padding: 2rem 1.5rem;
+    }
+}
