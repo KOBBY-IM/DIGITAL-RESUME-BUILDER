@@ -234,3 +234,88 @@ select:focus {
       gap: 0;
   }
 }
+
+* Date input specific styling */
+.date-input {
+  position: relative;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  padding-right: 36px !important; /* Make room for the icon */
+}
+
+/* Present option toggle */
+.present-toggle {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 5px;
+  font-size: 0.85rem;
+  color: #666;
+  cursor: pointer;
+}
+
+.present-toggle input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.present-toggle:hover {
+  color: #3498db;
+}
+
+/* Improve small helper text */
+.text-muted {
+  font-size: 0.75rem;
+  color: #777;
+  margin-top: 2px;
+}
+
+/* Valid date input indication */
+.date-input.is-valid {
+  border-color: #2ecc71;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%232ecc71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>');
+  background-position: right 10px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 36px;
+}
+
+/* Invalid date input indication */
+.date-input.is-invalid {
+  border-color: #e74c3c;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>');
+  background-position: right 10px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 36px;
+}
+
+/* Improve date field hints */
+.date-field-container {
+  position: relative;
+}
+
+.date-format-tooltip {
+  position: absolute;
+  top: -8px;
+  right: 10px;
+  background-color: #3498db;
+  color: white;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.date-input:focus + .date-format-tooltip {
+  opacity: 1;
+}
+
+/* Add "Present" styling */
+.date-present {
+  color: #3498db;
+  font-style: italic;
+  font-weight: 500;
+}

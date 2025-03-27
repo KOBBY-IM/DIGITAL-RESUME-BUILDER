@@ -30,8 +30,8 @@
         <button id="save-resume" class="btn btn-secondary">
           <i class="fas fa-save"></i> Save
         </button>
-        <button id="load-resume" class="btn btn-primary">
-          <i class="fas fa-folder-open"></i> Load Resume
+        <button id="my-resumes-btn" class="btn btn-primary">
+          <i class="fas fa-folder-open"></i> My Resumes
         </button>
       </nav>
     </header>
@@ -137,7 +137,6 @@
           <h2>Custom Sections</h2>
 
           <div id="custom-sections-container">
-            <!-- Custom sections will be added here -->
             <div class="no-custom-sections">
               <p>Add custom sections like Certifications, Projects, Languages, etc.</p>
             </div>
@@ -152,6 +151,7 @@
       </div>
 
       <!-- Right Section: Preview -->
+      <!-- Updated HTML for the preview section - Complete replacement -->
       <div class="preview">
         <div class="preview-header">
           <h2>Resume Preview</h2>
@@ -161,11 +161,11 @@
         </div>
 
         <div class="resume-container">
-          <div class="resume">
+          <div class="resume" id="resume">
             <!-- Resume Header -->
             <div class="resume-header">
-              <h1 id="preview-name">Your Name</h1>
-              <p id="preview-title">Job Title</p>
+              <h1 id="preview-name">YOUR NAME</h1>
+              <p id="preview-title">Professional Title</p>
               <div class="contact-info">
                 <span id="preview-email">email@example.com</span>
                 <span id="preview-phone">(123) 456-7890</span>
@@ -173,15 +173,15 @@
               </div>
             </div>
 
-            <!-- Summary Section -->
+            <!-- Professional Summary Section -->
             <div class="resume-section">
-              <h2>Professional Summary</h2>
+              <h2>PROFESSIONAL SUMMARY</h2>
               <p id="preview-summary">A brief summary of your professional background and career goals...</p>
             </div>
 
             <!-- Experience Section -->
             <div class="resume-section">
-              <h2>Work Experience</h2>
+              <h2>WORK EXPERIENCE</h2> <!-- Changed from PROFESSIONAL EXPERIENCE to match JavaScript -->
               <div id="preview-experience">
                 <p class="empty-section">Your work experience will appear here...</p>
               </div>
@@ -189,7 +189,7 @@
 
             <!-- Education Section -->
             <div class="resume-section">
-              <h2>Education</h2>
+              <h2>EDUCATION</h2>
               <div id="preview-education">
                 <p class="empty-section">Your education will appear here...</p>
               </div>
@@ -197,7 +197,7 @@
 
             <!-- Skills Section -->
             <div class="resume-section">
-              <h2>Skills</h2>
+              <h2>SKILLS</h2>
               <div id="preview-skills" class="skills-list">
                 <p class="empty-section">Your skills will appear here...</p>
               </div>
@@ -208,225 +208,135 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Resume List Modal -->
-  <div class="modal fade" id="resumeListModal" tabindex="-1" aria-labelledby="resumeListModalLabel">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="resumeListModalLabel">Your Resumes</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <!-- Experience Entry Template-->
+      <template id="experience-entry-template">
+        <div class="entry-container experience-entry">
+          <div class="entry-header">
+            <h3>Position Details</h3>
+            <button type="button" class="btn-remove">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label>Job Title</label>
+            <input type="text" class="form-control exp-title" placeholder="e.g. Software Engineer">
+          </div>
+
+          <div class="form-group">
+            <label>Company</label>
+            <input type="text" class="form-control exp-company" placeholder="e.g. Tech Company Inc.">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Start Date</label>
+              <input type="text" class="form-control exp-start date-input" placeholder="MM/YYYY"
+                title="Enter date as MM/YYYY format (e.g., 05/2023)">
+              <small class="text-muted">Format: MM/YYYY (e.g., 05/2023)</small>
+            </div>
+            <div class="form-group col-md-6">
+              <label>End Date</label>
+              <input type="text" class="form-control exp-end date-input" placeholder="MM/YYYY or Present"
+                title="Enter date as MM/YYYY format or 'Present' for current positions">
+              <small class="text-muted">Format: MM/YYYY or "Present"</small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <div class="textarea-container">
+              <textarea class="form-control exp-description"
+                placeholder="Describe your responsibilities and achievements" rows="4"></textarea>
+              <button type="button" class="ai-assist">
+                <i class="fas fa-magic"></i> AI Assist
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="modal-body">
-          <div id="resume-list-content"></div>
+      </template>
+
+      <!-- Education Entry Template -->
+      <template id="education-entry-template">
+        <div class="entry-container education-entry">
+          <div class="entry-header">
+            <h3>Education Details</h3>
+            <button class="btn-remove">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label>Degree</label>
+            <input type="text" class="form-control edu-degree" placeholder="e.g. Bachelor of Science">
+          </div>
+
+          <div class="form-group">
+            <label>Institution</label>
+            <input type="text" class="form-control edu-institution" placeholder="e.g. University Name">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Start Year</label>
+              <input type="text" class="form-control edu-start date-input" placeholder="YYYY or MM/YYYY"
+                title="Enter year (e.g., 2020) or specific date (e.g., 09/2020)">
+              <small class="text-muted">Format: YYYY or MM/YYYY</small>
+            </div>
+            <div class="form-group col-md-6">
+              <label>End Year</label>
+              <input type="text" class="form-control edu-end date-input" placeholder="YYYY, MM/YYYY or Present"
+                title="Enter year, specific date, or 'Present' for current education">
+              <small class="text-muted">Format: YYYY, MM/YYYY or "Present"</small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>GPA/Grade</label>
+            <input type="text" class="form-control edu-gpa" placeholder="e.g. 3.8/4.0">
+          </div>
+
+          <div class="form-group">
+            <label>Description (Optional)</label>
+            <textarea class="form-control edu-description" placeholder="Additional details about your education"
+              rows="2"></textarea>
+          </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </template>
+      <!-- Custom Section Template -->
+      <template id="custom-section-template">
+        <div class="custom-section">
+          <div class="entry-header">
+            <input type="text" class="custom-section-title form-control"
+              placeholder="Section Title (e.g., Certifications, Projects)" required>
+            <button class="btn-remove custom-section-remove">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+          <div class="form-group">
+            <div class="textarea-container">
+              <textarea class="custom-section-content form-control" rows="4"
+                placeholder="Enter details for this section"></textarea>
+              <button class="ai-assist">
+                <i class="fas fa-magic"></i> AI Assist
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <!-- HTML Templates for dynamic content -->
-  <!-- Experience Entry Template -->
-  <template id="experience-entry-template">
-    <div class="entry-container experience-entry">
-      <div class="entry-header">
-        <h3>Position Details</h3>
-        <button class="btn-remove">
-          <i class="fas fa-trash"></i>
-        </button>
-      </div>
+      </template>
 
-      <div class="form-group">
-        <label>Job Title</label>
-        <input type="text" class="form-control exp-title" placeholder="e.g. Software Engineer">
-      </div>
+      <!-- Include Bootstrap for modals -->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-      <div class="form-group">
-        <label>Company</label>
-        <input type="text" class="form-control exp-company" placeholder="e.g. Tech Company Inc.">
-      </div>
+      <!-- Include shared model first -->
+      <script src="./Js/shared-resume-model.js"></script>
 
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label>Start Date</label>
-          <input type="text" class="form-control exp-start" placeholder="e.g. Jan 2020">
-        </div>
-        <div class="form-group col-md-6">
-          <label>End Date</label>
-          <input type="text" class="form-control exp-end" placeholder="e.g. Present">
-        </div>
-      </div>
+      <!-- Include authentication functionality -->
+      <script src="./Js/auth.js"></script>
 
-      <div class="form-group">
-        <label>Description</label>
-        <div class="textarea-wrapper">
-          <textarea class="form-control exp-description" placeholder="Describe your responsibilities and achievements"
-            rows="4"></textarea>
-          <button class="ai-assist">
-            <i class="fas fa-magic"></i> AI Assist
-          </button>
-        </div>
-      </div>
-    </div>
-  </template>
+      <!-- Include Custom Sections JavaScript BEFORE main template JS -->
+      <script src="./Js/templates/custom-sections.js"></script>
 
-  <!-- Education Entry Template -->
-  <template id="education-entry-template">
-    <div class="entry-container education-entry">
-      <div class="entry-header">
-        <h3>Education Details</h3>
-        <button class="btn-remove">
-          <i class="fas fa-trash"></i>
-        </button>
-      </div>
-
-      <div class="form-group">
-        <label>Degree</label>
-        <input type="text" class="form-control edu-degree" placeholder="e.g. Bachelor of Science">
-      </div>
-
-      <div class="form-group">
-        <label>Institution</label>
-        <input type="text" class="form-control edu-institution" placeholder="e.g. University Name">
-      </div>
-
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label>Start Year</label>
-          <input type="text" class="form-control edu-start" placeholder="e.g. 2016">
-        </div>
-        <div class="form-group col-md-6">
-          <label>End Year</label>
-          <input type="text" class="form-control edu-end" placeholder="e.g. 2020">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Description (Optional)</label>
-        <textarea class="form-control edu-description" placeholder="Additional details about your education"
-          rows="2"></textarea>
-      </div>
-    </div>
-  </template>
-
-  <!-- Experience item template for the preview -->
-  <template id="experience-item-template">
-    <div class="experience-item">
-      <div class="job-title"></div>
-      <div class="company-dates">
-        <span class="company"></span>
-        <span class="dates"></span>
-      </div>
-      <div class="job-description"></div>
-    </div>
-  </template>
-
-  <!-- Education item template for the preview -->
-  <template id="education-item-template">
-    <div class="education-item">
-      <div class="degree"></div>
-      <div class="institution-years">
-        <span class="institution"></span>
-        <span class="years"></span>
-      </div>
-      <div class="education-description"></div>
-    </div>
-  </template>
-
-  <!-- Print template for resume export -->
-  <template id="print-template">
-    <!DOCTYPE html>
-    <html>
-
-    <head>
-      <title>Resume - {{name}}</title>
-      <link rel="stylesheet" href="./css/print-styles.css">
-    </head>
-
-    <body>
-      <div class="resume">
-        {{resumeContent}}
-      </div>
-    </body>
-
-    </html>
-  </template>
-
-  <!-- Toast notification template -->
-  <template id="toast-template">
-    <div class="toast {{type}}">
-      <div class="toast-icon">
-        <i class="fas {{iconClass}}"></i>
-      </div>
-      <div class="toast-content">
-        <div class="toast-title">{{title}}</div>
-        <div class="toast-message">{{message}}</div>
-      </div>
-      <button class="toast-close">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-  </template>
-
-  <!-- Empty State Template -->
-  <template id="empty-state-template">
-    <div class="empty-state">
-      <div class="empty-state-icon">
-        <i class="fas fa-file-alt"></i>
-      </div>
-      <div class="empty-state-title">No resumes found</div>
-      <div class="empty-state-text">Create your first resume to see it here</div>
-    </div>
-  </template>
-
-  <!-- Resume List Item Template -->
-  <template id="resume-list-item-template">
-    <li class="resume-list-item">
-      <div class="resume-info">
-        <div class="resume-title">Resume Title</div>
-        <div class="resume-meta">
-          <span class="resume-position">Position</span>
-          <span class="resume-date">Last updated: 01/01/2025</span>
-        </div>
-      </div>
-      <div class="resume-actions">
-        <button class="action-button edit" title="Edit Resume">
-          <i class="fas fa-edit"></i>
-        </button>
-        <button class="action-button delete" title="Delete Resume">
-          <i class="fas fa-trash"></i>
-        </button>
-      </div>
-    </li>
-  </template>
-
-  <!-- Loading Spinner Template -->
-  <template id="loading-spinner-template">
-    <div class="loading-spinner">
-      <div class="spinner"></div>
-    </div>
-  </template>
-
-  <!-- Error State Template -->
-  <template id="error-state-template">
-    <div class="empty-state">
-      <div class="empty-state-icon">
-        <i class="fas fa-exclamation-circle"></i>
-      </div>
-      <div class="empty-state-title">Error</div>
-      <div class="empty-state-text">Error message goes here</div>
-    </div>
-  </template>
-<!-- Include Bootstrap for modals -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Include authentication functionality -->
-<script src="./Js/auth.js"></script>
-
-<!-- Include Template1 specific JavaScript -->
-<script src="./Js/templates/template1.js"></script>
-</body>
-</html>
+      <!-- Include Template1 specific JavaScript LAST -->
+      <script src="./Js/templates/template1.js"></script>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Carter - Senior IT Engineer</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            color: #333;
+            line-height: 1.6;
+            background-color: #fff;
+            padding: 0;
+            margin: 0;
+            font-size: 10.5pt;
+        }
+        
+        .document {
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.6in 0.8in;
+            background: white;
+        }
+        
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #2c3e50;
+        }
+        
+        .name {
+            font-size: 28pt;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
+        
+        .title {
+            font-size: 14pt;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .contact-info {
+            font-size: 10pt;
+            color: #555;
+            margin-top: 5px;
+        }
+        
+        /* Section Styling */
+        .section {
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 14pt;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        /* Experience Entries */
+        .experience {
+            margin-bottom: 15px;
+        }
+        
+        .experience:last-child {
+            margin-bottom: 0;
+        }
+        
+        .job-title {
+            font-weight: 600;
+            font-size: 12pt;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+        
+        .company-location {
+            font-style: italic;
+            font-weight: 400;
+            color: #555;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        
+        .date-range {
+            font-weight: normal;
+            color: #555;
+            float: right;
+        }
+        
+        .work-details {
+            margin-top: 5px;
+        }
+        
+        /* Bulleted Lists */
+        ul {
+            padding-left: 20px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+        
+        li {
+            margin-bottom: 5px;
+            position: relative;
+        }
+        
+        /* Education Section */
+        .education {
+            margin-bottom: 10px;
+        }
+        
+        /* Skills Section */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        
+        .skill-category {
+            width: 100%;
+            margin-bottom: 6px;
+        }
+        
+        .skill-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-right: 8px;
+            min-width: 140px;
+            display: inline-block;
+        }
+        
+        .skill-list {
+            display: inline;
+        }
+        
+        /* Certifications Section */
+        .certifications-list {
+            margin-top: 8px;
+        }
+        
+        .certification {
+            margin-bottom: 5px;
+        }
+        
+        /* Projects Section */
+        .projects-list {
+            margin-top: 8px;
+        }
+        
+        .project {
+            margin-bottom: 8px;
+        }
+        
+        .project-title {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        /* Print Optimization */
+        @media print {
+            body {
+                background: none;
+                font-size: 10.5pt;
+            }
+            
+            .document {
+                padding: 0;
+                max-width: 100%;
+            }
+            
+            .header {
+                margin-bottom: 15px;
+            }
+            
+            .section {
+                margin-bottom: 15px;
+                page-break-inside: avoid;
+            }
+            
+            .experience, .education {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="document">
+        <!-- Header Section -->
+        <header class="header">
+            <h1 class="name">JOHN CARTER</h1>
+            <h2 class="title">Senior IT Engineer | Cloud & DevOps Specialist</h2>
+            <div class="contact-info">
+                john.carter@example.com | (415) 555-0198 | San Francisco, CA
+            </div>
+        </header>
+        
+        <!-- Professional Summary -->
+        <section class="section">
+            <h2 class="section-title">PROFESSIONAL SUMMARY</h2>
+            <p>Results-driven IT Engineer with 8+ years of experience in cloud infrastructure, DevOps automation, and system administration. Expertise in AWS, Kubernetes, CI/CD pipelines, and infrastructure as code (IaC). Passionate about optimizing system performance, security, and scalability.</p>
+        </section>
+        
+        <!-- Work Experience -->
+        <section class="section">
+            <h2 class="section-title">PROFESSIONAL EXPERIENCE</h2>
+            
+            <div class="experience">
+                <div class="job-title">
+                    Senior DevOps Engineer
+                    <span class="date-range">01/2021 - Present</span>
+                </div>
+                <div class="company-location">TechNova Solutions, San Francisco, CA</div>
+                <div class="work-details">
+                    <ul>
+                        <li>Designed and deployed AWS cloud infrastructure using Terraform, reducing costs by 30% through resource optimization.</li>
+                        <li>Implemented Kubernetes (EKS) for container orchestration, improving deployment efficiency by 40%.</li>
+                        <li>Automated CI/CD pipelines using Jenkins & GitHub Actions, reducing manual deployment time by 70%.</li>
+                        <li>Enhanced security compliance by enforcing IAM policies, VPC configurations, and encryption standards.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="experience">
+                <div class="job-title">
+                    IT Systems Engineer
+                    <span class="date-range">05/2015 - 12/2020</span>
+                </div>
+                <div class="company-location">VeriTech Systems, San Jose, CA</div>
+                <div class="work-details">
+                    <ul>
+                        <li>Managed on-premise and hybrid cloud environments (AWS + VMware), ensuring 99.9% uptime.</li>
+                        <li>Automated server provisioning using Ansible, reducing setup time from hours to minutes.</li>
+                        <li>Led migration of legacy applications to Docker containers, improving scalability.</li>
+                        <li>Troubleshot network issues and implemented Wireshark & Nagios for real-time monitoring.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Education -->
+        <section class="section">
+            <h2 class="section-title">EDUCATION</h2>
+            <div class="education">
+                <div class="job-title">
+                    Bachelor of Science in Computer Engineering
+                    <span class="date-range">2011 - 2015</span>
+                </div>
+                <div class="company-location">Stanford University, CA</div>
+            </div>
+        </section>
+        
+        <!-- Certifications -->
+        <section class="section">
+            <h2 class="section-title">CERTIFICATIONS</h2>
+            <div class="certifications-list">
+                <div class="certification">• AWS Certified Solutions Architect – Professional</div>
+                <div class="certification">• Certified Kubernetes Administrator (CKA)</div>
+                <div class="certification">• Terraform Associate (Hashicorp)</div>
+            </div>
+        </section>
+        
+        <!-- Skills -->
+        <section class="section">
+            <h2 class="section-title">TECHNICAL SKILLS</h2>
+            <div class="skills-container">
+                <div class="skill-category">
+                    <span class="skill-title">Cloud Platforms:</span>
+                    <span class="skill-list">AWS (EC2, S3, Lambda, RDS, IAM), Azure, GCP</span>
+                </div>
+                <div class="skill-category">
+                    <span class="skill-title">DevOps Tools:</span>
+                    <span class="skill-list">Docker, Kubernetes, Terraform, Ansible, Jenkins, GitHub Actions</span>
+                </div>
+                <div class="skill-category">
+                    <span class="skill-title">Scripting:</span>
+                    <span class="skill-list">Python, Bash, PowerShell, JavaScript</span>
+                </div>
+                <div class="skill-category">
+                    <span class="skill-title">Monitoring & Logging:</span>
+                    <span class="skill-list">Prometheus, Grafana, ELK Stack, CloudWatch</span>
+                </div>
+                <div class="skill-category">
+                    <span class="skill-title">Databases:</span>
+                    <span class="skill-list">MySQL, PostgreSQL, MongoDB, DynamoDB</span>
+                </div>
+                <div class="skill-category">
+                    <span class="skill-title">Networking & Security:</span>
+                    <span class="skill-list">VPN, Firewalls, TLS/SSL, IAM Policies</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Projects -->
+        <section class="section">
+            <h2 class="section-title">NOTABLE PROJECTS</h2>
+            <div class="projects-list">
+                <div class="project">
+                    <span class="project-title">Automated Cloud Backup System</span> — Built a Python script for automated AWS S3 backups, saving $15K/year in manual efforts.
+                </div>
+                <div class="project">
+                    <span class="project-title">CI/CD Pipeline for Microservices</span> — Designed a Jenkins + Docker + Kubernetes workflow, reducing deployment failures by 60%.
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

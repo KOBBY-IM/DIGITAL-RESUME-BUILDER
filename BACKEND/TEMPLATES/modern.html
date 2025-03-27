@@ -2,58 +2,152 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <title>Resume - {{fullName}}</title>
   <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; color: #333; }
-    .header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
-    h1 { color: #2c3e50; margin-bottom: 5px; }
-    h2 { color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-    .contact-info { margin: 10px 0; font-size: 0.9em; }
-    .section { margin-bottom: 20px; }
-    .job { margin-bottom: 15px; }
-    .job-title { font-weight: bold; }
-    .company { font-style: italic; }
-    .dates { color: #7f8c8d; font-size: 0.9em; }
-    ul { padding-left: 20px; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      font-size: 12px;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .header {
+      text-align: center;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      margin: 0;
+      color: #2c3e50;
+      font-size: 24px;
+    }
+    .header .job-title {
+      color: #3498db;
+      font-size: 16px;
+      margin: 5px 0;
+    }
+    .header .contact-info {
+      font-size: 10px;
+      color: #7f8c8d;
+    }
+    .section {
+      margin-bottom: 15px;
+    }
+    .section h2 {
+      border-bottom: 1px solid #ecf0f1;
+      padding-bottom: 5px;
+      color: #2980b9;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .job, .education-item {
+      margin-bottom: 10px;
+    }
+    .job-title, .degree {
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    .company, .institution {
+      color: #7f8c8d;
+      font-style: italic;
+    }
+    .dates {
+      color: #7f8c8d;
+      font-size: 10px;
+    }
+    .description-list {
+      margin: 5px 0;
+      padding-left: 20px;
+    }
+    .skills-list {
+      list-style-type: none;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .skills-list li {
+      background-color: #f1f4f7;
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+      color: #2c3e50;
+    }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>{{fullName}}</h1>
-    <div class="contact-info">
-      {{email}} | {{phone}} | {{location}}
-    </div>
-    <div class="job-title">{{jobTitle}}</div>
-  </div>
-
-  <div class="section">
-    <h2>Professional Summary</h2>
-    <p>{{summary}}</p>
-  </div>
-
-  <div class="section">
-    <h2>Work Experience</h2>
-    {{experience-item}}
-    <div class="job">
+  <div class="container">
+    <div class="header">
+      <h1>{{fullName}}</h1>
       <div class="job-title">{{jobTitle}}</div>
-      <div class="company">{{company}} | <span class="dates">{{startDate}} - {{endDate}}</span></div>
-      <p>{{description}}</p>
+      <div class="contact-info">
+        {{email}} | {{phone}} | {{location}}
+        {{#if website}}| {{website}}{{/if}}
+      </div>
     </div>
-    {{/experience-item}}
-  </div>
 
-  <div class="section">
-    <h2>Education</h2>
-    {{education-item}}
-    <div class="job">
-      <div class="job-title">{{degree}}</div>
-      <div class="company">{{institution}} | <span class="dates">{{startYear}} - {{endYear}}</span></div>
+    <div class="section">
+      <h2>Professional Summary</h2>
+      <p>{{summary}}</p>
     </div>
-    {{/education-item}}
-  </div>
 
-  <div class="section">
-    <h2>Skills</h2>
-    {{skills}}
+    {{#if experience.length}}
+    <div class="section">
+      <h2>Work Experience</h2>
+      {{#each experience}}
+      <div class="job">
+        <div class="job-title">{{jobTitle}}</div>
+        <div class="company">{{company}}</div>
+        <div class="dates">{{startDate}} - {{endDate}}</div>
+        {{#if description.length}}
+        <ul class="description-list">
+          {{#each description}}
+          <li>{{this}}</li>
+          {{/each}}
+        </ul>
+        {{/if}}
+      </div>
+      {{/each}}
+    </div>
+    {{/if}}
+
+    {{#if education.length}}
+    <div class="section">
+      <h2>Education</h2>
+      {{#each education}}
+      <div class="education-item">
+        <div class="degree">{{degree}}</div>
+        <div class="institution">{{institution}}</div>
+        <div class="dates">{{startYear}} - {{endYear}}</div>
+        {{#if gpa}}
+        <div class="gpa">GPA: {{gpa}}</div>
+        {{/if}}
+      </div>
+      {{/each}}
+    </div>
+    {{/if}}
+
+    {{#if skills}}
+    <div class="section">
+      <h2>Skills</h2>
+      {{{skills}}}
+    </div>
+    {{/if}}
+
+    {{#if customSections.length}}
+    {{#each customSections}}
+    <div class="section">
+      <h2>{{title}}</h2>
+      {{{content}}}
+    </div>
+    {{/each}}
+    {{/if}}
   </div>
 </body>
 </html>

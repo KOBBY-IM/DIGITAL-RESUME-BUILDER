@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Resumes - ResumeMaker</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/pages/my-resumes.css">
+  </head>
+  <body>
+    <div class="container">
+      <header class="app-header balanced-header">
+        <div class="header-wrap">
+          <div class="logo">
+            <h1>Resume<span>Maker</span></h1>
+          </div>
+          <nav class="header-nav">
+            <span class="user-welcome">Welcome, <span id="user-name">User</span></span>
+            <a href="loginindex.html" class="btn btn-outline-primary me-2" id="home-btn">
+              <i class="fas fa-home me-2"></i>Home
+            </a>
+            <button type="button" class="btn btn-primary" id="logout-btn">
+              <i class="fas fa-sign-out-alt me-2"></i>Log Out
+            </button>
+          </nav>
+        </div>
+      </header>
+
+      <main>
+        <div class="page-header">
+          <h2>My Resumes</h2>
+          <p class="text-muted">View, edit and manage your saved resumes</p>
+        </div>
+
+        <div class="resumes-container">
+          <div id="resumes-list">
+            <!-- Resumes will be loaded here dynamically -->
+            <div class="loading-indicator text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2">Loading your resumes...</p>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer class="app-footer">
+        <hr>
+        <p>Resumaker® is a registered trademark of CMM004 Team B 2025</p>
+      </footer>
+    </div>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Authentication JS -->
+    <script src="./Js/auth.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="./Js/my-resumes.js"></script>
+  </body>
+</html>

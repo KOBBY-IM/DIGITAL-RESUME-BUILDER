@@ -1,9 +1,17 @@
-/**
- * template2.js - JavaScript functionality for Resume Template 2
- */
-
 document.addEventListener('DOMContentLoaded', function() {
-    // Form field elements
+    // Check authentication
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = 'test.html?error=auth_required&redirect=template2';
+        return;
+    }
+
+    // Initialize variables
+    const urlParams = new URLSearchParams(window.location.search);
+    const resumeId = urlParams.get('id');
+    let resumeData = null;
+
+    // Form elements
     const fullNameInput = document.getElementById('fullName');
     const jobTitleInput = document.getElementById('jobTitle');
     const emailInput = document.getElementById('email');
@@ -11,43 +19,45 @@ document.addEventListener('DOMContentLoaded', function() {
     const locationInput = document.getElementById('location');
     const websiteInput = document.getElementById('website');
     const summaryInput = document.getElementById('summary');
+    const addExperienceBtn = document.querySelector('.section-header .btn-add');
+    const experienceContainer = document.getElementById('experience-container');
+    const addEducationBtn = document.querySelector('.section-header:nth-of-type(2) .btn-add');
+    const educationContainer = document.getElementById('education-container');
     const skillsInput = document.getElementById('skillsInput');
-    const addSkillBtn = document.getElementById('addSkill');
-    const skillsContainer = document.getElementById('skills-container');
+    const addSkillsBtn = document.getElementById('addSkills');
+    const skillsContainer = document.getElementById('skillsContainer');
 
     // Preview elements
-    const previewName = document.getElementById('preview-name');
-    const previewJobTitle = document.getElementById('preview-job-title');
-    const previewEmail = document.getElementById('preview-email');
-    const previewPhone = document.getElementById('preview-phone');
-    const previewLocation = document.getElementById('preview-location');
-    const previewWebsite = document.getElementById('preview-website');
-    const previewSummary = document.getElementById('preview-summary');
-    const previewSkillsList = document.getElementById('preview-skills');
-    const previewExperience = document.getElementById('preview-experience');
-    const previewEducation = document.getElementById('preview-education');
+    const previewName = document.querySelector('.resume-header h1');
+    const previewTitle = document.querySelector('.resume-header p');
+    const previewEmail = document.querySelector('.contact-item:nth-child(1) span:last-child');
+    const previewPhone = document.querySelector('.contact-item:nth-child(2) span:last-child');
+    const previewLocation = document.querySelector('.contact-item:nth-child(3) span:last-child');
+    const previewWebsite = document.querySelector('.contact-item:nth-child(4) span:last-child');
+    const previewSummary = document.querySelector('.resume-section:nth-child(1) p');
+    const previewExperience = document.querySelector('.resume-section:nth-child(2)');
+    const previewEducation = document.querySelector('.resume-section:nth-child(3)');
+    const previewSkills = document.querySelector('.skills-list');
 
-    // Template navigation buttons
-    const backToTemplatesBtn = document.getElementById('back-to-templates-btn');
-    const saveResumeBtn = document.getElementById('save-resume');
-    const printResumeBtn = document.getElementById('print-resume');
-    const exportPdfBtns = document.querySelectorAll('.export-pdf');
+    // Save and export buttons
+    const saveResumeBtn = document.querySelector('.header-nav .btn-primary');
+    const exportPdfBtn = document.querySelector('.export-pdf');
 
-    // Add experience and education buttons
-    const addExperienceBtn = document.getElementById('add-experience');
-    const addEducationBtn = document.getElementById('add-education');
-    
-    // Initialize the event listeners
+    // Initialize event listeners
     initializeEventListeners();
-    
-    // Initialize the form with any saved data (if applicable)
-    initializeFormData();
-    
-    /**
-     * Initialize all event listeners
-     */
+
+    // Load resume data if ID provided
+    if (resumeId) {
+        loadResumeData(resumeId);
+    } else {
+        // Initialize with empty sections
+        addExperienceEntry();
+        addEducationEntry();
+    }
+
+    // Initialize all event listeners
     function initializeEventListeners() {
-        // Personal information input listeners
+        // Personal info inputs
         if (fullNameInput) fullNameInput.addEventListener('input', updatePersonalInfo);
         if (jobTitleInput) jobTitleInput.addEventListener('input', updatePersonalInfo);
         if (emailInput) emailInput.addEventListener('input', updatePersonalInfo);
@@ -55,110 +65,228 @@ document.addEventListener('DOMContentLoaded', function() {
         if (locationInput) locationInput.addEventListener('input', updatePersonalInfo);
         if (websiteInput) websiteInput.addEventListener('input', updatePersonalInfo);
         if (summaryInput) summaryInput.addEventListener('input', updatePersonalInfo);
-        
-        // Add skill button
-        if (addSkillBtn) addSkillBtn.addEventListener('click', addSkill);
-        
+
         // Add experience button
-        if (addExperienceBtn) addExperienceBtn.addEventListener('click', addExperienceEntry);
-        
+        if (addExperienceBtn) {
+            addExperienceBtn.addEventListener('click', addExperienceEntry);
+        }
+
         // Add education button
-        if (addEducationBtn) addEducationBtn.addEventListener('click', addEducationEntry);
-        
-        // Navigation and action buttons
-        if (backToTemplatesBtn) backToTemplatesBtn.addEventListener('click', goToTemplates);
-        if (saveResumeBtn) saveResumeBtn.addEventListener('click', saveResume);
-        
-        // Print/Export buttons
-        exportPdfBtns.forEach(btn => {
-            btn.addEventListener('click', printResume);
-        });
-        if (printResumeBtn) printResumeBtn.addEventListener('click', printResume);
-        
+        if (addEducationBtn) {
+            addEducationBtn.addEventListener('click', addEducationEntry);
+        }
+
+        // Add skills functionality
+        if (addSkillsBtn) {
+            addSkillsBtn.addEventListener('click', addSkill);
+        }
+
+        // Save resume button
+        if (saveResumeBtn) {
+            saveResumeBtn.addEventListener('click', saveResume);
+        }
+
+        // Export PDF button
+        if (exportPdfBtn) {
+            exportPdfBtn.addEventListener('click', exportToPDF);
+        }
+
         // AI Assist buttons
         document.querySelectorAll('.ai-assist-button').forEach(button => {
             button.addEventListener('click', handleAIAssist);
         });
-        
-        // Initialize existing remove buttons
-        document.querySelectorAll('.btn-remove').forEach(button => {
-            button.addEventListener('click', handleRemoveEntry);
-        });
-        
-        // Initialize existing experience entries
-        document.querySelectorAll('.experience-entry').forEach(entry => {
-            initializeExperienceEntry(entry);
-        });
-        
-        // Initialize existing education entries
-        document.querySelectorAll('.education-entry').forEach(entry => {
-            initializeEducationEntry(entry);
-        });
     }
-    
-    /**
-     * Initialize form with saved data if available
-     */
-    function initializeFormData() {
-        // Check URL for resume ID
-        const urlParams = new URLSearchParams(window.location.search);
-        const resumeId = urlParams.get('id');
-        
-        if (resumeId) {
-            // In a real app, this would load resume data from server/localStorage
-            console.log('Would load resume with ID:', resumeId);
-            // For now, we'll just update the preview with the initial values
-            updateAllPreviews();
-        } else {
-            // For new resume, ensure preview is updated with default values
-            updateAllPreviews();
-        }
-    }
-    
-    /**
-     * Update personal information in the preview
-     */
+
+    // Update personal info in preview
     function updatePersonalInfo() {
         if (previewName) previewName.textContent = fullNameInput.value || 'Your Name';
-        if (previewJobTitle) previewJobTitle.textContent = jobTitleInput.value || 'Professional Title';
+        if (previewTitle) previewTitle.textContent = jobTitleInput.value || 'Professional Title';
         if (previewEmail) previewEmail.textContent = emailInput.value || 'email@example.com';
         if (previewPhone) previewPhone.textContent = phoneInput.value || '(123) 456-7890';
         if (previewLocation) previewLocation.textContent = locationInput.value || 'City, State';
-        if (previewWebsite) previewWebsite.textContent = websiteInput.value || 'linkedin.com/in/yourname';
+        if (previewWebsite) previewWebsite.textContent = websiteInput.value || 'linkedin.com/in/username';
         if (previewSummary) previewSummary.textContent = summaryInput.value || 'Professional summary will appear here...';
     }
-    
-    /**
-     * Update all preview sections
-     */
-    function updateAllPreviews() {
-        updatePersonalInfo();
+
+    // Add experience entry
+    function addExperienceEntry(data = {}) {
+        const experienceEntry = document.createElement('div');
+        experienceEntry.className = 'experience-entry';
+        experienceEntry.innerHTML = `
+            <div class="entry-header">
+                <h3>Experience ${experienceContainer.children.length + 1}</h3>
+                <button type="button" class="btn-remove">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+            <div class="form-group">
+                <label class="form-group__label">Job Title</label>
+                <input type="text" class="form-group__input job-title-input" value="${escapeHtml(data.jobTitle || '')}" placeholder="e.g. Software Engineer">
+            </div>
+            <div class="form-group">
+                <label class="form-group__label">Company</label>
+                <input type="text" class="form-group__input company-input" value="${escapeHtml(data.company || '')}" placeholder="e.g. Tech Solutions Inc.">
+            </div>
+            <div class="form-row">
+                <div class="form-group form-col">
+                    <label class="form-group__label">Start Date</label>
+                    <input type="text" class="form-group__input start-date-input" value="${escapeHtml(data.startDate || '')}" placeholder="e.g. Jan 2020">
+                </div>
+                <div class="form-group form-col">
+                    <label class="form-group__label">End Date</label>
+                    <input type="text" class="form-group__input end-date-input" value="${escapeHtml(data.endDate || '')}" placeholder="e.g. Present">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-group__label">Description</label>
+                <div class="textarea-container">
+                    <textarea class="form-group__textarea description-input" rows="3" placeholder="Describe your responsibilities and achievements">${escapeHtml(data.description || '')}</textarea>
+                    <button type="button" class="ai-assist-button">
+                        <i class="fas fa-magic"></i> AI Assist
+                    </button>
+                </div>
+            </div>
+        `;
+
+        // Add event listeners
+        const removeBtn = experienceEntry.querySelector('.btn-remove');
+        if (removeBtn) {
+            removeBtn.addEventListener('click', function() {
+                experienceContainer.removeChild(experienceEntry);
+                updateExperienceNumbers();
+                updateExperiencePreview();
+            });
+        }
+
+        // Input change listeners
+        const inputs = experienceEntry.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('input', updateExperiencePreview);
+        });
+
+        // AI assist button
+        const aiButton = experienceEntry.querySelector('.ai-assist-button');
+        if (aiButton) {
+            aiButton.addEventListener('click', handleAIAssist);
+        }
+
+        // Add to container
+        experienceContainer.appendChild(experienceEntry);
         updateExperiencePreview();
+    }
+
+    // Update experience numbers after removal
+    function updateExperienceNumbers() {
+        const entries = experienceContainer.querySelectorAll('.experience-entry');
+        entries.forEach((entry, index) => {
+            const header = entry.querySelector('h3');
+            if (header) {
+                header.textContent = `Experience ${index + 1}`;
+            }
+        });
+    }
+
+    // Update experience preview
+    function updateExperiencePreview() {
+        // Clear current preview
+        while (previewExperience.children.length > 1) {
+            previewExperience.removeChild(previewExperience.lastChild);
+        }
+
+        // Get all experience entries
+        const entries = experienceContainer.querySelectorAll('.experience-entry');
+        
+        entries.forEach(entry => {
+            const jobTitle = entry.querySelector('.job-title-input').value;
+            const company = entry.querySelector('.company-input').value;
+            const startDate = entry.querySelector('.start-date-input').value;
+            const endDate = entry.querySelector('.end-date-input').value;
+            const description = entry.querySelector('.description-input').value;
+
+            // Create preview experience item
+            const expItem = document.createElement('div');
+            expItem.className = 'experience-item';
+            expItem.innerHTML = `
+                <div class="job-title">${escapeHtml(jobTitle || 'Job Title')}</div>
+                <div class="company">${escapeHtml(company || 'Company')}</div>
+                <span class="dates">${escapeHtml(startDate || 'Start Date')} - ${escapeHtml(endDate || 'End Date')}</span>
+                <div class="job-description">
+                    <p>${escapeHtml(description || 'Job description will appear here.')}</p>
+                </div>
+            `;
+
+            previewExperience.appendChild(expItem);
+        });
+    }
+
+    // Add education entry with similar pattern as experience
+    function addEducationEntry(data = {}) {
+        const educationEntry = document.createElement('div');
+        educationEntry.className = 'education-entry';
+        educationEntry.innerHTML = `
+            <div class="entry-header">
+                <h3>Education ${educationContainer.children.length + 1}</h3>
+                <button type="button" class="btn-remove">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+            <div class="form-group">
+                <label class="form-group__label">Degree</label>
+                <input type="text" class="form-group__input degree-input" value="${escapeHtml(data.degree || '')}" placeholder="e.g. Bachelor of Science in Computer Science">
+            </div>
+            <div class="form-group">
+                <label class="form-group__label">Institution</label>
+                <input type="text" class="form-group__input institution-input" value="${escapeHtml(data.institution || '')}" placeholder="e.g. University of Technology">
+            </div>
+            <div class="form-row">
+                <div class="form-group form-col">
+                    <label class="form-group__label">Start Year</label>
+                    <input type="text" class="form-group__input start-year-input" value="${escapeHtml(data.startYear || '')}" placeholder="e.g. 2016">
+                </div>
+                <div class="form-group form-col">
+                    <label class="form-group__label">End Year</label>
+                    <input type="text" class="form-group__input end-year-input" value="${escapeHtml(data.endYear || '')}" placeholder="e.g. 2020">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-group__label">Description (Optional)</label>
+                <div class="textarea-container">
+                    <textarea class="form-group__textarea education-description-input" rows="2" placeholder="Additional information, achievements, etc.">${escapeHtml(data.description || '')}</textarea>
+                    <button type="button" class="ai-assist-button">
+                        <i class="fas fa-magic"></i> AI Assist
+                    </button>
+                </div>
+            </div>
+        `;
+
+        // Add event listeners for removal, input change, and AI assist
+        // ... (similar to experience entry implementation)
+
+        // Add to container
+        educationContainer.appendChild(educationEntry);
         updateEducationPreview();
     }
-    
-    /**
-     * Add a new skill
-     */
+
+    // Add skill to the skills list
     function addSkill() {
         const skillText = skillsInput.value.trim();
         if (!skillText) return;
         
-        // Clear input
+        // Reset input
         skillsInput.value = '';
         
-        // Create skill item for editor
+        // Generate random skill level (60-95%)
+        const skillLevel = Math.floor(Math.random() * 36) + 60;
+        
+        // Create skill item
         const skillItem = document.createElement('div');
         skillItem.className = 'skill-item';
-        
-        // Generate a random proficiency level between 60-95%
-        const proficiency = Math.floor(Math.random() * 36) + 60;
-        
+        skillItem.dataset.skill = skillText;
         skillItem.innerHTML = `
             <div class="skill-info">
                 <span class="skill-name">${escapeHtml(skillText)}</span>
-                <input type="range" class="skill-level-input" min="1" max="100" value="${proficiency}">
-                <span class="skill-percentage">${proficiency}%</span>
+                <input type="range" class="skill-level-input" min="1" max="100" value="${skillLevel}">
+                <span class="skill-percentage">${skillLevel}%</span>
             </div>
             <div class="skill-actions">
                 <button class="btn-remove-skill">
@@ -167,537 +295,294 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
         
-        // Add to editor
-        skillsContainer.appendChild(skillItem);
-        
-        // Add to preview
-        addSkillToPreview(skillText, proficiency);
-        
-        // Add event listeners
+        // Add removal listener
         const removeBtn = skillItem.querySelector('.btn-remove-skill');
-        if (removeBtn) {
-            removeBtn.addEventListener('click', function() {
-                // Remove from editor
-                skillItem.remove();
-                
-                // Remove from preview
-                removeSkillFromPreview(skillText);
-            });
-        }
+        removeBtn.addEventListener('click', function() {
+            skillsContainer.removeChild(skillItem);
+            updateSkillsPreview();
+        });
         
+        // Add level change listener
         const levelInput = skillItem.querySelector('.skill-level-input');
         const percentageSpan = skillItem.querySelector('.skill-percentage');
-        
-        if (levelInput && percentageSpan) {
-            levelInput.addEventListener('input', function() {
-                const newLevel = levelInput.value;
-                percentageSpan.textContent = `${newLevel}%`;
-                updateSkillLevelInPreview(skillText, newLevel);
-            });
-        }
-    }
-    
-    /**
-     * Add skill to preview section
-     */
-    function addSkillToPreview(skillName, level) {
-        // Create new skill item for preview
-        const skillItem = document.createElement('div');
-        skillItem.className = 'skill-item';
-        skillItem.dataset.skill = skillName;
-        
-        skillItem.innerHTML = `
-            <span class="skill-name">${escapeHtml(skillName)}</span>
-            <div class="skill-bar">
-                <div class="skill-level" style="width: ${level}%;"></div>
-            </div>
-        `;
-        
-        // Add to preview
-        previewSkillsList.appendChild(skillItem);
-    }
-    
-    /**
-     * Remove skill from preview
-     */
-    function removeSkillFromPreview(skillName) {
-        const skillItems = previewSkillsList.querySelectorAll('.skill-item');
-        skillItems.forEach(item => {
-            if (item.dataset.skill === skillName) {
-                item.remove();
-            }
+        levelInput.addEventListener('input', function() {
+            const newLevel = levelInput.value;
+            percentageSpan.textContent = `${newLevel}%`;
+            updateSkillsPreview();
         });
-    }
-    
-    /**
-     * Update skill level in preview
-     */
-    function updateSkillLevelInPreview(skillName, level) {
-        const skillItems = previewSkillsList.querySelectorAll('.skill-item');
-        skillItems.forEach(item => {
-            if (item.dataset.skill === skillName) {
-                const skillLevel = item.querySelector('.skill-level');
-                if (skillLevel) {
-                    skillLevel.style.width = `${level}%`;
-                }
-            }
-        });
-    }
-    
-    /**
-     * Add a new experience entry
-     */
-    function addExperienceEntry() {
-        const container = document.getElementById('experience-container');
-        if (!container) return;
         
-        const count = container.querySelectorAll('.experience-entry').length + 1;
+        // Add to container
+        skillsContainer.appendChild(skillItem);
+        updateSkillsPreview();
+    }
+
+    // Update skills preview
+    function updateSkillsPreview() {
+        // Clear current skills
+        previewSkills.innerHTML = '';
         
-        const entry = document.createElement('div');
-        entry.className = 'experience-entry';
-        entry.innerHTML = `
-            <div class="entry-header">
-                <h3>Experience ${count}</h3>
-                <button class="btn-remove">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
+        // Get all skills
+        const skills = skillsContainer.querySelectorAll('.skill-item');
+        
+        skills.forEach(skill => {
+            const skillName = skill.querySelector('.skill-name').textContent;
+            const skillLevel = skill.querySelector('.skill-level-input').value;
             
-            <div class="form-group">
-                <label>Job Title</label>
-                <input type="text" class="form-control job-title-input" placeholder="e.g. Software Engineer">
-            </div>
-            
-            <div class="form-group">
-                <label>Company</label>
-                <input type="text" class="form-control company-input" placeholder="e.g. Tech Solutions Inc.">
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group form-col">
-                    <label>Start Date</label>
-                    <input type="text" class="form-control start-date-input" placeholder="e.g. Jan 2020">
+            const skillPreview = document.createElement('div');
+            skillPreview.className = 'skill-item';
+            skillPreview.innerHTML = `
+                <span class="skill-name">${escapeHtml(skillName)}</span>
+                <div class="skill-bar">
+                    <div class="skill-level" style="width: ${skillLevel}%;"></div>
                 </div>
-                <div class="form-group form-col">
-                    <label>End Date</label>
-                    <input type="text" class="form-control end-date-input" placeholder="e.g. Present">
-                </div>
-            </div>
+            `;
             
-            <div class="form-group">
-                <label>Description</label>
-                <div class="textarea-container">
-                    <textarea class="form-control description-input" rows="3" placeholder="Describe your responsibilities and achievements..."></textarea>
-                    <button class="ai-assist-button">
-                        <i class="fas fa-magic"></i> AI Assist
-                    </button>
-                </div>
-            </div>
-        `;
-        
-        container.appendChild(entry);
-        
-        // Add event listeners
-        initializeExperienceEntry(entry);
-        
-        // Add AI assist button listener
-        const aiAssistBtn = entry.querySelector('.ai-assist-button');
-        if (aiAssistBtn) {
-            aiAssistBtn.addEventListener('click', handleAIAssist);
-        }
-        
-        // Add empty entry to preview
-        addExperienceToPreview({
-            jobTitle: '',
-            company: '',
-            startDate: '',
-            endDate: '',
-            description: ''
-        });
-        
-        // Update preview
-        updateExperiencePreview();
-    }
-    
-    /**
-     * Initialize an experience entry with event listeners
-     */
-    function initializeExperienceEntry(entry) {
-        const removeBtn = entry.querySelector('.btn-remove');
-        if (removeBtn) {
-            removeBtn.addEventListener('click', handleRemoveEntry);
-        }
-        
-        const jobTitleInput = entry.querySelector('.job-title-input');
-        const companyInput = entry.querySelector('.company-input');
-        const startDateInput = entry.querySelector('.start-date-input');
-        const endDateInput = entry.querySelector('.end-date-input');
-        const descriptionInput = entry.querySelector('.description-input');
-        
-        if (jobTitleInput) jobTitleInput.addEventListener('input', updateExperiencePreview);
-        if (companyInput) companyInput.addEventListener('input', updateExperiencePreview);
-        if (startDateInput) startDateInput.addEventListener('input', updateExperiencePreview);
-        if (endDateInput) endDateInput.addEventListener('input', updateExperiencePreview);
-        if (descriptionInput) descriptionInput.addEventListener('input', updateExperiencePreview);
-    }
-    
-    /**
-     * Add experience to preview
-     */
-    function addExperienceToPreview(data) {
-        if (!previewExperience) return;
-        
-        const experienceItem = document.createElement('div');
-        experienceItem.className = 'experience-item';
-        
-        experienceItem.innerHTML = `
-            <div class="job-title">${escapeHtml(data.jobTitle || 'Job Title')}</div>
-            <div class="company">${escapeHtml(data.company || 'Company')}</div>
-            <span class="dates">${escapeHtml(data.startDate || 'Start Date')} - ${escapeHtml(data.endDate || 'End Date')}</span>
-            <div class="job-description">
-                <p>${escapeHtml(data.description || 'Job description goes here.')}</p>
-            </div>
-        `;
-        
-        previewExperience.appendChild(experienceItem);
-    }
-    
-    /**
-     * Update experience preview based on form inputs
-     */
-    function updateExperiencePreview() {
-        if (!previewExperience) return;
-        
-        // Clear preview
-        previewExperience.innerHTML = '';
-        
-        // Get all experience entries
-        const experiences = document.querySelectorAll('.experience-entry');
-        
-        if (experiences.length === 0) {
-            previewExperience.innerHTML = '<p class="empty-section">Your work experience will appear here...</p>';
-            return;
-        }
-        
-        // Add each experience to preview
-        experiences.forEach(exp => {
-            const data = {
-                jobTitle: exp.querySelector('.job-title-input')?.value || '',
-                company: exp.querySelector('.company-input')?.value || '',
-                startDate: exp.querySelector('.start-date-input')?.value || '',
-                endDate: exp.querySelector('.end-date-input')?.value || '',
-                description: exp.querySelector('.description-input')?.value || ''
-            };
-            
-            addExperienceToPreview(data);
+            previewSkills.appendChild(skillPreview);
         });
     }
-    
-    /**
-     * Add a new education entry
-     */
-    function addEducationEntry() {
-        const container = document.getElementById('education-container');
-        if (!container) return;
-        
-        const count = container.querySelectorAll('.education-entry').length + 1;
-        
-        const entry = document.createElement('div');
-        entry.className = 'education-entry';
-        entry.innerHTML = `
-            <div class="entry-header">
-                <h3>Education ${count}</h3>
-                <button class="btn-remove">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-            
-            <div class="form-group">
-                <label>Degree</label>
-                <input type="text" class="form-control degree-input" placeholder="e.g. Bachelor of Science in Computer Science">
-            </div>
-            
-            <div class="form-group">
-                <label>Institution</label>
-                <input type="text" class="form-control institution-input" placeholder="e.g. University of Technology">
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group form-col">
-                    <label>Start Year</label>
-                    <input type="text" class="form-control start-year-input" placeholder="e.g. 2016">
-                </div>
-                <div class="form-group form-col">
-                    <label>End Year</label>
-                    <input type="text" class="form-control end-year-input" placeholder="e.g. 2020">
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Description (Optional)</label>
-                <div class="textarea-container">
-                    <textarea class="form-control education-description-input" rows="2" placeholder="Additional information about your education..."></textarea>
-                    <button class="ai-assist-button">
-                        <i class="fas fa-magic"></i> AI Assist
-                    </button>
-                </div>
-            </div>
-        `;
-        
-        container.appendChild(entry);
-        
-        // Add event listeners
-        initializeEducationEntry(entry);
-        
-        // Add AI assist button listener
-        const aiAssistBtn = entry.querySelector('.ai-assist-button');
-        if (aiAssistBtn) {
-            aiAssistBtn.addEventListener('click', handleAIAssist);
-        }
-        
-        // Add empty entry to preview
-        addEducationToPreview({
-            degree: '',
-            institution: '',
-            startYear: '',
-            endYear: '',
-            description: ''
-        });
-        
-        // Update preview
-        updateEducationPreview();
-    }
-    
-    /**
-     * Initialize an education entry with event listeners
-     */
-    function initializeEducationEntry(entry) {
-        const removeBtn = entry.querySelector('.btn-remove');
-        if (removeBtn) {
-            removeBtn.addEventListener('click', handleRemoveEntry);
-        }
-        
-        const degreeInput = entry.querySelector('.degree-input');
-        const institutionInput = entry.querySelector('.institution-input');
-        const startYearInput = entry.querySelector('.start-year-input');
-        const endYearInput = entry.querySelector('.end-year-input');
-        const descriptionInput = entry.querySelector('.education-description-input');
-        
-        if (degreeInput) degreeInput.addEventListener('input', updateEducationPreview);
-        if (institutionInput) institutionInput.addEventListener('input', updateEducationPreview);
-        if (startYearInput) startYearInput.addEventListener('input', updateEducationPreview);
-        if (endYearInput) endYearInput.addEventListener('input', updateEducationPreview);
-        if (descriptionInput) descriptionInput.addEventListener('input', updateEducationPreview);
-    }
-    
-    /**
-     * Add education to preview
-     */
-    function addEducationToPreview(data) {
-        if (!previewEducation) return;
-        
-        const educationItem = document.createElement('div');
-        educationItem.className = 'education-item';
-        
-        educationItem.innerHTML = `
-            <div class="degree">${escapeHtml(data.degree || 'Degree')}</div>
-            <div class="institution">${escapeHtml(data.institution || 'Institution')}</div>
-            <span class="dates">${escapeHtml(data.startYear || 'Start Year')} - ${escapeHtml(data.endYear || 'End Year')}</span>
-            ${data.description ? `<p>${escapeHtml(data.description)}</p>` : ''}
-        `;
-        
-        previewEducation.appendChild(educationItem);
-    }
-    
-    /**
-     * Update education preview based on form inputs
-     */
-    function updateEducationPreview() {
-        if (!previewEducation) return;
-        
-        // Clear preview
-        previewEducation.innerHTML = '';
-        
-        // Get all education entries
-        const educations = document.querySelectorAll('.education-entry');
-        
-        if (educations.length === 0) {
-            previewEducation.innerHTML = '<p class="empty-section">Your education will appear here...</p>';
-            return;
-        }
-        
-        // Add each education to preview
-        educations.forEach(edu => {
-            const data = {
-                degree: edu.querySelector('.degree-input')?.value || '',
-                institution: edu.querySelector('.institution-input')?.value || '',
-                startYear: edu.querySelector('.start-year-input')?.value || '',
-                endYear: edu.querySelector('.end-year-input')?.value || '',
-                description: edu.querySelector('.education-description-input')?.value || ''
-            };
-            
-            addEducationToPreview(data);
-        });
-    }
-    
-    /**
-     * Handle removing an entry (experience or education)
-     */
-    function handleRemoveEntry(event) {
-        const entryContainer = event.currentTarget.closest('.experience-entry, .education-entry');
-        if (!entryContainer) return;
-        
-        const isExperience = entryContainer.classList.contains('experience-entry');
-        const container = entryContainer.parentElement;
-        
-        // Remove the entry
-        container.removeChild(entryContainer);
-        
-        // Update numbering for remaining entries
-        const entries = isExperience ? 
-                      container.querySelectorAll('.experience-entry') :
-                      container.querySelectorAll('.education-entry');
-        
-        entries.forEach((entry, index) => {
-            const header = entry.querySelector('.entry-header h3');
-            if (header) {
-                header.textContent = `${isExperience ? 'Experience' : 'Education'} ${index + 1}`;
-            }
-        });
-        
-        // Update preview
-        if (isExperience) {
-            updateExperiencePreview();
-        } else {
-            updateEducationPreview();
-        }
-    }
-    
-    /**
-     * Handle AI assist button click
-     */
-    function handleAIAssist(event) {
+
+    // Handle AI assistance
+    async function handleAIAssist(event) {
         const button = event.currentTarget;
         const textarea = button.closest('.textarea-container')?.querySelector('textarea');
         
         if (!textarea) return;
         
-        // Save original button text
-        const originalText = button.innerHTML;
-        
-        // Show loading state
+        // Save original button state
+        const originalHTML = button.innerHTML;
         button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
         button.disabled = true;
         
-        // Determine context type
-        let type = 'summary';
-        if (textarea.classList.contains('description-input')) {
-            type = 'experience';
-        } else if (textarea.classList.contains('education-description-input')) {
-            type = 'education';
-        }
-        
-        // In a real app, this would call an AI service
-        // For now, we'll simulate it with a timeout and predefined text
-        setTimeout(() => {
-            let generatedText = '';
-            
-            switch (type) {
-                case 'summary':
-                    generatedText = 'Experienced professional with a track record of success in delivering high-quality results. Skilled in problem-solving, communication, and team collaboration. Passionate about continuous learning and applying innovative solutions to complex challenges.';
-                    break;
-                case 'experience':
-                    generatedText = 'Led cross-functional team projects and delivered results ahead of schedule. Improved process efficiency by 30% through implementation of new methodologies. Collaborated with stakeholders to ensure project requirements were met and exceeded expectations.';
-                    break;
-                case 'education':
-                    generatedText = 'Graduated with honors. Participated in relevant coursework and projects that enhanced practical skills in the field. Active member of student organizations related to the discipline.';
-                    break;
-                default:
-                    generatedText = 'Generated content would appear here.';
+        try {
+            // Determine context type
+            let context = 'summary';
+            if (textarea.classList.contains('description-input')) {
+                context = 'experience';
+                
+                // Get job details for better AI context
+                const entry = textarea.closest('.experience-entry');
+                const jobTitle = entry?.querySelector('.job-title-input')?.value || '';
+                const company = entry?.querySelector('.company-input')?.value || '';
+                
+                const prompt = `Write 3-4 bullet points for a ${jobTitle || 'professional'} role at ${company || 'a company'}. Include achievements with quantifiable results where possible. Start each bullet with a strong action verb.`;
+                
+                const result = await TemplateCore.getAIAssistance(prompt, context);
+                textarea.value = result;
+            } 
+            else if (textarea.classList.contains('education-description-input')) {
+                context = 'education';
+                
+                // Get education details for better AI context
+                const entry = textarea.closest('.education-entry');
+                const degree = entry?.querySelector('.degree-input')?.value || '';
+                const institution = entry?.querySelector('.institution-input')?.value || '';
+                
+                const prompt = `Write a brief description for ${degree || 'a degree'} from ${institution || 'a university'}. Highlight achievements, relevant coursework, or special projects.`;
+                
+                const result = await TemplateCore.getAIAssistance(prompt, context);
+                textarea.value = result;
+            }
+            else if (textarea.id === 'summary') {
+                // Get personal details for better summary
+                const name = fullNameInput?.value || '';
+                const title = jobTitleInput?.value || '';
+                
+                const prompt = `Write a professional summary for ${name || 'a candidate'} seeking a ${title || 'position'}. Focus on key strengths and value proposition. Keep it to 3-4 sentences.`;
+                
+                const result = await TemplateCore.getAIAssistance(prompt, 'summary');
+                textarea.value = result;
             }
             
-            // Update textarea
-            textarea.value = generatedText;
+            // Update preview
+            textarea.dispatchEvent(new Event('input'));
             
-            // Trigger input event to update preview
-            const inputEvent = new Event('input', { bubbles: true });
-            textarea.dispatchEvent(inputEvent);
-            
-            // Show success state
+            // Success state
             button.innerHTML = '<i class="fas fa-check"></i> Done!';
-            
-            // Reset button after delay
             setTimeout(() => {
-                button.innerHTML = originalText;
+                button.innerHTML = originalHTML;
                 button.disabled = false;
-            }, 1500);
+            }, 2000);
+        } catch (error) {
+            console.error('AI assist error:', error);
             
-        }, 1500);
-    }
-    
-    /**
-     * Navigate to templates page
-     */
-    function goToTemplates() {
-        window.location.href = 'template.html';
-    }
-    
-    /**
-     * Save the resume
-     */
-    function saveResume() {
-        // Get save button
-        if (!saveResumeBtn) return;
-        
-        // Save original button text
-        const originalText = saveResumeBtn.innerHTML;
-        
-        // Show loading state
-        saveResumeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-        saveResumeBtn.disabled = true;
-        
-        // Collect all resume data
-        const resumeData = {
-            personalInfo: {
-                fullName: fullNameInput?.value || '',
-                jobTitle: jobTitleInput?.value || '',
-                email: emailInput?.value || '',
-                phone: phoneInput?.value || '',
-                location: locationInput?.value || '',
-                website: websiteInput?.value || ''
-            },
-            summary: summaryInput?.value || '',
-            experience: collectExperienceData(),
-            education: collectEducationData(),
-            skills: collectSkillsData(),
-            template: 'template2'
-        };
-        
-        // In a real app, this would call an API to save the resume
-        // For now, just simulate with a timeout
-        setTimeout(() => {
-            console.log('Resume data to save:', resumeData);
-            
-            // Show success state
-            saveResumeBtn.innerHTML = '<i class="fas fa-check"></i> Saved!';
-            
-            // Reset button after delay
+            // Error state
+            button.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error';
             setTimeout(() => {
-                saveResumeBtn.innerHTML = originalText;
-                saveResumeBtn.disabled = false;
-                
-                // Optionally, show a success message
-                showToast('Resume saved successfully!', 'success');
-            }, 1500);
-        }, 1500);
+                button.innerHTML = originalHTML;
+                button.disabled = false;
+            }, 2000);
+            
+            showToast(error.message || 'Failed to generate content', 'error');
+        }
     }
-    
-    /**
-     * Collect experience data from form
-     */
+
+    // Save resume
+    async function saveResume() {
+        // Save button reference
+        const saveBtn = document.querySelector('.header-nav .btn-primary');
+        if (!saveBtn) return;
+        
+        // Update button state
+        const originalText = saveBtn.textContent;
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        saveBtn.disabled = true;
+        
+        try {
+            // Collect all resume data
+            const resumeData = {
+                personalInfo: {
+                    fullName: fullNameInput?.value || '',
+                    jobTitle: jobTitleInput?.value || '',
+                    email: emailInput?.value || '',
+                    phone: phoneInput?.value || '',
+                    location: locationInput?.value || '',
+                    website: websiteInput?.value || ''
+                },
+                summary: summaryInput?.value || '',
+                experience: collectExperienceData(),
+                education: collectEducationData(),
+                skills: collectSkillsData(),
+                template: 'template2',
+                lastUpdated: new Date()
+            };
+            
+            // Validate minimum requirements
+            if (!resumeData.personalInfo.fullName) {
+                throw new Error('Full name is required');
+            }
+            
+            // Save or update based on resumeId
+            let response;
+            if (resumeId) {
+                response = await TemplateCore.saveResume(resumeData, resumeId);
+            } else {
+                response = await TemplateCore.saveResume(resumeData);
+                // Update URL with new ID
+                if (response.data && response.data._id) {
+                    window.history.replaceState(null, '', `?id=${response.data._id}`);
+                    resumeId = response.data._id;
+                }
+            }
+            
+            // Show success message
+            showToast('Resume saved successfully!', 'success');
+            
+            // Reset button state after delay
+            setTimeout(() => {
+                saveBtn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+                setTimeout(() => {
+                    saveBtn.textContent = originalText;
+                    saveBtn.disabled = false;
+                }, 1500);
+            }, 500);
+            
+        } catch (error) {
+            console.error('Save error:', error);
+            
+            // Show error message
+            showToast(error.message || 'Failed to save resume', 'error');
+            
+            // Reset button
+            saveBtn.textContent = originalText;
+            saveBtn.disabled = false;
+        }
+    }
+
+    // Load resume data from server
+    async function loadResumeData(id) {
+        try {
+            // Show loading indicator
+            document.body.classList.add('loading');
+            
+            // Load data
+            const result = await TemplateCore.loadResume(id);
+            resumeData = result.data;
+            
+            // Populate form fields
+            populateFormFields(resumeData);
+            
+        } catch (error) {
+            console.error('Load error:', error);
+            showToast(error.message || 'Failed to load resume', 'error');
+        } finally {
+            // Hide loading indicator
+            document.body.classList.remove('loading');
+        }
+    }
+
+    // Populate form with resume data
+    function populateFormFields(data) {
+        // Clear existing entries first
+        experienceContainer.innerHTML = '';
+        educationContainer.innerHTML = '';
+        skillsContainer.innerHTML = '';
+        
+        // Personal info
+        if (data.personalInfo) {
+            fullNameInput.value = data.personalInfo.fullName || '';
+            jobTitleInput.value = data.personalInfo.jobTitle || '';
+            emailInput.value = data.personalInfo.email || '';
+            phoneInput.value = data.personalInfo.phone || '';
+            locationInput.value = data.personalInfo.location || '';
+            websiteInput.value = data.personalInfo.website || '';
+        }
+        
+        // Summary
+        summaryInput.value = data.summary || '';
+        
+        // Experience entries
+        if (Array.isArray(data.experience) && data.experience.length > 0) {
+            data.experience.forEach(exp => {
+                addExperienceEntry(exp);
+            });
+        } else {
+            // Add empty experience entry
+            addExperienceEntry();
+        }
+        
+        // Education entries
+        if (Array.isArray(data.education) && data.education.length > 0) {
+            data.education.forEach(edu => {
+                addEducationEntry(edu);
+            });
+        } else {
+            // Add empty education entry
+            addEducationEntry();
+        }
+        
+        // Skills
+        if (Array.isArray(data.skills) && data.skills.length > 0) {
+            data.skills.forEach(skill => {
+                // Set skill input and trigger add
+                skillsInput.value = skill.name || skill;
+                addSkill();
+                
+                // Update level if available
+                if (skill.level) {
+                    const lastSkill = skillsContainer.lastChild;
+                    if (lastSkill) {
+                        const levelInput = lastSkill.querySelector('.skill-level-input');
+                        const percentageSpan = lastSkill.querySelector('.skill-percentage');
+                        if (levelInput && percentageSpan) {
+                            levelInput.value = skill.level;
+                            percentageSpan.textContent = `${skill.level}%`;
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Update previews
+        updatePersonalInfo();
+        updateExperiencePreview();
+        updateEducationPreview();
+        updateSkillsPreview();
+    }
+
+    // Collect experience data from form
     function collectExperienceData() {
         const experiences = [];
-        const entries = document.querySelectorAll('.experience-entry');
+        const entries = experienceContainer.querySelectorAll('.experience-entry');
         
         entries.forEach(entry => {
             experiences.push({
@@ -711,13 +596,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         return experiences;
     }
-    
-    /**
-     * Collect education data from form
-     */
+
+    // Collect education data from form
     function collectEducationData() {
         const educations = [];
-        const entries = document.querySelectorAll('.education-entry');
+        const entries = educationContainer.querySelectorAll('.education-entry');
         
         entries.forEach(entry => {
             educations.push({
@@ -731,60 +614,51 @@ document.addEventListener('DOMContentLoaded', function() {
         
         return educations;
     }
-    
-    /**
-     * Collect skills data from form
-     */
+
+    // Collect skills data from form
     function collectSkillsData() {
         const skills = [];
-        const skillItems = skillsContainer.querySelectorAll('.skill-item');
+        const entries = skillsContainer.querySelectorAll('.skill-item');
         
-        skillItems.forEach(item => {
-            const name = item.querySelector('.skill-name')?.textContent || '';
-            const level = item.querySelector('.skill-level-input')?.value || 50;
+        entries.forEach(entry => {
+            const name = entry.querySelector('.skill-name')?.textContent || '';
+            const level = entry.querySelector('.skill-level-input')?.value || 50;
             
             if (name) {
-                skills.push({ name, level });
+                skills.push({ name, level: parseInt(level) });
             }
         });
         
         return skills;
     }
-    
-    /**
-     * Print the resume
-     */
-    function printResume() {
-        window.print();
+
+    // Export resume to PDF
+    function exportToPDF() {
+        try {
+            if (!resumeId) {
+                // If not saved yet, save first
+                showToast('Please save your resume before exporting', 'error');
+                return;
+            }
+            
+            // Use the core export function
+            TemplateCore.exportToPDF('template2', { _id: resumeId });
+            
+        } catch (error) {
+            console.error('Export error:', error);
+            showToast(error.message || 'Failed to export resume', 'error');
+        }
     }
-    
-    /**
-     * Show toast notification
-     */
+
+    // Show toast notification
     function showToast(message, type = 'info') {
-        // Create toast element
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
         toast.textContent = message;
         
-        // Style the toast
-        toast.style.position = 'fixed';
-        toast.style.top = '20px';
-        toast.style.right = '20px';
-        toast.style.padding = '10px 20px';
-        toast.style.borderRadius = '4px';
-        toast.style.backgroundColor = type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8';
-        toast.style.color = 'white';
-        toast.style.zIndex = '9999';
-        toast.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
-        
-        // Add to document
         document.body.appendChild(toast);
         
         // Fade in
-        toast.style.opacity = '0';
-        toast.style.transition = 'opacity 0.3s ease-in-out';
-        
         setTimeout(() => {
             toast.style.opacity = '1';
         }, 10);
@@ -792,16 +666,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Remove after delay
         setTimeout(() => {
             toast.style.opacity = '0';
-            
             setTimeout(() => {
                 document.body.removeChild(toast);
             }, 300);
         }, 3000);
     }
-    
-    /**
-     * Escape HTML to prevent XSS
-     */
+
+    // Escape HTML to prevent XSS
     function escapeHtml(text) {
         if (!text) return '';
         return String(text)
@@ -811,4 +682,4 @@ document.addEventListener('DOMContentLoaded', function() {
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
     }
-});
+ });

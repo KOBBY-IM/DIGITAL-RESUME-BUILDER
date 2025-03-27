@@ -1,126 +1,138 @@
-document.addEventListener('DOMContentLoaded', () => {
-    setupAIButtons();
-  });
-  
-  // Set up AI assistance buttons
-  function setupAIButtons() {
-    const aiButtons = document.querySelectorAll('.button-ai');
-    
-    aiButtons.forEach(button => {
-      button.addEventListener('click', handleAIAssistClick);
-    });
-  }
-  
-  // Handle AI assistance button click
-  async function handleAIAssistClick(event) {
-    event.preventDefault();
-    
-    const button = event.currentTarget;
-    const textarea = button.previousElementSibling;
-    
-    if (!textarea || textarea.tagName !== 'TEXTAREA') {
-      console.error('AI assist button must be next to a textarea element');
-      return;
-    }
-    
-    // Determine context type based on textarea class or id
-    let context = 'summary';
-    if (textarea.classList.contains('exp-description')) {
-      context = 'experience';
-    } else if (textarea.id === 'skills') {
-      context = 'skills';
-    }
-    
-    // Save original button text and show loading state
-    const originalText = button.textContent;
-    button.textContent = 'Generating...';
-    button.disabled = true;
-    
-    try {
-      // Get prompt content - use existing text or create default prompt
-      const prompt = textarea.value || getDefaultPrompt(context, textarea);
-      
-      // Call AI service
-      const result = await getAIResponse(prompt, context);
-      
-      // Update textarea with result
-      textarea.value = result;
-      
-      // Trigger input event to update preview
-      textarea.dispatchEvent(new Event('input'));
-      
-      // Success feedback
-      button.textContent = '✓ Done';
-      setTimeout(() => {
-        button.textContent = originalText;
-        button.disabled = false;
-      }, 2000);
-    } catch (error) {
-      console.error('AI error:', error);
-      
-      // Error feedback
-      button.textContent = 'Error - Try Again';
-      setTimeout(() => {
-        button.textContent = originalText;
-        button.disabled = false;
-      }, 2000);
-    }
-  }
-  
-  // Get default prompts based on context and form data
-  function getDefaultPrompt(context, textarea) {
-    // Get relevant information from the form
-    const fullName = document.getElementById('full-name')?.value || '';
-    const jobTitle = document.getElementById('job-title')?.value || '';
-    
-    // For experience sections, get more context from parent elements
-    let company = '';
-    let position = '';
-    
-    if (context === 'experience') {
-      const experienceEntry = textarea.closest('.experience-entry');
-      if (experienceEntry) {
-        company = experienceEntry.querySelector('.exp-company')?.value || '';
-        position = experienceEntry.querySelector('.exp-title')?.value || '';
+/**
+ * AI Assistance Controller - Unified approach for all templates
+ */
+const AIAssistController = {
+  // Context sensitive prompt generation
+  generatePrompt(context, formData) {
+      // Default fallback prompts
+      const defaultPrompts = {
+          summary: "Write a professional summary highlighting core competencies and career achievements in 3-4 sentences. Avoid first-person pronouns.",
+          experience: "Create 3-4 bullet points for job responsibilities and achievements. Start with strong action verbs and focus on quantifiable results.",
+          education: "Write a brief description of academic achievements, relevant coursework, and extracurricular activities.",
+          skills: "List relevant technical and soft skills for this profession as comma-separated values."
+      };
+
+      // Personal info context if available
+      const personalInfo = {
+          name: formData.fullName || '',
+          title: formData.jobTitle || '',
+          industry: this.inferIndustry(formData) || ''
+      };
+
+      // Context-specific prompt generation
+      switch (context) {
+          case 'summary':
+              return `Write a professional summary for ${personalInfo.name || 'a candidate'} 
+                      seeking a ${personalInfo.title || 'professional'} position 
+                      ${personalInfo.industry ? 'in the ' + personalInfo.industry + ' industry' : ''}. 
+                      Focus on key skills, expertise, and career highlights. Keep it to 3-4 sentences. 
+                      Avoid first-person pronouns.`;
+          
+          case 'experience':
+              const jobTitle = formData.jobTitle || '';
+              const company = formData.company || '';
+              const industry = personalInfo.industry || '';
+              
+              return `Create 3-4 bullet points for a ${jobTitle || 'professional'} role 
+                      at ${company || 'a company'} ${industry ? 'in the ' + industry + ' industry' : ''}. 
+                      Start each bullet with a strong action verb. Include specific achievements 
+                      with quantifiable results where possible (percentages, numbers, metrics). 
+                      Focus on impact and outcomes rather than just responsibilities.`;
+          
+          case 'education':
+              const degree = formData.degree || '';
+              const institution = formData.institution || '';
+              
+              return `Write a brief description for ${degree || 'a degree'} from 
+                      ${institution || 'a university'}. Highlight academic achievements, 
+                      relevant coursework, and any extracurricular activities that demonstrate 
+                      skills relevant to ${personalInfo.title || 'the professional field'}.`;
+          
+          case 'skills':
+              return `List 8-12 relevant skills for a ${personalInfo.title || 'professional'} 
+                      ${personalInfo.industry ? 'in the ' + industry + ' industry' : ''} 
+                      as comma-separated values. Include a mix of technical skills, 
+                      soft skills, and industry-specific competencies. Prioritize skills 
+                      that are currently in-demand for this field.`;
+              
+          default:
+              return defaultPrompts[context] || defaultPrompts.summary;
       }
-    }
-    
-    // Context-specific default prompts
-    const prompts = {
-      summary: `Write a professional summary for ${fullName || 'a professional'} seeking a ${jobTitle || 'position'}. Focus on key strengths, experience, and career achievements. Keep it to 3-4 sentences maximum.`,
-      experience: `Write 3-4 bullet points for a ${position || 'professional'} role at ${company || 'a company'}. Include achievements with quantifiable results where possible. Start each bullet with a strong action verb.`,
-      skills: `List relevant technical and soft skills for a ${jobTitle || 'professional'} position, separated by commas. Include 8-12 skills that are most in-demand for this role.`
-    };
-    
-    return prompts[context] || prompts.summary;
-  }
-  
-  // Call AI service API
-  async function getAIResponse(prompt, context) {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error('Authentication required. Please log in to use AI features.');
-    }
-    
-    try {
-      const response = await fetch('/api/ai/assist', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ prompt, context })
-      });
+  },
+
+  // Infer industry from job title and other information
+  inferIndustry(formData) {
+      const jobTitle = (formData.jobTitle || '').toLowerCase();
+      const experienceText = (formData.experienceText || '').toLowerCase();
       
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'AI service error');
+      // Very basic industry inference
+      const industryKeywords = {
+          'technology': ['developer', 'engineer', 'software', 'it', 'tech', 'data', 'web', 'programmer'],
+          'healthcare': ['doctor', 'nurse', 'medical', 'healthcare', 'health', 'patient', 'clinical'],
+          'finance': ['accountant', 'financial', 'finance', 'banking', 'investment', 'accounting'],
+          'education': ['teacher', 'professor', 'instructor', 'education', 'academic', 'school', 'university'],
+          'marketing': ['marketing', 'seo', 'social media', 'content', 'brand', 'advertising'],
+          'design': ['designer', 'ux', 'ui', 'graphic', 'creative', 'artist'],
+          'legal': ['attorney', 'lawyer', 'legal', 'law', 'counsel', 'compliance']
+      };
+      
+      for (const [industry, keywords] of Object.entries(industryKeywords)) {
+          for (const keyword of keywords) {
+              if (jobTitle.includes(keyword) || experienceText.includes(keyword)) {
+                  return industry;
+              }
+          }
       }
       
-      const data = await response.json();
-      return data.result;
-    } catch (error) {
-      console.error('AI service error:', error);
-      throw new Error('Unable to generate content. Please try again or modify your prompt.');
-    }
+      return ''; // No specific industry detected
+  },
+
+  // Process AI request with loading state handling
+  async requestAIAssistance(button, textarea, context, formData = {}) {
+      if (!button || !textarea) {
+          console.error('Button or textarea not provided');
+          return;
+      }
+      
+      // Save original button state
+      const originalHTML = button.innerHTML;
+      
+      try {
+          // Update button to loading state
+          button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+          button.disabled = true;
+          
+          // Generate appropriate prompt
+          const prompt = this.generatePrompt(context, formData);
+          
+          // Request AI assistance
+          const result = await TemplateCore.getAIAssistance(prompt, context);
+          
+          // Update textarea with result
+          textarea.value = result;
+          
+          // Trigger input event to update preview
+          textarea.dispatchEvent(new Event('input'));
+          
+          // Success state
+          button.innerHTML = '<i class="fas fa-check"></i> Done!';
+          setTimeout(() => {
+              button.innerHTML = originalHTML;
+              button.disabled = false;
+          }, 2000);
+          
+          return result;
+      } catch (error) {
+          console.error('AI assistance error:', error);
+          
+          // Error state
+          button.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error';
+          setTimeout(() => {
+              button.innerHTML = originalHTML;
+              button.disabled = false;
+          }, 2000);
+          
+          throw error;
+      }
   }
+};

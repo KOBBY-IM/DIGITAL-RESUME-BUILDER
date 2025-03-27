@@ -1,11 +1,14 @@
-/* template1.css - Template 1 resume editor styles */
+/* Enhanced template1.css - More formal professional resume styling */
 
 /* Base layout */
 body {
   background-color: #f8f9fa;
+  color: #333;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
 }
 
-/* Page layout - split into two columns */
+/* Page layout */
 .page-container {
   display: flex;
   gap: 20px;
@@ -35,11 +38,11 @@ body {
   max-height: calc(100vh - 100px);
 }
 
-/* Section titles */
+/* Section titles in the editor */
 .editor h2 {
   font-size: 20px;
   font-weight: 600;
-  color: #333;
+  color: #2c3e50;
   margin-bottom: 15px;
   padding-bottom: 10px;
   border-bottom: 1px solid #eee;
@@ -66,6 +69,30 @@ body {
   margin-bottom: 15px;
 }
 
+.form-group label {
+  display: block;
+  color: #2c3e50;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+}
+
 /* Entry container for experience and education */
 .experience-entry,
 .education-entry {
@@ -82,12 +109,15 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
 }
 
 .entry-header h3 {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
+  color: #2c3e50;
 }
 
 .btn-remove {
@@ -115,10 +145,13 @@ body {
   margin-bottom: 15px;
   display: inline-flex;
   align-items: center;
+  transition: all 0.2s ease;
 }
 
 .btn-add:hover {
   background-color: #2980b9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .btn-add i {
@@ -131,10 +164,8 @@ body {
 }
 
 .textarea-container textarea {
-  padding-bottom: calc(40px);
-  width: 100%;
-  resize: vertical;
-  min-height: 100px;
+  padding-bottom: 40px;
+  min-height: 80px;
 }
 
 /* AI Assist button */
@@ -143,74 +174,186 @@ body {
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 8px 15px;
-  font-size: 14px;
+  padding: 8px 12px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   position: absolute;
   right: 10px;
   bottom: 10px;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
 }
 
 .ai-assist:hover {
   background-color: #2980b9;
 }
 
-/* Resume Preview Styling */
-.resume-container {
-  background-color: white;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  min-height: 100%;
+.ai-assist i {
+  margin-right: 5px;
 }
 
+/* ===== IMPROVED RESUME PREVIEW STYLING ===== */
+
+/* Resume container */
+.resume-container {
+  background-color: white;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+}
+
+.resume {
+  padding: 30px;
+  color: #333;
+  line-height: 1.5;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Resume header - more professional styling */
 .resume-header {
   text-align: center;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #3498db;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #2c3e50;
 }
 
 .resume-header h1 {
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 700;
-  color: #3498db;
+  color: #2c3e50;
   margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .resume-header p {
-  font-size: 18px;
-  color: #666;
-  margin-bottom: 15px;
+  font-size: 16px;
+  color: #2c3e50;
+  margin-bottom: 5px;
+  font-weight: 500;
 }
 
 .contact-info {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  font-size: 14px;
-  color: #666;
+  gap: 15px;
+  font-size: 13px;
+  color: #555;
+  flex-wrap: wrap;
 }
 
+/* Resume sections - more formal styling */
 .resume-section {
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .resume-section h2 {
-  font-size: 22px;
+  font-size: 16px;
   font-weight: 600;
-  color: #3498db;
-  margin-bottom: 15px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #eee;
+  color: #2c3e50;
+  margin-bottom: 12px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #e0e0e0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.empty-section {
-  color: #aaa;
+/* Professional Summary section */
+.resume-section p {
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+/* Experience items */
+.job {
+  margin-bottom: 18px;
+}
+
+.job-title {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 3px;
+  font-size: 15px;
+}
+
+.company-dates {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.company {
   font-style: italic;
-  text-align: center;
-  padding: 15px 0;
+  color: #555;
+}
+
+.dates {
+  color: #555;
+  font-size: 13px;
+}
+
+.job-description p {
+  margin: 5px 0;
+  font-size: 13px;
+}
+
+/* Education items */
+.education-item {
+  margin-bottom: 15px;
+}
+
+.degree {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 3px;
+  font-size: 15px;
+}
+
+.institution-years {
+  display: flex;
+  justify-content: space-between;
+}
+
+.institution {
+  font-style: italic;
+  color: #555;
+}
+
+.years {
+  color: #555;
+  font-size: 13px;
+}
+
+/* Skills list */
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-tag {
+  background-color: #f1f8fe;
+  color: #2980b9;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  border: 1px solid #d4e9f7;
+}
+
+/* Custom sections */
+.custom-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #e0e0e0;
+  text-transform: uppercase;
+}
+
+.custom-section-content {
+  font-size: 13px;
 }
 
 /* Preview header */
@@ -225,6 +368,7 @@ body {
   margin: 0;
   font-size: 20px;
   font-weight: 600;
+  color: #2c3e50;
 }
 
 /* Export to PDF button */
@@ -252,79 +396,123 @@ body {
   margin-right: 6px;
 }
 
-/* Experience item in preview */
-.experience-item {
-  margin-bottom: 20px;
-}
-
-.job-title {
-  font-weight: bold;
-  color: #2c3e50;
-  margin-bottom: 5px;
-}
-
-.company-dates {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: #666;
-}
-
-.job-description p {
-  margin: 5px 0;
-}
-
-/* Education item in preview */
-.education-item {
-  margin-bottom: 20px;
-}
-
-.degree {
-  font-weight: bold;
-  color: #2c3e50;
-  margin-bottom: 5px;
-}
-
-.institution-years {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: #666;
-}
-
-/* Skills list in preview */
-.skills-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.skill-tag {
-  background-color: rgba(52, 152, 219, 0.1);
-  color: #3498db;
-  padding: 5px 10px;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
 /* Custom sections */
 .custom-sections-container {
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
-.no-custom-sections {
-  text-align: center;
-  padding: 20px;
-  color: #777;
-  font-style: italic;
+.custom-section {
+  position: relative;
   background-color: #f9f9f9;
+  border: 1px solid #eee;
   border-radius: 6px;
-  margin-top: 15px;
+  padding: 15px;
+  margin-bottom: 15px;
 }
 
-/* Add custom section button */
+/* Toast notification styles */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 4px;
+  color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 10000;
+  min-width: 250px;
+  text-align: center;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.toast-error {
+  background-color: #e74c3c;
+}
+
+.toast-success {
+  background-color: #2ecc71;
+}
+
+/* Print styles for PDF export */
+@media print {
+  body {
+    padding: 0;
+    background: none;
+  }
+  
+  .editor, .preview-header, .app-header {
+    display: none !important;
+  }
+  
+  .preview {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .resume-container {
+    box-shadow: none;
+  }
+  
+  .resume {
+    padding: 10mm;
+  }
+  
+  .resume-header, .resume-section {
+    page-break-inside: avoid;
+  }
+  
+  .job, .education-item {
+    page-break-inside: avoid;
+  }
+  
+  @page {
+    margin: 10mm;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .page-container {
+    flex-direction: column;
+  }
+  
+  .editor, .preview {
+    max-height: none;
+  }
+  
+  .preview {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .header-nav {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .contact-info {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+/* Add Custom Section Button */
 .btn-add-custom-section {
   background-color: #3498db;
   color: white;
@@ -346,172 +534,106 @@ body {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* Toast notification */
-.toast {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 12px 20px;
-  border-radius: 4px;
-  color: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 10000;
-  min-width: 200px;
-  text-align: center;
-  transition: opacity 0.3s ease-in-out;
+/* Add these styles to your template1.css file */
+
+/* Base font settings for the entire resume */
+.resume {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
 }
 
-.toast-error {
-  background-color: #e74c3c;
+/* Consistent heading styles */
+.resume-header h1 {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #2c3e50;
 }
 
-.toast-success {
-  background-color: #2ecc71;
-}
-
-/* Loading spinner */
-.loading {
-  position: relative;
-}
-
-.loading::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.loading::before {
-  content: "";
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 3px solid #3498db;
-  border-top-color: transparent;
-  animation: spin 1s linear infinite;
-  z-index: 100;
-  top: calc(50% - 15px);
-  left: calc(50% - 15px);
-}
-
-@keyframes spin {
-  to {transform: rotate(360deg);}
-}
-
-/* Resume list modal */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background-color: white;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-.modal-header {
-  padding: 15px 20px;
-  border-bottom: 1px solid #eee;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.modal-header h2, .modal-header h3, .modal-header h5 {
-  margin: 0;
+.resume-header p {
+  font-family: 'Poppins', Arial, sans-serif;
   font-size: 18px;
+  font-weight: 500;
+  color: #3498db;
 }
 
-.modal-body {
-  padding: 20px;
+.resume-section h2 {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #3498db;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.modal-footer {
-  padding: 15px 20px;
-  border-top: 1px solid #eee;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+/* Consistent content styles */
+.resume-section p, 
+.resume-section .job-description, 
+.resume-section .education-description {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
 }
 
-/* Resume list */
-.resume-list {
-  list-style: none;
-  padding: 0;
+/* Job titles and degrees */
+.job-title, 
+.degree {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
 }
 
-.resume-list-item {
-  padding: 10px 15px;
-  margin-bottom: 10px;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* Company and institution names */
+.company, 
+.institution {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
 }
 
-/* Responsive adjustments */
-@media (max-width: 992px) {
-  .page-container {
-      flex-direction: column;
-  }
-  
-  .editor, .preview {
-      max-height: none;
-  }
-  
-  .preview {
-      margin-top: 20px;
-  }
-  
-  .header-nav {
-      flex-wrap: wrap;
-  }
+/* Dates */
+.dates, 
+.years {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #777;
 }
 
-@media (max-width: 768px) {
-  .app-header {
-      flex-direction: column;
-      gap: 10px;
-  }
-  
-  .header-nav {
-      width: 100%;
-      justify-content: center;
-  }
-  
-  .form-row {
-      flex-direction: column;
-      gap: 0;
-  }
-  
-  .contact-info {
-      flex-direction: column;
-      gap: 5px;
-  }
-  
-  .btn-add-custom-section {
-      width: 100%;
-  }
+/* Skills tags */
+.skill-tag {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #2c3e50;
 }
-.modal {
-  display: none; /* Ensure modals are hidden by default */
+
+/* Bullet points in descriptions */
+.job-description ul, 
+.job-description li,
+.education-description ul,
+.education-description li {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Contact info */
+.contact-info {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 14px;
+  color: #555;
+}
+
+/* For print consistency */
+@media print {
+  .resume {
+    font-family: 'Poppins', Arial, sans-serif;
+  }
 }

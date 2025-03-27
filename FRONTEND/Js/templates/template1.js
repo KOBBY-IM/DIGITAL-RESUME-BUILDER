@@ -1,307 +1,35 @@
-/**
- * template1.js - Clean implementation for Template 1 Resume Builder
- */
+// Template 1 Resume Builder Main JavaScript
 
-// Wait for the DOM to be fully loaded before executing any code
 document.addEventListener("DOMContentLoaded", function () {
-  // Check if user is authenticated
-  checkAuthentication();
-
-  // Initialize the application components
-  initializeApp();
-
-  /**
-   * Show a toast notification
-   */
-  function showToast(message, type = "info") {
-    // Create toast element
-    const toast = document.createElement("div");
-    toast.className = `toast ${
-      type === "error" ? "toast-error" : "toast-success"
-    }`;
-    toast.textContent = message;
-
-    // Style the toast
-    toast.style.position = "fixed";
-    toast.style.top = "20px";
-    toast.style.right = "20px";
-    toast.style.padding = "12px 20px";
-    toast.style.borderRadius = "4px";
-    toast.style.backgroundColor = type === "error" ? "#e74c3c" : "#2ecc71";
-    toast.style.color = "white";
-    toast.style.boxShadow = "0 2px 10px rgba(0,0,0,0.1)";
-    toast.style.zIndex = "10000";
-    toast.style.minWidth = "200px";
-    toast.style.textAlign = "center";
-    toast.style.transition = "opacity 0.3s ease-in-out";
-    toast.style.opacity = "0";
-
-    // Add to document
-    document.body.appendChild(toast);
-
-    // Trigger reflow to enable transition
-    setTimeout(() => {
-      toast.style.opacity = "1";
-    }, 10);
-
-    // Remove after delay
-    setTimeout(() => {
-      toast.style.opacity = "0";
-      setTimeout(() => {
-        if (toast.parentNode) {
-          document.body.removeChild(toast);
-        }
-      }, 300);
-    }, 3000);
-  }
-
-  /**
-   * Display modal with resumes list
-   */
-  function displayResumesModal(resumes) {
-    // Create modal element
-    const modal = document.createElement("div");
-    modal.className = "modal";
-    modal.style.display = "block";
-    modal.style.position = "fixed";
-    modal.style.zIndex = "1000";
-    modal.style.left = "0";
-    modal.style.top = "0";
-    modal.style.width = "100%";
-    modal.style.height = "100%";
-    modal.style.overflow = "auto";
-    modal.style.backgroundColor = "rgba(0,0,0,0.5)";
-
-    // Create modal content
-    const modalContent = document.createElement("div");
-    modalContent.className = "modal-content";
-    modalContent.style.backgroundColor = "#fff";
-    modalContent.style.margin = "10% auto";
-    modalContent.style.padding = "20px";
-    modalContent.style.border = "1px solid #ddd";
-    modalContent.style.width = "80%";
-    modalContent.style.maxWidth = "600px";
-    modalContent.style.borderRadius = "8px";
-    modalContent.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
-
-    // Create close button
-    const closeButton = document.createElement("span");
-    closeButton.className = "close-modal";
-    closeButton.innerHTML = "&times;";
-    closeButton.style.color = "#aaa";
-    closeButton.style.float = "right";
-    closeButton.style.fontSize = "28px";
-    closeButton.style.fontWeight = "bold";
-    closeButton.style.cursor = "pointer";
-
-    closeButton.addEventListener("click", function () {
-      document.body.removeChild(modal);
-    });
-
-    // Create modal title
-    const modalTitle = document.createElement("h3");
-    modalTitle.textContent = "Your Resumes";
-    modalTitle.style.marginBottom = "20px";
-
-    // Add content to modal
-    modalContent.appendChild(closeButton);
-    modalContent.appendChild(modalTitle);
-
-    // Create resumes list
-    if (resumes.length === 0) {
-      const emptyMessage = document.createElement("p");
-      emptyMessage.textContent = "You don't have any saved resumes yet.";
-      emptyMessage.style.textAlign = "center";
-      emptyMessage.style.color = "#666";
-      modalContent.appendChild(emptyMessage);
-    } else {
-      const resumesList = document.createElement("ul");
-      resumesList.style.listStyle = "none";
-      resumesList.style.padding = "0";
-
-      resumes.forEach((resume) => {
-        const listItem = document.createElement("li");
-        listItem.style.padding = "10px 15px";
-        listItem.style.marginBottom = "10px";
-        listItem.style.border = "1px solid #eee";
-        listItem.style.borderRadius = "4px";
-        listItem.style.display = "flex";
-        listItem.style.justifyContent = "space-between";
-        listItem.style.alignItems = "center";
-
-        // Resume info
-        const resumeInfo = document.createElement("div");
-
-        const resumeName = document.createElement("div");
-        resumeName.textContent =
-          resume.personalInfo?.fullName || "Untitled Resume";
-        resumeName.style.fontWeight = "bold";
-
-        const resumeDetails = document.createElement("div");
-        resumeDetails.textContent = `${
-          resume.personalInfo?.jobTitle || ""
-        } - Last updated: ${new Date(
-          resume.updatedAt || resume.createdAt
-        ).toLocaleDateString()}`;
-        resumeDetails.style.fontSize = "0.85em";
-        resumeDetails.style.color = "#666";
-
-        resumeInfo.appendChild(resumeName);
-        resumeInfo.appendChild(resumeDetails);
-
-        // Action buttons
-        const actions = document.createElement("div");
-
-        // Edit button
-        const editButton = document.createElement("button");
-        editButton.innerHTML = '<i class="fas fa-edit"></i> Edit';
-        editButton.className = "btn-edit";
-        editButton.style.marginRight = "10px";
-        editButton.style.backgroundColor = "#3498db";
-        editButton.style.color = "white";
-        editButton.style.border = "none";
-        editButton.style.padding = "5px 10px";
-        editButton.style.borderRadius = "4px";
-        editButton.style.cursor = "pointer";
-
-        editButton.addEventListener("click", function () {
-          window.location.href = `template1.html?id=${resume._id}`;
-        });
-
-        // Delete button
-        const deleteButton = document.createElement("button");
-        deleteButton.innerHTML = '<i class="fas fa-trash"></i> Delete';
-        deleteButton.className = "btn-delete";
-        deleteButton.style.backgroundColor = "#e74c3c";
-        deleteButton.style.color = "white";
-        deleteButton.style.border = "none";
-        deleteButton.style.padding = "5px 10px";
-        deleteButton.style.borderRadius = "4px";
-        deleteButton.style.cursor = "pointer";
-
-        deleteButton.addEventListener("click", function () {
-          if (confirm("Are you sure you want to delete this resume?")) {
-            deleteResume(resume._id, modal);
-          }
-        });
-
-        actions.appendChild(editButton);
-        actions.appendChild(deleteButton);
-
-        listItem.appendChild(resumeInfo);
-        listItem.appendChild(actions);
-        resumesList.appendChild(listItem);
-      });
-
-      modalContent.appendChild(resumesList);
-    }
-
-    // Add close button at bottom
-    const closeButtonBottom = document.createElement("button");
-    closeButtonBottom.textContent = "Close";
-    closeButtonBottom.className = "btn-close";
-    closeButtonBottom.style.marginTop = "20px";
-    closeButtonBottom.style.padding = "8px 16px";
-    closeButtonBottom.style.backgroundColor = "#6c757d";
-    closeButtonBottom.style.color = "white";
-    closeButtonBottom.style.border = "none";
-    closeButtonBottom.style.borderRadius = "4px";
-    closeButtonBottom.style.cursor = "pointer";
-    closeButtonBottom.style.float = "right";
-
-    closeButtonBottom.addEventListener("click", function () {
-      document.body.removeChild(modal);
-    });
-
-    modalContent.appendChild(closeButtonBottom);
-
-    // Add clear div to fix float
-    const clearDiv = document.createElement("div");
-    clearDiv.style.clear = "both";
-    modalContent.appendChild(clearDiv);
-
-    // Add modal to page
-    modal.appendChild(modalContent);
-    document.body.appendChild(modal);
-
-    // Close modal when clicking outside
-    modal.addEventListener("click", function (event) {
-      if (event.target === modal) {
-        document.body.removeChild(modal);
-      }
-    });
-  }
-});
-
-function showToast(message, type = "info") {
-  const toast = document.createElement("div");
-  toast.className = `toast ${
-    type === "error" ? "toast-error" : "toast-success"
-  }`;
-  toast.textContent = message;
-
-  toast.style.position = "fixed";
-  toast.style.top = "20px";
-  toast.style.right = "20px";
-  toast.style.padding = "12px 20px";
-  toast.style.borderRadius = "4px";
-  toast.style.backgroundColor = type === "error" ? "#e74c3c" : "#2ecc71";
-  toast.style.color = "white";
-  toast.style.boxShadow = "0 2px 10px rgba(0,0,0,0.1)";
-  toast.style.zIndex = "10000";
-  toast.style.textAlign = "center";
-  toast.style.opacity = "0";
-  toast.style.transition = "opacity 0.3s ease-in-out";
-
-  document.body.appendChild(toast);
-
-  setTimeout(() => {
-    toast.style.opacity = "1";
-  }, 100);
-
-  setTimeout(() => {
-    toast.style.opacity = "0";
-    setTimeout(() => {
-      if (toast.parentNode) {
-        document.body.removeChild(toast);
-      }
-    }, 300);
-  }, 3000);
-}
-
-/**
- * Check if the user is authenticated, redirect to login if not
- */
-function checkAuthentication() {
+  // Check authentication
   const token = localStorage.getItem("token");
   if (!token) {
     window.location.href = "test.html?redirect=template1&error=auth_required";
-    return false;
+    return;
   }
-  return true;
-}
 
-/**
- * Initialize all application components
- */
-function initializeApp() {
-  console.log("Initializing template1 app...");
-
-  // Set up form input listeners
-  setupFormListeners();
-
-  // Initialize UI components and buttons
+  // Initialize form and preview elements
+  initializeFormListeners();
   setupUIComponents();
 
-  // Check if we need to load an existing resume
-  checkForExistingResume();
-}
+  // Check if loading an existing resume
+  const urlParams = new URLSearchParams(window.location.search);
+  const resumeId = urlParams.get("id");
+
+  if (resumeId) {
+    loadResumeById(resumeId);
+  } else {
+    // Add initial experience and education entries for new resume
+    addExperienceEntry();
+    addEducationEntry();
+  }
+});
 
 /**
- * Set up event listeners for form inputs to update preview
+ * Set up form input listeners
  */
-function setupFormListeners() {
-  // Add listeners to all inputs with data-preview attribute
+function initializeFormListeners() {
+  // Listeners for inputs with direct preview mapping
   document.querySelectorAll("[data-preview]").forEach((input) => {
     input.addEventListener("input", function () {
       const previewId = this.getAttribute("data-preview");
@@ -313,7 +41,7 @@ function setupFormListeners() {
     });
   });
 
-  // Set up listeners for inputs without direct preview mappings
+  // Listeners for inputs without direct preview mapping
   document
     .querySelectorAll("input:not([data-preview]), textarea:not([data-preview])")
     .forEach((input) => {
@@ -325,94 +53,50 @@ function setupFormListeners() {
  * Set up UI components and button handlers
  */
 function setupUIComponents() {
-  console.log("Setting up UI components and buttons...");
-
   // Back to templates button
   const backBtn = document.getElementById("back-to-templates-btn");
   if (backBtn) {
-    console.log("Back button found, adding event listener");
-    backBtn.addEventListener("click", function (e) {
-      e.preventDefault();
+    backBtn.addEventListener("click", () => {
       window.location.href = "template.html";
     });
-  } else {
-    console.warn("Back button not found");
   }
 
   // Add experience button
   const addExpBtn = document.getElementById("add-experience");
   if (addExpBtn) {
-    console.log("Add experience button found, adding event listener");
     addExpBtn.addEventListener("click", addExperienceEntry);
-  } else {
-    console.warn("Add experience button not found");
   }
 
   // Add education button
   const addEduBtn = document.getElementById("add-education");
   if (addEduBtn) {
-    console.log("Add education button found, adding event listener");
     addEduBtn.addEventListener("click", addEducationEntry);
-  } else {
-    console.warn("Add education button not found");
   }
 
   // Save resume button
   const saveBtn = document.getElementById("save-resume");
   if (saveBtn) {
-    console.log("Save button found, adding event listener");
-    saveBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      saveResume();
-    });
-  } else {
-    console.warn("Save button not found");
+    saveBtn.addEventListener("click", saveResume);
   }
 
-  // Load resume button
-  const loadBtn = document.getElementById("load-resume");
-  if (loadBtn) {
-    console.log("Load button found, adding event listener");
-    loadBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      showResumesList();
+  // My Resumes button - Changed from Load Resume
+  const myResumesBtn = document.getElementById("my-resumes-btn");
+  if (myResumesBtn) {
+    myResumesBtn.addEventListener("click", () => {
+      window.location.href = "my-resumes.html";
     });
-  } else {
-    console.warn("Load button not found");
   }
 
   // Export to PDF button
   const exportBtn = document.getElementById("export-pdf");
   if (exportBtn) {
-    console.log("Export button found, adding event listener");
-    exportBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      exportResumeToPDF();
-    });
-  } else {
-    console.warn("Export button not found");
+    exportBtn.addEventListener("click", exportResumeToPDF);
   }
 
   // AI Assist buttons
   document.querySelectorAll(".ai-assist").forEach((button) => {
     button.addEventListener("click", handleAIAssist);
   });
-}
-
-/**
- * Check if there's an existing resume ID in the URL parameters
- */
-function checkForExistingResume() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const resumeId = urlParams.get("id");
-
-  if (resumeId) {
-    loadResumeById(resumeId);
-  } else {
-    // Add empty experience and education entries for new resume
-    addExperienceEntry();
-    addEducationEntry();
-  }
 }
 
 /**
@@ -442,140 +126,201 @@ function updateAllPreviews() {
 }
 
 /**
- * Add a new experience entry to the form
+ * Initialize date inputs when the DOM is loaded
+ */
+document.addEventListener("DOMContentLoaded", function () {
+  // Other existing initialization code...
+
+  // Initialize date input fields
+  initializeDateInputs();
+
+  // Update existing experience/education entries to use date formatting
+  setupExistingDateFields();
+});
+
+/**
+ * Setup existing date fields in the form
+ */
+function setupExistingDateFields() {
+  // Apply date input masks to experience date fields
+  document
+    .querySelectorAll(
+      ".experience-entry .exp-start, .experience-entry .exp-end"
+    )
+    .forEach((input) => {
+      input.classList.add("date-input");
+      setupDateInputMask(input);
+    });
+
+  // Apply date input masks to education date fields
+  document
+    .querySelectorAll(".education-entry .edu-start, .education-entry .edu-end")
+    .forEach((input) => {
+      input.classList.add("date-input");
+      setupDateInputMask(input);
+    });
+}
+
+/**
+ * Add a new experience entry
  */
 function addExperienceEntry() {
-  console.log("Adding new experience entry");
   const container = document.getElementById("experience-container");
-  if (!container) {
-    console.error("Experience container not found");
-    return;
-  }
+  if (!container) return;
 
-  // Create experience entry template
+  // Create experience entry from template
   const template = document.getElementById("experience-entry-template");
   if (!template) {
     console.error("Experience entry template not found");
     return;
   }
 
-  // Clone the template
-  const clone = document.importNode(template.content, true);
+  const newEntry = document
+    .importNode(template.content, true)
+    .querySelector(".experience-entry");
 
   // Add event listeners to inputs
-  clone.querySelectorAll("input, textarea").forEach((input) => {
+  newEntry.querySelectorAll("input, textarea").forEach((input) => {
     input.addEventListener("input", updateExperiencePreview);
   });
 
-  // Add event listener to remove button
-  const removeBtn = clone.querySelector(".btn-remove");
+  // Set up date inputs specifically
+  const startDateInput = newEntry.querySelector(".exp-start");
+  const endDateInput = newEntry.querySelector(".exp-end");
+
+  if (startDateInput) {
+    startDateInput.classList.add("date-input");
+    startDateInput.placeholder = "MM/YYYY";
+    setupDateInputMask(startDateInput);
+  }
+
+  if (endDateInput) {
+    endDateInput.classList.add("date-input");
+    endDateInput.placeholder = "MM/YYYY or Present";
+    setupDateInputMask(endDateInput);
+  }
+
+  // Add remove button functionality
+  const removeBtn = newEntry.querySelector(".btn-remove");
   if (removeBtn) {
-    removeBtn.addEventListener("click", function (e) {
-      const entry = e.target.closest(".experience-entry");
-      if (entry && entry.parentNode) {
-        entry.parentNode.removeChild(entry);
-        updateExperiencePreview();
-      }
+    removeBtn.addEventListener("click", function () {
+      container.removeChild(newEntry);
+      updateExperiencePreview();
     });
   }
 
-  // Add event listener to AI assist button
-  const aiAssistBtn = clone.querySelector(".ai-assist");
+  // Add AI assist button functionality
+  const aiAssistBtn = newEntry.querySelector(".ai-assist");
   if (aiAssistBtn) {
     aiAssistBtn.addEventListener("click", handleAIAssist);
   }
 
-  // Add the new entry to the container
-  container.appendChild(clone);
+  // Add to container
+  container.appendChild(newEntry);
 
-  // Update the preview
+  // Update preview
   updateExperiencePreview();
 }
 
 /**
- * Add a new education entry to the form
+ * Add a new education entry
  */
 function addEducationEntry() {
-  console.log("Adding new education entry");
   const container = document.getElementById("education-container");
-  if (!container) {
-    console.error("Education container not found");
-    return;
-  }
+  if (!container) return;
 
-  // Create education entry template
+  // Create education entry from template
   const template = document.getElementById("education-entry-template");
   if (!template) {
     console.error("Education entry template not found");
     return;
   }
 
-  // Clone the template
-  const clone = document.importNode(template.content, true);
+  const newEntry = document
+    .importNode(template.content, true)
+    .querySelector(".education-entry");
 
   // Add event listeners to inputs
-  clone.querySelectorAll("input, textarea").forEach((input) => {
+  newEntry.querySelectorAll("input, textarea").forEach((input) => {
     input.addEventListener("input", updateEducationPreview);
   });
 
-  // Add event listener to remove button
-  const removeBtn = clone.querySelector(".btn-remove");
+   // Set up date/year inputs specifically
+   const startYearInput = newEntry.querySelector('.edu-start');
+   const endYearInput = newEntry.querySelector('.edu-end');
+   
+   if (startYearInput) {
+     startYearInput.placeholder = 'YYYY or MM/YYYY';
+   }
+   
+   if (endYearInput) {
+     endYearInput.placeholder = 'YYYY or Present';
+   }
+
+  // Add remove button functionality
+  const removeBtn = newEntry.querySelector(".btn-remove");
   if (removeBtn) {
-    removeBtn.addEventListener("click", function (e) {
-      const entry = e.target.closest(".education-entry");
-      if (entry && entry.parentNode) {
-        entry.parentNode.removeChild(entry);
-        updateEducationPreview();
-      }
+    removeBtn.addEventListener("click", function () {
+      container.removeChild(newEntry);
+      updateEducationPreview();
     });
   }
 
-  // Add the new entry to the container
-  container.appendChild(clone);
+  // Add AI assist button functionality
+  const aiAssistBtn = newEntry.querySelector(".ai-assist");
+  if (aiAssistBtn) {
+    aiAssistBtn.addEventListener("click", handleAIAssist);
+  }
 
-  // Update the preview
+  // Add to container
+  container.appendChild(newEntry);
+
+  // Update preview
   updateEducationPreview();
 }
 
 /**
- * Update the experience section in the preview
+ * Update experience preview
  */
 function updateExperiencePreview() {
   const previewContainer = document.getElementById("preview-experience");
-  if (!previewContainer) return;
+  if (!previewContainer) {
+    console.error("Preview experience container not found");
+    return;
+  }
 
   const entries = document.querySelectorAll(".experience-entry");
 
-  // If there are no entries, show placeholder text
+  // Clear or show placeholder
   if (entries.length === 0) {
     previewContainer.innerHTML =
       '<p class="empty-section">Your work experience will appear here...</p>';
     return;
   }
 
+  // Build preview HTML
   let html = "";
-
-  // Iterate through experience entries and build HTML
   entries.forEach((entry) => {
     const jobTitle = entry.querySelector(".exp-title")?.value || "";
     const company = entry.querySelector(".exp-company")?.value || "";
     const startDate = entry.querySelector(".exp-start")?.value || "";
     const endDate = entry.querySelector(".exp-end")?.value || "";
     const description = entry.querySelector(".exp-description")?.value || "";
+    const formattedStartDate = formatDateDisplay(startDate);
+    const formattedEndDate = formatDateDisplay(endDate);
+
 
     if (jobTitle || company || description) {
       html += `
         <div class="experience-item">
-          <div class="job-title">${escapeHtml(
-            jobTitle || "Position Title"
-          )}</div>
+          <div class="job-title">${escapeHtml(jobTitle)}</div>
           <div class="company-dates">
-            <span class="company">${escapeHtml(company || "Company")}</span>
+            <span class="company">${escapeHtml(company)}</span>
             ${
               startDate || endDate
-                ? `<span class="dates">${escapeHtml(
-                    startDate || ""
-                  )} - ${escapeHtml(endDate || "")}</span>`
+                ? `<span class="dates">${escapeHtml(startDate)} - ${escapeHtml(
+                    endDate
+                  )}</span>`
                 : ""
             }
           </div>
@@ -591,57 +336,180 @@ function updateExperiencePreview() {
     }
   });
 
-  // Update the preview container
+  // Update preview container
   previewContainer.innerHTML =
     html ||
     '<p class="empty-section">Your work experience will appear here...</p>';
 }
 
 /**
- * Update the education section in the preview
+ * Date formatting utility function if not imported from dateUtils.js
+ */
+function formatDateDisplay(dateString) {
+  // Handle empty values
+  if (!dateString || dateString.trim() === '') {
+    return '';
+  }
+  
+  // Handle "Present" case (case insensitive)
+  if (dateString.trim().toLowerCase() === 'present') {
+    return 'Present';
+  }
+  
+  // Try to parse the date
+  try {
+    // Check if it's already in MM/YYYY format
+    const mmyyyyRegex = /^(0[1-9]|1[0-2])\/\d{4}$/;
+    if (mmyyyyRegex.test(dateString)) {
+      const parts = dateString.split('/');
+      const month = parseInt(parts[0], 10);
+      const year = parts[1];
+      
+      const monthNames = [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+      ];
+      
+      return `${monthNames[month - 1]} ${year}`;
+    }
+    
+    // Try to parse as a date object
+    const date = new Date(dateString);
+    if (!isNaN(date.getTime())) {
+      return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short'
+      });
+    }
+    
+    // If we can't parse it, return as is
+    return dateString;
+  } catch (e) {
+    console.warn('Date formatting error:', e);
+    return dateString; // Return original string if error
+  }
+}
+
+/**
+ * Format input field to enforce MM/YYYY format
+ */
+function setupDateInputMask(input) {
+  input.addEventListener('input', function(e) {
+    // If user types "Present" (case insensitive), allow it
+    if (/^p|pr|pre|pres|prese|presen|present$/i.test(e.target.value)) {
+      return;
+    }
+    
+    // Otherwise try to format as MM/YYYY
+    let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+    
+    if (value.length > 0) {
+      // Don't allow month values > 12
+      if (value.length >= 2 && parseInt(value.substring(0, 2)) > 12) {
+        value = '12' + value.substring(2);
+      }
+      
+      // Format with / after month
+      if (value.length > 2) {
+        value = value.substring(0, 2) + '/' + value.substring(2, 6);
+      }
+    }
+    
+    e.target.value = value;
+  });
+  
+  // Add blur handler to ensure proper formatting
+  input.addEventListener('blur', function(e) {
+    const value = e.target.value.trim();
+    
+    // Skip if empty or "Present"
+    if (!value || value.toLowerCase() === 'present') {
+      return;
+    }
+    
+    // Ensure month has leading zero
+    const parts = value.split('/');
+    if (parts.length === 2) {
+      const month = parseInt(parts[0], 10);
+      if (month > 0 && month <= 12) {
+        const formattedMonth = month.toString().padStart(2, '0');
+        e.target.value = `${formattedMonth}/${parts[1]}`;
+      }
+    }
+  });
+}
+
+/**
+ * Initialize date input fields across the application
+ */
+function initializeDateInputs() {
+  // Find all date inputs and apply formatting
+  document.querySelectorAll('.date-input').forEach(input => {
+    setupDateInputMask(input);
+    
+    // Add placeholder text for guidance
+    if (!input.placeholder) {
+      input.placeholder = 'MM/YYYY or Present';
+    }
+    
+    // Add tooltip if needed
+    if (!input.title) {
+      input.title = 'Enter date as MM/YYYY (e.g., 05/2023) or "Present" for current positions';
+    }
+  });
+}
+
+/**
+ * Update education preview
  */
 function updateEducationPreview() {
   const previewContainer = document.getElementById("preview-education");
-  if (!previewContainer) return;
+  if (!previewContainer) {
+    console.error("Preview education container not found");
+    return;
+  }
 
   const entries = document.querySelectorAll(".education-entry");
 
-  // If there are no entries, show placeholder text
+  // Clear or show placeholder
   if (entries.length === 0) {
     previewContainer.innerHTML =
       '<p class="empty-section">Your education will appear here...</p>';
     return;
   }
 
+  // Build preview HTML
   let html = "";
-
-  // Iterate through education entries and build HTML
   entries.forEach((entry) => {
     const degree = entry.querySelector(".edu-degree")?.value || "";
     const institution = entry.querySelector(".edu-institution")?.value || "";
     const startYear = entry.querySelector(".edu-start")?.value || "";
     const endYear = entry.querySelector(".edu-end")?.value || "";
+    const gpa = entry.querySelector(".edu-gpa")?.value || "";
     const description = entry.querySelector(".edu-description")?.value || "";
 
     if (degree || institution) {
       html += `
         <div class="education-item">
-          <div class="degree">${escapeHtml(degree || "Degree")}</div>
+          <div class="degree">${escapeHtml(degree)}</div>
           <div class="institution-years">
-            <span class="institution">${escapeHtml(
-              institution || "Institution"
-            )}</span>
+            <span class="institution">${escapeHtml(institution)}</span>
             ${
               startYear || endYear
-                ? `<span class="years">${escapeHtml(
-                    startYear || ""
-                  )} - ${escapeHtml(endYear || "")}</span>`
+                ? `<span class="years">${escapeHtml(startYear)} - ${escapeHtml(
+                    endYear
+                  )}</span>`
                 : ""
             }
           </div>
           ${
+            gpa
+              ? `<div class="education-gpa">GPA: ${escapeHtml(gpa)}</div>`
+              : ""
+          }
+          ${
             description
-              ? `<div class="education-description">${formatDescription(
+              ? `<div class="job-description">${formatDescriptionWithBullets(
                   description
                 )}</div>`
               : ""
@@ -651,30 +519,33 @@ function updateEducationPreview() {
     }
   });
 
-  // Update the preview container
+  // Update preview container
   previewContainer.innerHTML =
     html || '<p class="empty-section">Your education will appear here...</p>';
 }
 
 /**
- * Update the skills section in the preview
+ * Update skills preview
  */
 function updateSkillsPreview() {
   const skillsInput = document.getElementById("skills-text");
   const previewContainer = document.getElementById("preview-skills");
 
-  if (!skillsInput || !previewContainer) return;
+  if (!skillsInput || !previewContainer) {
+    console.error("Skills input or preview container not found");
+    return;
+  }
 
   const skillsText = skillsInput.value.trim();
 
-  // If there are no skills, show placeholder text
+  // Clear or show placeholder
   if (!skillsText) {
     previewContainer.innerHTML =
       '<p class="empty-section">Your skills will appear here...</p>';
     return;
   }
 
-  // Split by commas and filter out empty entries
+  // Create skill tags
   const skills = skillsText
     .split(",")
     .map((skill) => skill.trim())
@@ -686,35 +557,18 @@ function updateSkillsPreview() {
     return;
   }
 
-  // Create skill tags
-  let html = skills
+  // Update preview
+  previewContainer.innerHTML = skills
     .map((skill) => `<span class="skill-tag">${escapeHtml(skill)}</span>`)
     .join(" ");
-
-  // Update the preview container
-  previewContainer.innerHTML = html;
 }
 
 /**
- * Format description text with proper paragraph breaks
+ * Utility: Escape HTML
  */
-function formatDescription(text) {
-  if (!text) return "";
-
-  return escapeHtml(text)
-    .split("\n")
-    .filter((line) => line.trim() !== "")
-    .map((line) => `<p>${line}</p>`)
-    .join("");
-}
-
-/**
- * Escape HTML special characters
- */
-function escapeHtml(text) {
-  if (!text) return "";
-
-  return String(text)
+function escapeHtml(unsafe) {
+  if (!unsafe) return "";
+  return String(unsafe)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -723,19 +577,36 @@ function escapeHtml(text) {
 }
 
 /**
- * Handle AI assist button clicks
+ * Utility: Format description with paragraphs
+ */
+function formatDescription(text) {
+  if (!text) return "";
+
+  return text
+    .split("\n")
+    .filter((line) => line.trim() !== "")
+    .map((line) => `<p>${escapeHtml(line)}</p>`)
+    .join("");
+}
+
+/**
+ * Handle AI Assist functionality
  */
 function handleAIAssist(event) {
-  event.preventDefault();
-  console.log("AI assist button clicked");
-
   const button = event.currentTarget;
   const textarea =
     button.closest(".textarea-container")?.querySelector("textarea") ||
-    button.closest(".textarea-wrapper")?.querySelector("textarea");
+    button.closest(".textarea-container")?.querySelector("input");
 
   if (!textarea) {
-    console.error("No textarea found for AI assist");
+    console.error("No textarea or input found for AI assist");
+    return;
+  }
+
+  // Check authentication
+  const token = localStorage.getItem("token");
+  if (!token) {
+    showToast("Please log in to use AI assistance", "error");
     return;
   }
 
@@ -750,12 +621,16 @@ function handleAIAssist(event) {
     context = "experience";
   } else if (textarea.id === "skills-text") {
     context = "skills";
+  } else if (textarea.classList.contains("edu-description")) {
+    context = "education";
+  } else if (textarea.classList.contains("custom-section-content")) {
+    context = "custom";
   }
 
-  // Create prompt based on content or use default prompt
-  const prompt = textarea.value || getDefaultPrompt(context, textarea);
+  // Create prompt based on context and form data
+  const prompt = getAIPrompt(context, textarea);
 
-  // Call the AI service
+  // Call AI service
   callAIService(prompt, context)
     .then((result) => {
       // Update textarea with result
@@ -785,71 +660,69 @@ function handleAIAssist(event) {
 }
 
 /**
- * Get default prompt based on context
+ * Generate AI prompt based on context
  */
-function getDefaultPrompt(context, textarea) {
-  // Get relevant data from form
+function getAIPrompt(context, textarea) {
+  // Get relevant information from the form
   const fullName = document.getElementById("full-name")?.value || "";
   const jobTitle = document.getElementById("job-title")?.value || "";
 
-  // For experience sections, get company and position
+  // For experience sections, get more context
   let company = "";
   let position = "";
 
   if (context === "experience") {
-    const entryContainer = textarea.closest(".experience-entry");
-    if (entryContainer) {
-      position = entryContainer.querySelector(".exp-title")?.value || "";
-      company = entryContainer.querySelector(".exp-company")?.value || "";
+    const experienceEntry = textarea.closest(".experience-entry");
+    if (experienceEntry) {
+      company = experienceEntry.querySelector(".exp-company")?.value || "";
+      position = experienceEntry.querySelector(".exp-title")?.value || "";
     }
   }
 
-  // Default prompts by context
+  // For education sections, get more context
+  let degree = "";
+  let institution = "";
+
+  if (context === "education") {
+    const educationEntry = textarea.closest(".education-entry");
+    if (educationEntry) {
+      degree = educationEntry.querySelector(".edu-degree")?.value || "";
+      institution =
+        educationEntry.querySelector(".edu-institution")?.value || "";
+    }
+  }
+
+  // Context-specific prompts
   const prompts = {
     summary: `Write a professional summary for ${
       fullName || "a candidate"
     } seeking a ${
-      jobTitle || "professional"
-    } position. Focus on strengths, experience, and value proposition. Keep it to 3-4 sentences.`,
+      jobTitle || "position"
+    }. Focus on key strengths, experience, and career achievements. Keep it to 3-4 sentences maximum.`,
     experience: `Write 3-4 bullet points for a ${
       position || "professional"
     } role at ${
       company || "a company"
-    }. Include achievements with metrics where possible and use action verbs.`,
-    skills: `List 8-12 relevant technical and soft skills for a ${
+    }. Include achievements with quantifiable results where possible. Start each bullet with a strong action verb.`,
+    skills: `List relevant technical and soft skills for a ${
       jobTitle || "professional"
-    } position, separated by commas.`,
+    } position, separated by commas. Include 8-12 skills that are most in-demand for this role.`,
+    education: `Write a brief description for ${degree || "a degree"} from ${
+      institution || "a university"
+    }. Highlight relevant coursework, achievements, or academic projects.`,
+    custom: `Write professional content for a custom resume section. Keep it concise and achievement-focused.`,
   };
 
   return prompts[context] || prompts.summary;
 }
 
 /**
- * Call the AI service API
+ * AI Service implementation
  */
 async function callAIService(prompt, context) {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    throw new Error("Authentication required");
-  }
-
   try {
-    const response = await fetch("/api/ai/assist", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ prompt, context }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "AI service error");
-    }
-
-    const data = await response.json();
-    return data.result;
+    // Use TemplateCore for AI assistance
+    return await TemplateCore.getAIAssistance(prompt, context);
   } catch (error) {
     console.error("AI service error:", error);
     throw error;
@@ -857,20 +730,18 @@ async function callAIService(prompt, context) {
 }
 
 /**
- * Save or update the resume
+ * Save resume
  */
 async function saveResume() {
   try {
-    // Check authentication
-    if (!checkAuthentication()) return;
-
     // Get save button for status updates
     const saveButton = document.getElementById("save-resume");
-    if (saveButton) {
-      const originalText = saveButton.innerHTML;
-      saveButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-      saveButton.disabled = true;
-    }
+    if (!saveButton) return;
+
+    // Save original button text
+    const originalText = saveButton.innerHTML;
+    saveButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    saveButton.disabled = true;
 
     // Collect resume data
     const resumeData = collectResumeData();
@@ -879,11 +750,8 @@ async function saveResume() {
     if (!resumeData.personalInfo.fullName) {
       showToast("Please enter your full name", "error");
 
-      if (saveButton) {
-        saveButton.innerHTML = '<i class="fas fa-save"></i> Save';
-        saveButton.disabled = false;
-      }
-
+      saveButton.innerHTML = originalText;
+      saveButton.disabled = false;
       return;
     }
 
@@ -891,43 +759,29 @@ async function saveResume() {
     const urlParams = new URLSearchParams(window.location.search);
     const resumeId = urlParams.get("id");
 
-    const endpoint = resumeId ? `/api/resumes/${resumeId}` : "/api/resumes";
-    const method = resumeId ? "PUT" : "POST";
-
-    // Make API call
-    const token = localStorage.getItem("token");
-    const response = await fetch(endpoint, {
-      method: method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(resumeData),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Failed to save resume");
+    let result;
+    if (resumeId) {
+      // Update existing resume
+      result = await TemplateCore.saveResume(resumeData, resumeId);
+    } else {
+      // Create new resume
+      result = await TemplateCore.saveResume(resumeData);
     }
-
-    const data = await response.json();
 
     // Show success message
     showToast("Resume saved successfully!", "success");
 
     // Update URL if new resume was created
-    if (!resumeId && data.data && data.data._id) {
-      window.history.replaceState(null, "", `?id=${data.data._id}`);
+    if (!resumeId && result.data && result.data._id) {
+      window.history.replaceState(null, "", `?id=${result.data._id}`);
     }
 
     // Reset button
-    if (saveButton) {
-      saveButton.innerHTML = '<i class="fas fa-check"></i> Saved!';
-      setTimeout(() => {
-        saveButton.innerHTML = '<i class="fas fa-save"></i> Save';
-        saveButton.disabled = false;
-      }, 2000);
-    }
+    saveButton.innerHTML = '<i class="fas fa-check"></i> Saved!';
+    setTimeout(() => {
+      saveButton.innerHTML = originalText;
+      saveButton.disabled = false;
+    }, 2000);
   } catch (error) {
     console.error("Save error:", error);
     showToast(error.message || "Failed to save resume", "error");
@@ -941,9 +795,789 @@ async function saveResume() {
 }
 
 /**
- * Collect all resume data from the form
+ * Load a specific resume by ID - improved version
+ */
+async function loadResumeById(id) {
+  // Show loading state
+  document.body.classList.add("loading");
+  showToast("Loading resume...", "info");
+
+  try {
+    // Check authentication
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("Authentication required");
+    }
+
+    console.log("Loading resume with ID:", id);
+
+    // Get resume data from server
+    const response = await fetch(`/api/resumes/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Server response error:", errorText);
+      throw new Error("Failed to load resume");
+    }
+
+    const result = await response.json();
+    console.log("Resume data received:", result);
+
+    if (!result.data) {
+      throw new Error("Resume data not found in server response");
+    }
+
+    // Populate form with resume data
+    populateFormWithResumeData(result.data);
+
+    showToast("Resume loaded successfully", "success");
+  } catch (error) {
+    console.error("Load error:", error);
+    showToast(error.message || "Failed to load resume", "error");
+  } finally {
+    // Remove loading state
+    document.body.classList.remove("loading");
+  }
+}
+
+/**
+ * Populate form with resume data - completely fixed version
+ */
+function populateFormWithResumeData(resume) {
+  // For debugging - log the resume data to see what's available
+  console.log("Resume data to populate:", resume);
+
+  // Clear existing entries first
+  const expContainer = document.getElementById("experience-container");
+  const eduContainer = document.getElementById("education-container");
+  const customSectionsContainer = document.getElementById(
+    "custom-sections-container"
+  );
+
+  if (expContainer) expContainer.innerHTML = "";
+  if (eduContainer) eduContainer.innerHTML = "";
+
+  // Clear existing custom sections
+  if (customSectionsContainer) {
+    customSectionsContainer.innerHTML = "";
+    // Add the default no sections message
+    const noSectionsMsg = document.createElement("div");
+    noSectionsMsg.className = "no-custom-sections";
+    noSectionsMsg.innerHTML =
+      "<p>Add custom sections like Certifications, Projects, Languages, etc.</p>";
+    customSectionsContainer.appendChild(noSectionsMsg);
+  }
+
+  // Populate personal info - with fallbacks and better error handling
+  try {
+    if (resume.personalInfo) {
+      // Get all form fields
+      const fullNameInput = document.getElementById("full-name");
+      const jobTitleInput = document.getElementById("job-title");
+      const emailInput = document.getElementById("email");
+      const phoneInput = document.getElementById("phone");
+      const locationInput = document.getElementById("location");
+
+      // Set values with checks for each field
+      if (fullNameInput)
+        fullNameInput.value = resume.personalInfo.fullName || "";
+      if (jobTitleInput)
+        jobTitleInput.value = resume.personalInfo.jobTitle || "";
+      if (emailInput) emailInput.value = resume.personalInfo.email || "";
+      if (phoneInput) phoneInput.value = resume.personalInfo.phone || "";
+      if (locationInput)
+        locationInput.value = resume.personalInfo.location || "";
+
+      // Log any missing fields for debugging
+      if (!fullNameInput) console.warn("full-name input field not found");
+      if (!jobTitleInput) console.warn("job-title input field not found");
+      if (!emailInput) console.warn("email input field not found");
+      if (!phoneInput) console.warn("phone input field not found");
+      if (!locationInput) console.warn("location input field not found");
+    }
+  } catch (error) {
+    console.error("Error populating personal info:", error);
+  }
+
+  // Populate summary
+  try {
+    const summaryInput = document.getElementById("summary-text");
+    if (summaryInput) {
+      summaryInput.value = resume.summary || "";
+    } else {
+      console.warn("summary-text input field not found");
+    }
+  } catch (error) {
+    console.error("Error populating summary:", error);
+  }
+
+  // Populate experience entries
+  try {
+    if (
+      Array.isArray(resume.experience) &&
+      resume.experience.length > 0 &&
+      expContainer
+    ) {
+      resume.experience.forEach((exp) => {
+        addExperienceEntry();
+        const entries = document.querySelectorAll(".experience-entry");
+        if (entries.length === 0) {
+          console.error("No experience entries found after adding");
+          return;
+        }
+
+        const latestEntry = entries[entries.length - 1];
+
+        // Set values with checks for each field
+        const titleInput = latestEntry.querySelector(".exp-title");
+        const companyInput = latestEntry.querySelector(".exp-company");
+        const startInput = latestEntry.querySelector(".exp-start");
+        const endInput = latestEntry.querySelector(".exp-end");
+        const descInput = latestEntry.querySelector(".exp-description");
+
+        if (titleInput) titleInput.value = exp.jobTitle || "";
+        if (companyInput) companyInput.value = exp.company || "";
+        if (startInput)
+          startInput.value = exp.startDate
+            ? formatDateDisplay(exp.startDate)
+            : "";
+        if (endInput)
+          endInput.value = exp.endDate ? formatDateDisplay(exp.endDate) : "";
+        if (descInput) descInput.value = exp.description || "";
+      });
+    } else {
+      // Add default entry if no experience
+      addExperienceEntry();
+    }
+  } catch (error) {
+    console.error("Error populating experience:", error);
+    // Try to add a default entry
+    try {
+      addExperienceEntry();
+    } catch (e) {
+      console.error("Error adding default experience entry:", e);
+    }
+  }
+
+  // Populate education entries
+  try {
+    if (
+      Array.isArray(resume.education) &&
+      resume.education.length > 0 &&
+      eduContainer
+    ) {
+      resume.education.forEach((edu) => {
+        addEducationEntry();
+        const entries = document.querySelectorAll(".education-entry");
+        if (entries.length === 0) {
+          console.error("No education entries found after adding");
+          return;
+        }
+
+        const latestEntry = entries[entries.length - 1];
+
+        // Set values with checks for each field
+        const degreeInput = latestEntry.querySelector(".edu-degree");
+        const institutionInput = latestEntry.querySelector(".edu-institution");
+        const startInput = latestEntry.querySelector(".edu-start");
+        const endInput = latestEntry.querySelector(".edu-end");
+        const gpaInput = latestEntry.querySelector(".edu-gpa");
+        const descInput = latestEntry.querySelector(".edu-description");
+
+        if (degreeInput) degreeInput.value = edu.degree || "";
+        if (institutionInput) institutionInput.value = edu.institution || "";
+        if (startInput) startInput.value = edu.startYear || "";
+        if (endInput) endInput.value = edu.endYear || "";
+        if (gpaInput) gpaInput.value = edu.gpa || "";
+        if (descInput) descInput.value = edu.description || "";
+      });
+    } else {
+      // Add default entry if no education
+      addEducationEntry();
+    }
+  } catch (error) {
+    console.error("Error populating education:", error);
+    // Try to add a default entry
+    try {
+      addEducationEntry();
+    } catch (e) {
+      console.error("Error adding default education entry:", e);
+    }
+  }
+
+  // Populate skills
+  try {
+    const skillsInput = document.getElementById("skills-text");
+    if (skillsInput && Array.isArray(resume.skills)) {
+      skillsInput.value = resume.skills.join(", ");
+    }
+  } catch (error) {
+    console.error("Error populating skills:", error);
+  }
+
+  // Populate custom sections if available
+  try {
+    if (
+      Array.isArray(resume.customSections) &&
+      resume.customSections.length > 0 &&
+      customSectionsContainer
+    ) {
+      // Remove the no sections message
+      const noSectionsMsg = customSectionsContainer.querySelector(
+        ".no-custom-sections"
+      );
+      if (noSectionsMsg) {
+        customSectionsContainer.removeChild(noSectionsMsg);
+      }
+
+      // Add each custom section
+      resume.customSections.forEach((section) => {
+        // Add a new empty section
+        if (typeof addCustomSection === "function") {
+          addCustomSection();
+
+          // Get the latest section added
+          const sections =
+            customSectionsContainer.querySelectorAll(".custom-section");
+          if (sections.length === 0) {
+            console.error("No custom sections found after adding");
+            return;
+          }
+
+          const latestSection = sections[sections.length - 1];
+
+          // Populate the fields
+          const titleInput = latestSection.querySelector(
+            ".custom-section-title"
+          );
+          const contentInput = latestSection.querySelector(
+            ".custom-section-content"
+          );
+
+          if (titleInput) titleInput.value = section.title || "";
+          if (contentInput) contentInput.value = section.content || "";
+        } else {
+          console.error("addCustomSection function not found");
+        }
+      });
+    }
+  } catch (error) {
+    console.error("Error populating custom sections:", error);
+  }
+
+  // Trigger preview updates for all inputs
+  try {
+    document.querySelectorAll("input, textarea").forEach((input) => {
+      input.dispatchEvent(new Event("input"));
+    });
+  } catch (error) {
+    console.error("Error triggering preview updates:", error);
+  }
+
+  // Update custom sections preview
+  try {
+    if (typeof updateCustomSectionsPreview === "function") {
+      updateCustomSectionsPreview();
+    }
+  } catch (error) {
+    console.error("Error updating custom sections preview:", error);
+  }
+
+  // Log completion
+  console.log("Resume data population complete");
+}
+/**
+ * Format date for display
+ */
+function formatDateDisplay(dateString) {
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString; // Return original if not valid date
+
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+    });
+  } catch (e) {
+    return dateString; // Return original string if error
+  }
+}
+
+/**
+ * Show list of saved resumes
+ */
+async function showResumesList() {
+  try {
+    // Check authentication
+    const token = localStorage.getItem("token");
+    if (!token) {
+      showToast("Please log in to load your resumes", "error");
+      return;
+    }
+
+    // Make API request to get all user resumes
+    const response = await fetch("/api/resumes", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to load resumes");
+    }
+
+    const result = await response.json();
+
+    if (!Array.isArray(result.data)) {
+      throw new Error("Invalid resume data");
+    }
+
+    // Display resumes in a modal
+    displayResumesModal(result.data);
+  } catch (error) {
+    console.error("Load resumes error:", error);
+    showToast(error.message || "Failed to load resumes", "error");
+  }
+}
+
+/**
+ * Delete a resume by ID
+ */
+async function deleteResume(id) {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("Authentication required");
+    }
+
+    const response = await fetch(`/api/resumes/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to delete resume");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Delete error:", error);
+    throw error;
+  }
+}
+
+/**
+ * Display list of resumes in a modal
+ */
+function displayResumesModal(resumes) {
+  // Create modal container
+  const modal = document.createElement("div");
+  modal.className = "modal";
+  modal.style.display = "block";
+  modal.style.position = "fixed";
+  modal.style.zIndex = "1000";
+  modal.style.left = "0";
+  modal.style.top = "0";
+  modal.style.width = "100%";
+  modal.style.height = "100%";
+  modal.style.overflow = "auto";
+  modal.style.backgroundColor = "rgba(0,0,0,0.5)";
+
+  // Create modal content
+  const modalContent = document.createElement("div");
+  modalContent.style.backgroundColor = "#fff";
+  modalContent.style.margin = "10% auto";
+  modalContent.style.padding = "20px";
+  modalContent.style.border = "1px solid #ddd";
+  modalContent.style.width = "80%";
+  modalContent.style.maxWidth = "600px";
+  modalContent.style.borderRadius = "8px";
+  modalContent.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
+
+  // Create close button
+  const closeButton = document.createElement("span");
+  closeButton.innerHTML = "&times;";
+  closeButton.style.float = "right";
+  closeButton.style.cursor = "pointer";
+  closeButton.style.fontSize = "28px";
+  closeButton.style.fontWeight = "bold";
+  closeButton.addEventListener("click", () => {
+    document.body.removeChild(modal);
+  });
+
+  // Create title
+  const title = document.createElement("h3");
+  title.textContent = "Your Resumes";
+  title.style.marginBottom = "20px";
+
+  // Add to modal content
+  modalContent.appendChild(closeButton);
+  modalContent.appendChild(title);
+
+  // Create resume list
+  if (resumes.length === 0) {
+    const noResumesMessage = document.createElement("p");
+    noResumesMessage.textContent =
+      "No resumes found. Create your first resume!";
+    noResumesMessage.style.textAlign = "center";
+    noResumesMessage.style.color = "#666";
+    modalContent.appendChild(noResumesMessage);
+  } else {
+    const resumeList = document.createElement("ul");
+    resumeList.style.listStyle = "none";
+    resumeList.style.padding = "0";
+
+    resumes.forEach((resume) => {
+      const listItem = document.createElement("li");
+      listItem.style.padding = "10px";
+      listItem.style.borderBottom = "1px solid #eee";
+      listItem.style.display = "flex";
+      listItem.style.justifyContent = "space-between";
+      listItem.style.alignItems = "center";
+
+      const resumeInfo = document.createElement("div");
+      resumeInfo.innerHTML = `
+        <strong>${resume.personalInfo?.fullName || "Untitled Resume"}</strong>
+        <br>
+        <small>${resume.personalInfo?.jobTitle || ""}</small>
+      `;
+
+      // Action buttons container
+      const actionButtons = document.createElement("div");
+      actionButtons.style.display = "flex";
+      actionButtons.style.gap = "8px";
+
+      // Load button
+      const loadButton = document.createElement("button");
+      loadButton.textContent = "Load";
+      loadButton.style.backgroundColor = "#3498db";
+      loadButton.style.color = "white";
+      loadButton.style.border = "none";
+      loadButton.style.borderRadius = "4px";
+      loadButton.style.padding = "5px 10px";
+      loadButton.style.cursor = "pointer";
+      loadButton.addEventListener("click", () => {
+        // Load the selected resume
+        window.location.href = `template1.html?id=${resume._id}`;
+      });
+
+      // Delete button
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+      deleteButton.style.backgroundColor = "#e74c3c";
+      deleteButton.style.color = "white";
+      deleteButton.style.border = "none";
+      deleteButton.style.borderRadius = "4px";
+      deleteButton.style.padding = "5px 10px";
+      deleteButton.style.cursor = "pointer";
+      deleteButton.addEventListener("click", async () => {
+        if (
+          confirm(
+            `Are you sure you want to delete "${
+              resume.personalInfo?.fullName || "this resume"
+            }"?`
+          )
+        ) {
+          try {
+            // Disable delete button while processing
+            deleteButton.disabled = true;
+            deleteButton.textContent = "Deleting...";
+
+            // Call delete API
+            await deleteResume(resume._id);
+
+            // Remove this item from the list
+            resumeList.removeChild(listItem);
+
+            // Show success message
+            showToast("Resume deleted successfully", "success");
+
+            // If no more resumes, show empty message
+            if (resumeList.children.length === 0) {
+              const noResumesMessage = document.createElement("p");
+              noResumesMessage.textContent =
+                "No resumes found. Create your first resume!";
+              noResumesMessage.style.textAlign = "center";
+              noResumesMessage.style.color = "#666";
+
+              // Clear the list and append the message
+              modalContent.removeChild(resumeList);
+              modalContent.appendChild(noResumesMessage);
+            }
+
+            // If current resume is being viewed, redirect to templates
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentResumeId = urlParams.get("id");
+            if (currentResumeId === resume._id) {
+              window.location.href = "template.html";
+            }
+          } catch (error) {
+            showToast(error.message || "Failed to delete resume", "error");
+
+            // Reset delete button
+            deleteButton.disabled = false;
+            deleteButton.textContent = "Delete";
+          }
+        }
+      });
+
+      // Add buttons to container
+      actionButtons.appendChild(loadButton);
+      actionButtons.appendChild(deleteButton);
+
+      // Add elements to list item
+      listItem.appendChild(resumeInfo);
+      listItem.appendChild(actionButtons);
+      resumeList.appendChild(listItem);
+    });
+
+    modalContent.appendChild(resumeList);
+  }
+
+  // Add modal to page
+  modal.appendChild(modalContent);
+  document.body.appendChild(modal);
+
+  // Close modal when clicking outside
+  modal.addEventListener("click", function (event) {
+    if (event.target === modal) {
+      document.body.removeChild(modal);
+    }
+  });
+}
+
+/**
+ * Export resume to PDF
+ */
+function exportResumeToPDF() {
+  // Get resume element
+  const resumeElement = document.getElementById("resume");
+  if (!resumeElement) {
+    showToast("Resume element not found", "error");
+    return;
+  }
+
+  // Check if we're in edit mode
+  const urlParams = new URLSearchParams(window.location.search);
+  const resumeId = urlParams.get("id");
+
+  // If resume isn't saved yet, use client-side PDF generation
+  if (!resumeId) {
+    generateClientPDF();
+    return;
+  }
+
+  // Otherwise, use server-side PDF generation if available
+  try {
+    // Collect current resume data
+    const resumeData = collectResumeData();
+    resumeData._id = resumeId;
+
+    // Use TemplateCore to export PDF
+    TemplateCore.exportToPDF("template1", resumeData).catch((error) => {
+      console.error(
+        "Server PDF export failed, falling back to client-side:",
+        error
+      );
+      generateClientPDF();
+    });
+  } catch (error) {
+    console.error("PDF export error:", error);
+    generateClientPDF();
+  }
+
+  // Client-side PDF generation as fallback
+  function generateClientPDF() {
+    // Create a new window for printing
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) {
+      showToast("Please allow pop-ups to export your resume", "error");
+      return;
+    }
+
+    // Get the name from the resume for the title
+    const name = document.getElementById("preview-name").textContent || "Resume";
+
+    // Write the HTML content to the new window with fixes for blank pages
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>${escapeHtml(name)}</title>
+        <style>
+          /* Base styles */
+          body {
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            /* Remove any default margins that might cause extra pages */
+            background-color: white;
+          }
+          
+          /* Remove page breaks inside elements */
+          * {
+            page-break-inside: avoid;
+          }
+          
+          /* Container for the resume with controlled height */
+          .resume-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            /* Explicit height calculation to prevent overflow */
+            min-height: auto;
+            max-height: 29.7cm; /* A4 height */
+            box-sizing: border-box;
+            overflow: visible;
+          }
+          
+          .resume {
+            /* No fixed height to prevent forcing page breaks */
+            width: 100%;
+          }
+          
+          .resume-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+          }
+          
+          .resume-header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #2c3e50;
+          }
+          
+          .resume-header p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+          }
+          
+          .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 14px;
+            color: #666;
+          }
+          
+          .resume-section {
+            margin-bottom: 15px;
+          }
+          
+          .resume-section h2 {
+            font-size: 16px;
+            color: #3498db;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+          }
+          
+          .job-title, .degree {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 3px;
+          }
+          
+          .company-dates, .institution-years {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #666;
+          }
+          
+          .job-description p {
+            margin: 3px 0;
+          }
+          
+          .skill-tag {
+            display: inline-block;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 2px 8px;
+            margin: 2px;
+            border-radius: 12px;
+            font-size: 12px;
+          }
+          
+          /* Print-specific styles */
+          @media print {
+            body {
+              width: 210mm; /* A4 width */
+              height: 297mm; /* A4 height */
+              margin: 0;
+              padding: 0;
+            }
+            
+            /* Force page break before specific elements if needed */
+            .page-break {
+              page-break-before: always;
+            }
+            
+            /* Ensure no extra space at bottom */
+            html, body {
+              margin-bottom: 0;
+              padding-bottom: 0;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="resume-container">
+          ${resumeElement.innerHTML}
+        </div>
+        <script>
+          window.onload = function() {
+            // Remove any unnecessary elements that could cause extra pages
+            document.querySelectorAll('footer, .page-break').forEach(elem => {
+              if (elem.offsetTop > (document.body.offsetHeight - 100)) {
+                elem.remove();
+              }
+            });
+            
+            // Automatically print when loaded
+            setTimeout(function() {
+              window.print();
+              // Close window after printing (works in some browsers)
+              window.onfocus = function() {
+                setTimeout(function() {
+                  window.close();
+                }, 500);
+              };
+            }, 300);
+          };
+        </script>
+      </body>
+      </html>
+    `);
+
+    printWindow.document.close();
+  }
+}
+
+
+/**
+ * Collect all resume data from form
  */
 function collectResumeData() {
+  // Collect custom sections data if the function exists
+  const customSections = window.collectCustomSectionsData
+    ? window.collectCustomSectionsData()
+    : [];
+
   return {
     personalInfo: {
       fullName: document.getElementById("full-name")?.value || "",
@@ -959,6 +1593,7 @@ function collectResumeData() {
       .split(",")
       .map((skill) => skill.trim())
       .filter((skill) => skill.length > 0),
+    customSections: customSections,
   };
 }
 
@@ -979,11 +1614,11 @@ function collectExperienceData() {
     // Only add if essential fields have values
     if (jobTitle || company) {
       experiences.push({
-        jobTitle,
-        company,
-        startDate,
-        endDate,
-        description,
+        company: company,
+        jobTitle: jobTitle,
+        startDate: startDate || null,
+        endDate: endDate || null,
+        description: description,
       });
     }
   });
@@ -1003,16 +1638,18 @@ function collectEducationData() {
     const institution = entry.querySelector(".edu-institution")?.value || "";
     const startYear = entry.querySelector(".edu-start")?.value || "";
     const endYear = entry.querySelector(".edu-end")?.value || "";
+    const gpa = entry.querySelector(".edu-gpa")?.value || "";
     const description = entry.querySelector(".edu-description")?.value || "";
 
     // Only add if essential fields have values
     if (degree || institution) {
       educations.push({
-        degree,
-        institution,
-        startYear,
-        endYear,
-        description,
+        institution: institution,
+        degree: degree,
+        startYear: startYear || null,
+        endYear: endYear || null,
+        gpa: gpa || "",
+        description: description || "",
       });
     }
   });
@@ -1021,388 +1658,34 @@ function collectEducationData() {
 }
 
 /**
- * Load resume data by ID
+ * Show toast notification
  */
-async function loadResumeById(id) {
-  try {
-    // Check authentication
-    if (!checkAuthentication()) return;
+function showToast(message, type = "info") {
+  const toast = document.createElement("div");
+  toast.className = `toast ${
+    type === "error" ? "toast-error" : "toast-success"
+  }`;
+  toast.textContent = message;
 
-    // Show loading state
-    document.body.classList.add("loading");
+  toast.style.position = "fixed";
+  toast.style.top = "20px";
+  toast.style.right = "20px";
+  toast.style.padding = "12px 20px";
+  toast.style.borderRadius = "4px";
+  toast.style.backgroundColor = type === "error" ? "#e74c3c" : "#2ecc71";
+  toast.style.color = "white";
+  toast.style.zIndex = "9999";
+  toast.style.minWidth = "250px";
+  toast.style.textAlign = "center";
+  toast.style.boxShadow = "0 2px 10px rgba(0,0,0,0.2)";
 
-    const token = localStorage.getItem("token");
-    const response = await fetch(`/api/resumes/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  document.body.appendChild(toast);
 
-    if (!response.ok) {
-      throw new Error("Failed to load resume");
-    }
-
-    const result = await response.json();
-
-    if (!result.data) {
-      throw new Error("Resume data not found");
-    }
-
-    // Populate form with resume data
-    populateFormWithResumeData(result.data);
-  } catch (error) {
-    console.error("Load error:", error);
-    showToast(error.message || "Failed to load resume", "error");
-  } finally {
-    // Remove loading state
-    document.body.classList.remove("loading");
-  }
-}
-
-/**
- * Populate form with resume data
- */
-function populateFormWithResumeData(resume) {
-  // Clear existing entries
-  document.getElementById("experience-container").innerHTML = "";
-  document.getElementById("education-container").innerHTML = "";
-
-  // Populate personal info
-  if (resume.personalInfo) {
-    document.getElementById("full-name").value =
-      resume.personalInfo.fullName || "";
-    document.getElementById("job-title").value =
-      resume.personalInfo.jobTitle || "";
-    document.getElementById("email").value = resume.personalInfo.email || "";
-    document.getElementById("phone").value = resume.personalInfo.phone || "";
-    document.getElementById("location").value =
-      resume.personalInfo.location || "";
-  }
-
-  // Populate summary
-  document.getElementById("summary-text").value = resume.summary || "";
-
-  // Populate experience entries
-  if (Array.isArray(resume.experience) && resume.experience.length > 0) {
-    resume.experience.forEach((exp) => {
-      addExperienceEntry();
-      const entries = document.querySelectorAll(".experience-entry");
-      const latestEntry = entries[entries.length - 1];
-
-      latestEntry.querySelector(".exp-title").value = exp.jobTitle || "";
-      latestEntry.querySelector(".exp-company").value = exp.company || "";
-      latestEntry.querySelector(".exp-start").value = exp.startDate || "";
-      latestEntry.querySelector(".exp-end").value = exp.endDate || "";
-      latestEntry.querySelector(".exp-description").value =
-        exp.description || "";
-    });
-  } else {
-    addExperienceEntry();
-  }
-
-  // Populate education entries
-  if (Array.isArray(resume.education) && resume.education.length > 0) {
-    resume.education.forEach((edu) => {
-      addEducationEntry();
-      const entries = document.querySelectorAll(".education-entry");
-      const latestEntry = entries[entries.length - 1];
-
-      latestEntry.querySelector(".edu-degree").value = edu.degree || "";
-      latestEntry.querySelector(".edu-institution").value =
-        edu.institution || "";
-      latestEntry.querySelector(".edu-start").value = edu.startYear || "";
-      latestEntry.querySelector(".edu-end").value = edu.endYear || "";
-
-      const descField = latestEntry.querySelector(".edu-description");
-      if (descField) {
-        descField.value = edu.description || "";
-      }
-    });
-  } else {
-    addEducationEntry();
-  }
-
-  // Populate skills
-  if (Array.isArray(resume.skills)) {
-    document.getElementById("skills-text").value = resume.skills.join(", ");
-  }
-
-  // Update preview
-  document.querySelectorAll("input, textarea").forEach((input) => {
-    input.dispatchEvent(new Event("input"));
-  });
-}
-
-// Helper functions
-function displayResumesModal(resumes) {
-  if (!Array.isArray(resumes) || resumes.length === 0) {
-    showToast("No saved resumes found.", "error");
-    return;
-  }
-
-  const modal = document.createElement("div");
-  modal.className = "modal";
-  modal.style.display = "block";
-  modal.style.position = "fixed";
-  modal.style.zIndex = "1000";
-  modal.style.left = "0";
-  modal.style.top = "0";
-  modal.style.width = "100%";
-  modal.style.height = "100%";
-  modal.style.overflow = "auto";
-  modal.style.backgroundColor = "rgba(0,0,0,0.5)";
-
-  const modalContent = document.createElement("div");
-  modalContent.className = "modal-content";
-  modalContent.style.backgroundColor = "#fff";
-  modalContent.style.margin = "10% auto";
-  modalContent.style.padding = "20px";
-  modalContent.style.border = "1px solid #ddd";
-  modalContent.style.width = "80%";
-  modalContent.style.maxWidth = "600px";
-  modalContent.style.borderRadius = "8px";
-  modalContent.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
-
-  const closeButton = document.createElement("span");
-  closeButton.innerHTML = "&times;";
-  closeButton.style.float = "right";
-  closeButton.style.cursor = "pointer";
-  closeButton.addEventListener("click", function () {
-    document.body.removeChild(modal);
-  });
-
-  modalContent.appendChild(closeButton);
-
-  resumes.forEach((resume) => {
-    const resumeItem = document.createElement("div");
-    resumeItem.textContent = resume.personalInfo?.fullName || "Untitled Resume";
-    resumeItem.style.padding = "10px";
-    resumeItem.style.borderBottom = "1px solid #eee";
-    resumeItem.style.cursor = "pointer";
-
-    resumeItem.addEventListener("click", function () {
-      window.location.href = `template1.html?id=${resume._id}`;
-    });
-
-    modalContent.appendChild(resumeItem);
-  });
-
-  modal.appendChild(modalContent);
-  document.body.appendChild(modal);
-}
-
-/**
- * Show list of saved resumes
- */
-async function showResumesList() {
-  try {
-    // Check authentication
-    if (!checkAuthentication()) return;
-
-    const token = localStorage.getItem("token");
-    const response = await fetch("/api/resumes", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to load resumes");
-    }
-
-    const result = await response.json();
-
-    if (!Array.isArray(result.data)) {
-      throw new Error("Invalid resume data");
-    }
-
-    // Show resume list in modal
-    displayResumesModal(result.data);
-  } catch (error) {
-    console.error("Load resumes error:", error);
-    showToast(error.message || "Failed to load resumes", "error");
-  }
-}
-
-/**
- * Delete a resume
- */
-async function deleteResume(id, modalElement) {
-  try {
-    // Check authentication
-    if (!checkAuthentication()) return;
-
-    const token = localStorage.getItem("token");
-    const response = await fetch(`/api/resumes/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to delete resume");
-    }
-
-    // Show success message
-    showToast("Resume deleted successfully", "success");
-
-    // Remove modal
-    if (modalElement && modalElement.parentNode) {
-      document.body.removeChild(modalElement);
-    }
-
-    // If we're currently viewing the deleted resume, go back to templates
-    const urlParams = new URLSearchParams(window.location.search);
-    const currentResumeId = urlParams.get("id");
-
-    if (currentResumeId === id) {
-      window.location.href = "template.html";
-    } else {
-      // Refresh the resumes list
-      showResumesList();
-    }
-  } catch (error) {
-    console.error("Delete error:", error);
-    showToast(error.message || "Failed to delete resume", "error");
-  }
-}
-
-/**
- * Export resume to PDF
- */
-function exportResumeToPDF() {
-  const resumeElement = document.querySelector(".resume");
-  if (!resumeElement) {
-    showToast("Resume element not found", "error");
-    return;
-  }
-
-  // Create a new window for printing
-  const printWindow = window.open("", "_blank");
-  if (!printWindow) {
-    showToast("Please allow pop-ups to export your resume", "error");
-    return;
-  }
-
-  // Get the name from the resume for the title
-  const name = document.getElementById("preview-name").textContent || "Resume";
-
-  // Write the HTML content to the new window
-  printWindow.document.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>${escapeHtml(name)}</title>
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          line-height: 1.5;
-          color: #333;
-          margin: 0;
-          padding: 20px;
-        }
-        
-        .resume {
-          max-width: 800px;
-          margin: 0 auto;
-          padding: 20px;
-        }
-        
-        .resume-header {
-          text-align: center;
-          margin-bottom: 20px;
-          padding-bottom: 20px;
-          border-bottom: 2px solid #3498db;
-        }
-        
-        .resume-header h1 {
-          font-size: 28px;
-          margin-bottom: 5px;
-          color: #2c3e50;
-        }
-        
-        .resume-header p {
-          font-size: 18px;
-          color: #666;
-          margin-bottom: 10px;
-        }
-        
-        .contact-info {
-          display: flex;
-          justify-content: center;
-          flex-wrap: wrap;
-          gap: 15px;
-          font-size: 14px;
-          color: #666;
-        }
-        
-        .resume-section {
-          margin-bottom: 20px;
-        }
-        
-        .resume-section h2 {
-          font-size: 18px;
-          color: #3498db;
-          border-bottom: 1px solid #eee;
-          padding-bottom: 5px;
-          margin-bottom: 15px;
-        }
-        
-        .job-title, .degree {
-          font-weight: bold;
-          color: #2c3e50;
-          margin-bottom: 5px;
-        }
-        
-        .company-dates, .institution-years {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 5px;
-          font-size: 14px;
-          color: #666;
-        }
-        
-        .job-description p {
-          margin: 5px 0;
-        }
-        
-        .skill-tag {
-          display: inline-block;
-          background-color: #f8f9fa;
-          border: 1px solid #ddd;
-          padding: 3px 10px;
-          margin: 3px;
-          border-radius: 15px;
-          font-size: 13px;
-        }
-        
-        @media print {
-          body {
-            padding: 0;
-          }
-        }
-      </style>
-    </head>
-    <body>
-      <div class="resume">
-        ${resumeElement.innerHTML}
-      </div>
-      <script>
-        window.onload = function() {
-          // Automatically print when loaded
-          window.print();
-          // Close window after printing (works in some browsers)
-          window.onfocus = function() {
-            setTimeout(function() {
-              window.close();
-            }, 500);
-          };
-        };
-      </script>
-    </body>
-    </html>
-  `);
-
-  printWindow.document.close();
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transition = "opacity 0.3s ease";
+    setTimeout(() => {
+      document.body.removeChild(toast);
+    }, 300);
+  }, 3000);
 }

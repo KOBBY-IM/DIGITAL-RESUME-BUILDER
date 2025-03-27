@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 // Create a new resume
 exports.createResume = async (req, res) => {
   try {
-    const { personalInfo, summary, experience, education, skills } = req.body;
+    const { personalInfo, summary, experience, education, skills, customSections } = req.body;
     
     if (!personalInfo || !personalInfo.fullName) {
       return res.status(400).json({ 
@@ -14,13 +14,37 @@ exports.createResume = async (req, res) => {
       });
     }
 
+    // Process experience data to ensure dates are strings
+    const processedExperience = Array.isArray(experience) 
+      ? experience.map(exp => ({
+          company: exp.company || '',
+          jobTitle: exp.jobTitle || '',
+          startDate: exp.startDate ? String(exp.startDate) : '',
+          endDate: exp.endDate ? String(exp.endDate) : '',
+          description: exp.description || ''
+        }))
+      : [];
+
+    // Process education data to ensure years are strings
+    const processedEducation = Array.isArray(education)
+      ? education.map(edu => ({
+          institution: edu.institution || '',
+          degree: edu.degree || '',
+          startYear: edu.startYear ? String(edu.startYear) : '',
+          endYear: edu.endYear ? String(edu.endYear) : '',
+          gpa: edu.gpa || '',
+          description: edu.description || ''
+        }))
+      : [];
+
     const newResume = new Resume({
       userId: req.userId,
       personalInfo,
       summary,
-      experience: Array.isArray(experience) ? experience : [],
-      education: Array.isArray(education) ? education : [],
+      experience: processedExperience,
+      education: processedEducation,
       skills: Array.isArray(skills) ? skills : [],
+      customSections: Array.isArray(customSections) ? customSections : [],
       lastUpdated: new Date()
     });
 
@@ -79,6 +103,8 @@ exports.getUserResumes = async (req, res) => {
   }
 };
 
+
+
 // Download resume as PDF
 exports.downloadResume = async (req, res) => {
   try {
@@ -107,16 +133,34 @@ exports.downloadResume = async (req, res) => {
       });
     }
 
+    // Generate PDF
     const pdf = await PDFGenerator.generatePDF(resume);
     
+    // Sanitize filename
+    const filename = (resume.personalInfo.fullName || 'resume')
+      .replace(/[^a-z0-9]/gi, '_')
+      .toLowerCase() + '_resume.pdf';
+
+    // Set headers for PDF download
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename="${resume.personalInfo.fullName.replace(/[^a-z0-9]/gi, '_')}_Resume.pdf"`);
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Length', pdf.length);
+    
+    // Send PDF buffer directly
     res.send(pdf);
   } catch (error) {
     console.error('Download resume error:', error);
+    
     res.status(500).json({ 
       success: false,
-      message: 'Error generating PDF: ' + error.message
+      message: 'Error generating PDF: ' + error.message,
+      errorDetails: process.env.NODE_ENV === 'development' 
+        ? { 
+            name: error.name, 
+            message: error.message, 
+            stack: error.stack 
+          } 
+        : undefined
     });
   }
 };
@@ -133,7 +177,26 @@ exports.updateResume = async (req, res) => {
       });
     }
     
-    const updateData = req.body;
+    // Get update data and process dates
+    const updateData = { ...req.body };
+    
+    // Process experience data to ensure dates are strings
+    if (Array.isArray(updateData.experience)) {
+      updateData.experience = updateData.experience.map(exp => ({
+        ...exp,
+        startDate: exp.startDate ? String(exp.startDate) : '',
+        endDate: exp.endDate ? String(exp.endDate) : ''
+      }));
+    }
+    
+    // Process education data to ensure years are strings
+    if (Array.isArray(updateData.education)) {
+      updateData.education = updateData.education.map(edu => ({
+        ...edu,
+        startYear: edu.startYear ? String(edu.startYear) : '',
+        endYear: edu.endYear ? String(edu.endYear) : ''
+      }));
+    }
     
     // Add lastUpdated date
     updateData.lastUpdated = new Date();

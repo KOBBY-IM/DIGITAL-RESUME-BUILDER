@@ -18,4 +18,7 @@ router.put('/:id', authenticate, resumeController.updateResume);
 // Download resume as PDF
 router.get('/:id/download', authenticate, resumeController.downloadResume);
 
+// Delete a resume
+router.delete('/:id', authenticate, resumeController.deleteResume);
+
 module.exports = router;

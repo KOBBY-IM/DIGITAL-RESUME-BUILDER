@@ -24,7 +24,12 @@
           </div>
           <nav class="header-nav">
             <span class="user-welcome">Welcome, <span id="user-name">User</span></span>
-            <button type="button" class="btn btn-primary" onclick="logout()">Log Out</button>
+            <a href="my-resumes.html" class="btn btn-outline-primary me-2" id="my-resumes-btn">
+              <i class="fas fa-file-alt me-2"></i>My Resumes
+            </a>
+            <button type="button" class="btn btn-primary" id="logout-btn">
+              <i class="fas fa-sign-out-alt me-2"></i>Log Out
+            </button>
           </nav>
         </div>
       </header>
@@ -64,24 +69,72 @@
 
     <script>
       function templatepage() {
-        window.location.href = 'template.html';
+        window.location.replace('template.html');
       }
       
-      function logout() {
-        // Clear authentication data
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.href = 'test.html?logout=true';
-      }
-      
-      // Display user name if available
+      // Update to use the logout function from auth.js instead of inline
       document.addEventListener('DOMContentLoaded', function() {
+        console.log('LoginIndex page loaded');
+        
+        // Display user name if available
         const userData = JSON.parse(localStorage.getItem('user') || '{}');
         if (userData.name) {
           document.getElementById('user-name').textContent = userData.name;
         }
+        
+        // Set up My Resumes button with explicit navigation
+        const myResumesBtn = document.getElementById('my-resumes-btn');
+        if (myResumesBtn) {
+          console.log('Adding click handler to My Resumes button');
+          
+          myResumesBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('My Resumes button clicked');
+            
+            // Use a timeout and location.replace to avoid navigation issues
+            setTimeout(function() {
+              console.log('Navigating to my-resumes.html');
+              window.location.replace('my-resumes.html');
+            }, 10);
+            
+            return false;
+          });
+        } else {
+          console.error('My Resumes button not found');
+        }
+        
+        // Set up logout button
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+          logoutBtn.addEventListener('click', handleLogout);
+        }
+        
+        // Handle logout function
+        async function handleLogout() {
+          try {
+            const token = localStorage.getItem('token');
+            if (token) {
+              // Call the logout API
+              await fetch('/api/auth/logout', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+                }
+              });
+            }
+          } catch (err) {
+            console.error('Logout error:', err);
+          }
+          
+          // Clear authentication data
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          
+          // Redirect to login page
+          window.location.href = 'test.html?logout=true';
+        }
       });
     </script>
     <script src="./Js/auth.js"></script>
-  </body>
-</html>
