@@ -7,7 +7,7 @@ ATS-friendly resumes with AI-generated suggestions and keyword optimization.
 
 
 ## 👨‍💻 Authors
-- **[Your Name]** - [GitHub](https://github.com/KOBBY-IM)
+- **[THEOPHILUS NYARKO-MENSAH]** - [GitHub](https://github.com/KOBBY-IM)
 
 
 
