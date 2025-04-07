@@ -8,6 +8,7 @@ ATS-friendly resumes with AI-generated suggestions and keyword optimization.
 
 ## 👨‍💻 Authors
 - **[THEOPHILUS NYARKO-MENSAH]** - [GitHub](https://github.com/KOBBY-IM)
+- **[JOSHUA WILSON]** - [GitHub](https://github.com/JoshuaWilson-RGU)
 
 
 
