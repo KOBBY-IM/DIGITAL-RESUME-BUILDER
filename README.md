@@ -9,6 +9,11 @@ ATS-friendly resumes with AI-generated suggestions and keyword optimization.
 ## 👨‍💻 Authors
 - **[THEOPHILUS NYARKO-MENSAH]** - [GitHub](https://github.com/KOBBY-IM)
 - **[JOSHUA WILSON]** - [GitHub](https://github.com/JoshuaWilson-RGU)
+- **[NATHAN ODOEMELAM]** - [GitHub](https://github.com/kelechiodoemelam)
+- **[PATRICK GOMEZ]** - [GitHub](https://github.com/OtuGomez)
+- **[EMMANUEL ACQUAH]** - [GitHub](https://github.com/acquah09)
+- **[PRINCE PAUL ASUQUO]** - [GitHub](https://github.com/Billpaj)
+- **[TOUFIC FUSEINI]** - [GitHub](https://github.com/Thorfic)
 
 
 
